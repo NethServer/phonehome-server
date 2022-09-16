@@ -1,0 +1,36 @@
+server {
+  listen [::]:80;
+  listen 80;
+
+  server_name www.${APP_DOMAIN};
+
+  return 301 $scheme://${APP_DOMAIN}$request_uri;
+}
+
+server {
+  # listen [::]:80 accept_filter=httpready; # for FreeBSD
+  # listen 80 accept_filter=httpready; # for FreeBSD
+  listen [::]:80;
+  listen 80;
+
+  # The host name to respond to
+  server_name ${APP_DOMAIN};
+
+  # Path for static files
+  root /var/www/html/public;
+
+  index index.php;
+
+  location / {
+    try_files $uri $uri/ /index.php?$query_string;
+  }
+
+  location ~ \.php$ {
+    fastcgi_pass ${FPM_URL}:${FPM_PORT};
+    fastcgi_param SCRIPT_FILENAME $realpath_root$fastcgi_script_name;
+    include fastcgi_params;
+  }
+
+  # Include the basic h5bp config set
+  include h5bp/basic.conf;
+}
