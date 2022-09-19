@@ -32,6 +32,18 @@ else
             --force-rm
         echo "Image php built and tagged: $php_tag."
         ;;
+    test)
+        php_tag="$registry/$repository-app:testing"
+        echo "Building app image targeting testing, tagging as: $php_tag"
+        buildah build --file "containers/php/Containerfile" \
+            --target testing \
+            --platform linux/amd64 \
+            --jobs 0 \
+            --tag "$php_tag" \
+            --force-rm
+        podman image rm $php_tag
+        echo "Testing successful."
+            ;;
     *)
         echo "Unknown action: $1"
         exit 1
