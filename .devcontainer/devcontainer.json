@@ -12,7 +12,8 @@
 		"amiralizadeh9480.laravel-extra-intellisense",
 		"ryannaddy.laravel-artisan",
 		"onecentlin.laravel5-snippets",
-		"onecentlin.laravel-blade"
+		"onecentlin.laravel-blade",
+		"hashicorp.hcl"
 	],
 	"remoteUser": "sail",
 	"postCreateCommand": "chown -R 1000:1000 /var/www/html"
