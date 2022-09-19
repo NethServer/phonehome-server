@@ -22,7 +22,7 @@ else
             --force-rm
         echo "Image nginx built and tagged: $nginx_tag."
         php_tag="$registry/$repository-app:$current_branch"
-        echo "Build nginx image as: $php_tag"
+        echo "Build php image as: $php_tag"
         buildah build --file "containers/php/Containerfile" \
             --target production \
             --platform linux/amd64 \
@@ -30,7 +30,7 @@ else
             --jobs 0 \
             --tag "$php_tag" \
             --force-rm
-        echo "Image nginx built and tagged: $php_tag."
+        echo "Image php built and tagged: $php_tag."
         ;;
     *)
         echo "Unknown action: $1"
