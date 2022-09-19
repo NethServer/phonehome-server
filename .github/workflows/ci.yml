@@ -4,8 +4,12 @@ on:
     branches:
       - master
 jobs:
+  application-testing:
+    uses: ./.github/workflows/test.yml
   build-and-push:
     runs-on: ubuntu-latest
+    needs:
+      - application-testing
     strategy:
       matrix:
         image: [ app, web ]

@@ -60,6 +60,6 @@ target "testing" {
     target = "testing"
 }
 
-group "release" {
-    targets = ["app-release", "web-release"]
+group "default" {
+    targets = ["develop"]
 }
