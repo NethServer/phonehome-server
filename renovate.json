@@ -2,5 +2,45 @@
     "$schema": "https://docs.renovatebot.com/renovate-schema.json",
     "extends": [
         "config:base"
+    ],
+    "assignees": [
+        "Tbaile"
+    ],
+    "minor": {
+        "automerge": true
+    },
+    "patch": {
+        "automerge": true
+    },
+    "packageRules": [
+        {
+            "matchPackageNames": [
+                "docker.io/php"
+            ],
+            "allowedVersions": "<= 8.0"
+        },
+        {
+            "matchPackageNames": [
+                "docker.io/composer"
+            ]
+        },
+        {
+            "matchPackageNames": [
+                "docker.io/node"
+            ],
+            "allowedVersions": "<= 16"
+        },
+        {
+            "matchPackageNames": [
+                "docker.io/mariadb"
+            ],
+            "allowedVersions": "<= 10.6"
+        },
+        {
+            "matchPackageNames": [
+                "docker.io/redis"
+            ],
+            "allowedVersions": "<= 6"
+        }
     ]
 }
