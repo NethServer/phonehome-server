@@ -26,7 +26,7 @@ services:
             - mariadb
             - redis
     mariadb:
-        image: 'mariadb:10'
+        image: docker.io/mariadb:10.6.9
         ports:
             - '${FORWARD_DB_PORT:-3306}:3306'
         environment:
@@ -46,7 +46,7 @@ services:
             retries: 3
             timeout: 5s
     redis:
-        image: 'redis:6.2.7-alpine'
+        image: docker.io/redis:6.2.7-alpine
         ports:
             - '${FORWARD_REDIS_PORT:-6379}:6379'
         volumes:
