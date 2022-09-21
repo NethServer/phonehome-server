@@ -1,6 +1,6 @@
 name: Application Testing
 on:
-  pull_requests:
+  pull_request:
   workflow_call:
 jobs:
   application-testing:
