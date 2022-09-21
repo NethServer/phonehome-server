@@ -1,4 +1,4 @@
-name: lupus-api
+name: phone-home
 services:
     redis:
         image: docker.io/redis:6.2.7-alpine

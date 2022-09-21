@@ -5,6 +5,7 @@ RUN install-php-extensions \
     mysqli \
     opcache \
     pdo_mysql \
+    redis \
     zip
 COPY --from=docker.io/composer:2.4.1 /usr/bin/composer /usr/local/bin/composer
 
