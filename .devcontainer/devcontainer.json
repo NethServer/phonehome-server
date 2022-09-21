@@ -13,7 +13,9 @@
 		"ryannaddy.laravel-artisan",
 		"onecentlin.laravel5-snippets",
 		"onecentlin.laravel-blade",
-		"hashicorp.hcl"
+		"hashicorp.hcl",
+		"eamodio.gitlens",
+		"ms-azuretools.vscode-docker"
 	],
 	"remoteUser": "sail",
 	"postCreateCommand": "chown -R 1000:1000 /var/www/html"
