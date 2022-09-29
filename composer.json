@@ -11,7 +11,7 @@
         "ext-pdo_mysql": "*",
         "ext-redis": "*",
         "guzzlehttp/guzzle": "7.5.0",
-        "laravel/framework": "9.31.0",
+        "laravel/framework": "9.32.0",
         "laravel/sanctum": "3.0.1",
         "laravel/tinker": "2.7.2"
     },
@@ -19,10 +19,10 @@
         "brianium/paratest": "6.6.4",
         "fakerphp/faker": "1.20.0",
         "laravel/pint": "1.2.0",
-        "laravel/sail": "1.16.0",
+        "laravel/sail": "1.16.1",
         "mockery/mockery": "1.5.1",
         "nunomaduro/collision": "6.3.0",
-        "phpunit/phpunit": "9.5.24",
+        "phpunit/phpunit": "9.5.25",
         "spatie/laravel-ignition": "1.5.0"
     },
     "autoload": {
