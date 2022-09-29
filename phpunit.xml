@@ -17,6 +17,7 @@
             <file>./app/Console/Kernel.php</file>
             <file>./app/Console/Commands/SetupCommand.php</file>
             <file>./app/Exceptions/Handler.php</file>
+            <file>./app/Http/Controllers/Controller.php</file>
             <file>./app/Http/Middleware/Authenticate.php</file>
             <file>./app/Http/Middleware/EncryptCookies.php</file>
             <file>./app/Http/Middleware/PreventRequestsDuringMaintenance.php</file>
@@ -24,7 +25,9 @@
             <file>./app/Http/Middleware/TrimStrings.php</file>
             <file>./app/Http/Middleware/TrustHosts.php</file>
             <file>./app/Http/Middleware/TrustProxies.php</file>
+            <file>./app/Http/Middleware/ValidateSignature.php</file>
             <file>./app/Http/Middleware/VerifyCsrfToken.php</file>
+            <file>./app/Http/Kernel.php</file>
             <file>./app/Providers/AppServiceProvider.php</file>
             <file>./app/Providers/AuthServiceProvider.php</file>
             <file>./app/Providers/BroadcastServiceProvider.php</file>
