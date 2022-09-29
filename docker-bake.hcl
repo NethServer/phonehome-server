@@ -2,62 +2,58 @@ variable "TAG" {
     default = "master"
 }
 
-variable "REGISTRY" {
-    default = "docker.io"
-}
-
 variable "REPOSITORY" {
     default = "tbaile/phonehome"
 }
 
-target "app" {
-    dockerfile = "containers/php/Containerfile"
-    platforms = ["linux/amd64"]
+# CI purposes
+target "docker-metadata-action" {}
+
+target "base" {
+    inherits = ["docker-metadata-action"]
     target = "production"
-    cache-from = ["type=registry,ref=${REGISTRY}/${REPOSITORY}-app:cache"]
     context = "."
 }
 
-target "app-develop" {
-    inherits = ["app"]
-    tags = ["${REGISTRY}/${REPOSITORY}-app:master"]
-    output = ["type=docker"]
+target "app" {
+    dockerfile = "containers/php/Containerfile"
 }
 
 target "app-release" {
-    inherits = ["app"]
-    cache-to = ["type=registry,ref=${REGISTRY}/${REPOSITORY}-app:cache,mode=max"]
-    output = ["type=registry"]
+    inherits = ["base", "app"]
+    cache-from = ["type=registry,ref=${REPOSITORY}-app:${TAG}"]
+    cache-to = ["type=inline"]
+}
+
+target "app-develop" {
+    inherits = ["app-release"]
+    tags = ["${REPOSITORY}-app:master"]
+    output = ["type=docker"]
 }
 
 target "web" {
     dockerfile = "containers/nginx/Containerfile"
-    platforms = ["linux/amd64"]
-    cache-from = ["type=registry,ref=${REGISTRY}/${REPOSITORY}-web:cache"]
-    context = "."
-}
-
-target "web-develop" {
-    inherits = ["web"]
-    tags = ["${REGISTRY}/${REPOSITORY}-web:master"]
-    target = "production"
-    output = ["type=docker"]
 }
 
 target "web-release" {
-    inherits = ["web"]
-    target = "production"
-    cache-to = ["type=registry,ref=${REGISTRY}/${REPOSITORY}-web:cache,mode=max"]
-    output = ["type=registry"]
+    inherits = ["base", "web"]
+    cache-from = ["type=registry,ref=${REPOSITORY}-web:${TAG}"]
+    cache-to = ["type=inline"]
+}
+
+target "web-develop" {
+    inherits = ["web-release"]
+    tags = ["${REPOSITORY}-web:master"]
+    output = ["type=docker"]
+}
+
+target "testing" {
+    inherits = ["app-release"]
+    target = "testing"
 }
 
 group "develop" {
     targets = ["app-develop", "web-develop"]
-}
-
-target "testing" {
-    inherits = ["app"]
-    target = "testing"
 }
 
 group "default" {

@@ -1,0 +1,16 @@
+name: Development Pipeline
+on:
+  push:
+  pull_request:
+
+jobs:
+  app-image-test:
+    uses: ./.github/workflows/test.yml
+
+  build-image:
+    uses: ./.github/workflows/build.yml
+    needs:
+      - app-image-test
+    secrets: inherit
+    with:
+      push: true

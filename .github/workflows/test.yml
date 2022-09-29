@@ -1,17 +1,41 @@
-name: Application Testing
+name: Testing
 on:
-  pull_request:
   workflow_call:
+
+env:
+  repository: tbaile/phonehome
+
 jobs:
-  application-testing:
-    runs-on: ubuntu-latest
+  app-image-test:
+    name: "Test app image"
+    runs-on: ubuntu-22.04
     steps:
-      - uses: actions/checkout@v3
-      - uses: docker/setup-qemu-action@v2
-      - uses: docker/setup-buildx-action@v2
-      - name: Test target "testing"
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Setup buildx
+        uses: docker/setup-buildx-action@v2
+
+      - name: Generate tags to fetch cache from
+        uses: docker/metadata-action@v4
+        id: meta-cache
+        with:
+          images: |
+            ${{ env.repository }}-app
+          tags: |
+            type=ref,event=branch
+            type=ref,event=pr
+          flavor: |
+            latest=false
+            suffix=-cache
+
+      - name: Build target "testing"
         uses: docker/bake-action@v2.2.0
         with:
           targets: testing
           files: |
             ./docker-bake.hcl
+          set: |
+            *.output=type=docker
+            *.cache-from=type=registry,ref=${{ env.repository }}-app:master
+            *.cache-from=type=registry,ref=${{ join(fromJSON(steps.meta-cache.outputs.json).tags, ' *.cache-from=type=registry,ref=') }}
