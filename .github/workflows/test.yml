@@ -1,41 +1,54 @@
 name: Testing
 on:
+  pull_request:
   workflow_call:
-
 env:
   repository: tbaile/phonehome
-
 jobs:
-  app-image-test:
-    name: "Test app image"
+  test-app-image:
+    name: Test app image
     runs-on: ubuntu-22.04
+    strategy:
+      matrix:
+        arch:
+          - amd64
+          - arm64
     steps:
-      - name: Checkout code
+      - name: Checkout repo
         uses: actions/checkout@v3
 
-      - name: Setup buildx
+      - name: Setup QEMU
+        uses: docker/setup-qemu-action@v2
+
+      - name: Create new buildx builder
         uses: docker/setup-buildx-action@v2
 
-      - name: Generate tags to fetch cache from
+      - name: Generate cache-from tags
         uses: docker/metadata-action@v4
-        id: meta-cache
+        id: meta-cache-from
         with:
           images: |
             ${{ env.repository }}-app
           tags: |
+            type=raw,value=develop
             type=ref,event=branch
             type=ref,event=pr
           flavor: |
             latest=false
-            suffix=-cache
+            suffix=-cache-${{ matrix.arch }}
 
-      - name: Build target "testing"
-        uses: docker/bake-action@v2.2.0
+      - name: Transform cache tags
+        id: bake-cache
+        run: |
+          cache_from_file="$(mktemp)"
+          jq '{ "target": { "testing": { "cache-from": ."target"."docker-metadata-action"."tags" | map_values("type=registry,ref=" + .) } } }' ${{ steps.meta-cache-from.outputs.bake-file }} > "$cache_from_file"
+          echo "::set-output name=cache-from::$cache_from_file"
+
+      - uses: docker/bake-action@v2.2.0
         with:
-          targets: testing
           files: |
             ./docker-bake.hcl
+            ${{ steps.bake-cache.outputs.cache-from }}
+          targets: testing
           set: |
-            *.output=type=docker
-            *.cache-from=type=registry,ref=${{ env.repository }}-app:master
-            *.cache-from=type=registry,ref=${{ join(fromJSON(steps.meta-cache.outputs.json).tags, ' *.cache-from=type=registry,ref=') }}
+            *.platform=linux/${{ matrix.arch }}

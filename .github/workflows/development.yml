@@ -1,16 +1,20 @@
 name: Development Pipeline
 on:
   push:
-  pull_request:
+    branches-ignore:
+      - "renovate/**"
+
+env:
+  REPOSITORY: tbaile/phonehome
 
 jobs:
-  app-image-test:
+  test-app-image:
     uses: ./.github/workflows/test.yml
 
-  build-image:
+  build-and-push-images:
     uses: ./.github/workflows/build.yml
     needs:
-      - app-image-test
+      - test-app-image
     secrets: inherit
     with:
       push: true
