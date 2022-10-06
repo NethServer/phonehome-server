@@ -15,12 +15,11 @@
 		"onecentlin.laravel-blade",
 		"hashicorp.hcl",
 		"ms-azuretools.vscode-docker",
-		"bmewburn.vscode-intelephense-client"
+		"bmewburn.vscode-intelephense-client",
+		"xdebug.php-debug"
 	],
 	"remoteUser": "sail",
-	"initializeCommand": "if [ ! -f .env ]; then cp .env.example .env; fi",
-	"onCreateCommand": "composer i",
-	"postCreateCommand": "chown -R 1000:1000 /var/www/html"
+	"postCreateCommand": "chown -R 1000:1000 /var/www/html && composer i && if [ ! -f .env ]; then cp .env.example .env; fi"
 	// "forwardPorts": [],
 	// "runServices": [],
 	// "shutdownAction": "none",
