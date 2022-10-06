@@ -16,7 +16,8 @@
 		"hashicorp.hcl",
 		"ms-azuretools.vscode-docker",
 		"bmewburn.vscode-intelephense-client",
-		"xdebug.php-debug"
+		"xdebug.php-debug",
+		"redhat.vscode-yaml"
 	],
 	"remoteUser": "sail",
 	"postCreateCommand": "chown -R 1000:1000 /var/www/html && composer i && if [ ! -f .env ]; then cp .env.example .env; fi"
