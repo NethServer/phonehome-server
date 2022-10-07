@@ -2,9 +2,9 @@ name: Build
 on:
   workflow_call:
     secrets:
-      dockerhub_username:
+      registry_username:
         required: true
-      dockerhub_token:
+      registry_password:
         required: true
 env:
   repository: tbaile/phonehome
@@ -81,8 +81,8 @@ jobs:
       - name: Login to Docker
         uses: docker/login-action@v2
         with:
-          username: ${{ secrets.dockerhub_username }}
-          password: ${{ secrets.dockerhub_token }}
+          username: ${{ secrets.registry_username }}
+          password: ${{ secrets.registry_password }}
 
       - uses: docker/bake-action@v2.2.0
         with:
