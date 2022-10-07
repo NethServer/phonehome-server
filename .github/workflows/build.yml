@@ -11,10 +11,8 @@ on:
         required: false
       dockerhub_token:
         required: false
-
 env:
   repository: tbaile/phonehome
-
 jobs:
   build-image:
     name: Build ${{ matrix.image }} image and push

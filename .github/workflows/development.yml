@@ -1,12 +1,10 @@
 name: Development Pipeline
 on:
   push:
-    branches-ignore:
-      - "renovate/**"
-
+    branches:
+      - "master"
 env:
   REPOSITORY: tbaile/phonehome
-
 jobs:
   test-app-image:
     uses: ./.github/workflows/test.yml
