@@ -1,16 +1,11 @@
 name: Build
 on:
   workflow_call:
-    inputs:
-      push:
-        type: boolean
-        required: false
-        default: false
     secrets:
       dockerhub_username:
-        required: false
+        required: true
       dockerhub_token:
-        required: false
+        required: true
 env:
   repository: tbaile/phonehome
 jobs:
@@ -22,9 +17,6 @@ jobs:
         image:
           - app
           - web
-        arch:
-          - amd64
-          - arm64
     steps:
       - name: Checkout repo
         uses: actions/checkout@v3
@@ -43,14 +35,11 @@ jobs:
           images: |
             ${{ env.repository }}-${{ matrix.image }}
           tags: |
-            type=ref,event=branch,enable=${{ github.ref != format('refs/heads/{0}', 'master') }}
+            type=ref,event=branch
             type=ref,event=pr
             type=semver,pattern={{version}}
             type=semver,pattern={{major}}.{{minor}}
             type=semver,pattern={{major}},enable=${{ !startsWith(github.ref, 'refs/tags/v0.') }}
-          flavor: |
-            latest=false
-            suffix=-${{ matrix.arch }}
 
       - name: Generate cache-from tags
         uses: docker/metadata-action@v4
@@ -64,7 +53,7 @@ jobs:
             type=ref,event=pr
           flavor: |
             latest=false
-            suffix=-cache-${{ matrix.arch }}
+            suffix=-cache
 
       - name: Generate cache-to tags
         uses: docker/metadata-action@v4
@@ -77,7 +66,7 @@ jobs:
             type=ref,event=pr
           flavor: |
             latest=false
-            suffix=-cache-${{ matrix.arch }}
+            suffix=-cache
 
       - name: Transform cache tags
         id: bake-cache
@@ -99,10 +88,10 @@ jobs:
         with:
           targets: ${{ matrix.image }}-release
           set: |
-            *.platform=linux/${{ matrix.arch }}
+            *.platform=linux/arm64,linux/amd64
           files: |
             ./docker-bake.hcl
             ${{ steps.meta.outputs.bake-file }}
             ${{ steps.bake-cache.outputs.cache-from }}
             ${{ steps.bake-cache.outputs.cache-to }}
-          push: ${{ inputs.push }}
+          push: true

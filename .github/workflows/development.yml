@@ -14,5 +14,3 @@ jobs:
     needs:
       - test-app-image
     secrets: inherit
-    with:
-      push: true

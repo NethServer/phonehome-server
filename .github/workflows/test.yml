@@ -8,11 +8,6 @@ jobs:
   test-app-image:
     name: Test app image
     runs-on: ubuntu-22.04
-    strategy:
-      matrix:
-        arch:
-          - amd64
-          - arm64
     steps:
       - name: Checkout repo
         uses: actions/checkout@v3
@@ -35,7 +30,7 @@ jobs:
             type=ref,event=pr
           flavor: |
             latest=false
-            suffix=-cache-${{ matrix.arch }}
+            suffix=-cache
 
       - name: Transform cache tags
         id: bake-cache
@@ -51,4 +46,4 @@ jobs:
             ${{ steps.bake-cache.outputs.cache-from }}
           targets: testing
           set: |
-            *.platform=linux/${{ matrix.arch }}
+            *.platform=linux/amd64,linux/arm64
