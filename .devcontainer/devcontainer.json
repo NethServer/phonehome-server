@@ -17,7 +17,8 @@
 		"ms-azuretools.vscode-docker",
 		"bmewburn.vscode-intelephense-client",
 		"xdebug.php-debug",
-		"redhat.vscode-yaml"
+		"redhat.vscode-yaml",
+		"eamodio.gitlens"
 	],
 	"remoteUser": "sail",
 	"initializeCommand": "if [ ! -f .env ]; then cp .env.example .env; fi",
