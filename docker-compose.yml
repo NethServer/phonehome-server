@@ -26,7 +26,7 @@ services:
             - mariadb
             - redis
     mariadb:
-        image: docker.io/mariadb:10.6.10
+        image: mariadb:10.6.10
         ports:
             - '${FORWARD_DB_PORT:-3306}:3306'
         environment:
@@ -46,7 +46,7 @@ services:
             retries: 3
             timeout: 5s
     redis:
-        image: docker.io/redis:6.2.7-alpine
+        image: redis:6.2.7-alpine
         ports:
             - '${FORWARD_REDIS_PORT:-6379}:6379'
         volumes:
@@ -57,6 +57,13 @@ services:
             test: ["CMD", "redis-cli", "ping"]
             retries: 3
             timeout: 5s
+    mailhog:
+        image: mailhog/mailhog:v1.0.1
+        ports:
+            - '${FORWARD_MAILHOG_PORT:-1025}:1025'
+            - '${FORWARD_MAILHOG_DASHBOARD_PORT:-8025}:8025'
+        networks:
+            - sail
 networks:
     sail:
         driver: bridge
