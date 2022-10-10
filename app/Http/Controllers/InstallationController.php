@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreInstallationRequest;
+use App\Logic\GeoIpLocator;
 use App\Models\Installation;
 
 class InstallationController extends Controller
@@ -13,10 +14,12 @@ class InstallationController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(StoreInstallationRequest $request)
+    public function store(StoreInstallationRequest $request, GeoIpLocator $geoIpLocator)
     {
         $installation = new Installation($request->validated());
-        // TODO: add geoip logic
+        $installation->source_ip = $request->ip();
+        $installation->country_iso_code = $geoIpLocator->locate($request->ip());
         $installation->save();
+        return response()->json([], 200);
     }
 }
