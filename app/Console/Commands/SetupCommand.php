@@ -48,6 +48,8 @@ class SetupCommand extends Command
                 '--seed' => true
             ]);
         }
+        $this->info('Setting up Application');
+        $this->callSilently('app:geoip:download');
         $this->info('Setup completed, exiting.');
         return 0;
     }
