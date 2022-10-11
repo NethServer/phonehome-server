@@ -12,11 +12,17 @@ test('cannot insert invalid type')
     ->assertUnprocessable()
     ->assertInvalid(['type' => 'in']);
 
-test('cannot insert invalid version', function () {
-    $this->postJson('/', ['release' => 'hello'])
+test('cannot insert invalid version', function (string $release) {
+    $this->postJson('/', ['release' => $release])
         ->assertUnprocessable()
-        ->assertInvalid(['release' => 'regex']);
-})->skip();
+        ->assertInvalid(['release' => 'format']);
+})->with([
+    'hello',
+    'x.y.z',
+    'x.y',
+    'x.',
+    '99.99.99x'
+]);
 
 it('can handle post data', function () {
     $installation = Installation::factory()->make();

@@ -11,13 +11,13 @@ class StoreInstallationRequest extends FormRequest
      *
      * @return array<string, mixed>
      */
-    public function rules()
+    public function rules(): array
     {
         return [
             'uuid' => 'required|uuid',
             'release' => [
                 'required',
-                'regex:/.*/m' // uses preg_match
+                'regex:/^\d+\.\d+\.?\d*$/m' // uses preg_match
             ],
             'type' => 'required|in:community,enterprise,subscription'
         ];
