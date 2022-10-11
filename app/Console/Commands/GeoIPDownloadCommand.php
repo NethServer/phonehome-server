@@ -27,12 +27,12 @@ class GeoIPDownloadCommand extends Command
      *
      * @return int
      */
-    public function handle()
+    public function handle(): int
     {
         $geoIPToken = Config::get('geoip.geoip_token');
         if (is_null($geoIPToken)) {
             $this->error('No GeoLite2 token set in configuration.');
-            return Command::FAILURE;
+            return self::FAILURE;
         }
 
         // Careful, this library is not so great, be sure to test it very well.
@@ -43,13 +43,13 @@ class GeoIPDownloadCommand extends Command
         ));
         $client->run();
 
-        $exitStatus = Command::SUCCESS;
+        $exitStatus = self::SUCCESS;
 
         if (!empty($client->errors())) {
             foreach ($client->errors() as $error) {
                 $this->error('Failed to update ' . $error);
             }
-            $exitStatus = Command::FAILURE;
+            $exitStatus = self::FAILURE;
         }
 
         foreach ($client->updated() as $updated) {
