@@ -2,9 +2,11 @@
 
 use App\Logic\GeoIpLocator;
 use App\Models\Installation;
+use GeoIp2\Exception\AddressNotFoundException;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Route;
 use Mockery\MockInterface;
+use Symfony\Component\HttpKernel\Exception\UnprocessableEntityHttpException;
 
 uses(RefreshDatabase::class);
 
@@ -53,14 +55,15 @@ it('can handle post data', function () {
 })->skip(fn () => !Route::has('installation.index'));
 
 it('can handle if ip is not found', function () {
+    /** @var Tests\TestCase $this */
     $this->mock(GeoIpLocator::class, function (MockInterface $mock) {
         $mock->shouldReceive('locate')
+            ->with('127.0.0.1')
             ->once()
-            ->andReturn('--');
+            ->andThrow(new AddressNotFoundException());
     });
 
     $installation = Installation::factory()->make();
-    /** @var Tests\TestCase $this */
     $this->withoutExceptionHandling()->postJson(
         '/',
         [
@@ -70,4 +73,4 @@ it('can handle if ip is not found', function () {
             'type' => $installation->type
         ]
     );
-});
+})->throws(UnprocessableEntityHttpException::class);
