@@ -47,13 +47,13 @@ class GeoIPDownloadCommand extends Command
 
         if (!empty($client->errors())) {
             foreach ($client->errors() as $error) {
-                $this->error('Failed to update ' . $error);
+                $this->error($error);
             }
             $exitStatus = self::FAILURE;
         }
 
         foreach ($client->updated() as $updated) {
-            $this->info($updated . ' updated successfully.');
+            $this->info($updated);
         }
 
         return $exitStatus;
