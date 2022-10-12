@@ -1,5 +1,7 @@
 name: Build
 on:
+  schedule:
+    - cron: "0 0 * * *"
   workflow_call:
     secrets:
       registry_username:
@@ -48,7 +50,7 @@ jobs:
           images: |
             ${{ env.repository }}-${{ matrix.image }}
           tags: |
-            type=raw,value=develop
+            type=raw,value=master
             type=ref,event=branch
             type=ref,event=pr
           flavor: |
