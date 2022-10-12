@@ -12,7 +12,7 @@
         "ext-redis": "*",
         "geoip2/geoip2": "2.13.0",
         "guzzlehttp/guzzle": "7.5.0",
-        "laravel/framework": "9.34.0",
+        "laravel/framework": "9.35.1",
         "laravel/sanctum": "3.0.1",
         "laravel/tinker": "2.7.2",
         "tronovav/geoip2-update": "2.1.23"
