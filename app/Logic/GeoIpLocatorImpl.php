@@ -3,7 +3,7 @@
 namespace App\Logic;
 
 use GeoIp2\Database\Reader;
-use GeoIp2\Exception\AddressNotFoundException;
+use GeoIp2\Record\Country;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Log;
 use MaxMind\Db\Reader\InvalidDatabaseException;
@@ -13,33 +13,32 @@ class GeoIpLocatorImpl implements GeoIpLocator
 
     private readonly Reader $resolver;
 
-    function __construct(String $geoIpDirectory)
+    function __construct(Reader $reader)
     {
-        $this->resolver = new Reader($geoIpDirectory . '/GeoLite2-Country/GeoLite2-Country.mmdb');
+        $this->resolver = $reader;
     }
 
     /**
      * @inheritdoc
      */
-    public function locate(String $ip): String
+    public function locate(String $ip): Country
     {
         return $this->retryLocate($ip);
     }
 
     /**
-     * Allows to try X times the recovery from a invalid database.
+     * Allows to try 3 times the recovery from a invalid database.
      *
      * @param String ip to look for in the database
      * @param int current retry of the recursion, max 3 tries
      *
-     * @return String location of IP, '--' if not in database
+     * @return \GeoIp2\Record\Country resolved by given IP
+     * @throws \GeoIp2\Exception\AddressNotFoundException if IP doesn't exists in database
      */
-    public function retryLocate(String $ip, int $retries = 0): String
+    private function retryLocate(String $ip, int $retries = 0): Country
     {
         try {
-            return $this->resolver->country($ip)->country->isoCode;
-        } catch (AddressNotFoundException) {
-            return '--';
+            return $this->resolver->country($ip)->country;
         } catch (InvalidDatabaseException $exception) {
             $returnCode = Artisan::call('app:geoip:download');
             if ($returnCode != 0 && $retries >= 3) {

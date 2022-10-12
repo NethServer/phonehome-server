@@ -2,6 +2,8 @@
 
 namespace App\Logic;
 
+use GeoIp2\Record\Country;
+
 interface GeoIpLocator
 {
 
@@ -10,7 +12,7 @@ interface GeoIpLocator
      *
      * @param String $ip Ip request source.
      *
-     * @return String Alpha-2 Code defined in ISO 3166-1.
+     * @return \GeoIp2\Record\Country Country object resolved from ip.
      */
-    function locate(String $ip): String;
+    function locate(String $ip): Country;
 }
