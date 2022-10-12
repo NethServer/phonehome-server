@@ -31,13 +31,14 @@ COPY artisan .
 COPY composer.json .
 COPY composer.lock .
 
-FROM application as testing
+FROM base as testing
 RUN install-php-extensions xdebug
+COPY --from=application /var/www/html /var/www/html
+COPY --from=vendor /var/www/html/vendor_test /var/www/html/vendor
+RUN composer run post-autoload-dump --quiet --no-ansi --no-plugins
 COPY tests ./tests
 COPY phpunit.xml .
-COPY --from=vendor /var/www/html/vendor_test /var/www/html/vendor
-RUN composer run post-autoload-dump --quiet --no-ansi --no-plugins \
-    && XDEBUG_MODE=coverage php artisan test --parallel --coverage-cobertura coverage.cobertura.xml
+RUN XDEBUG_MODE=coverage php artisan test --parallel --coverage-cobertura coverage.cobertura.xml
 
 FROM application as production
 RUN apk add --no-cache fcgiwrap \
