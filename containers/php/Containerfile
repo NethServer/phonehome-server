@@ -2,11 +2,11 @@ FROM docker.io/php:8.1.10-fpm-alpine as base
 WORKDIR /var/www/html/
 COPY --from=docker.io/mlocati/php-extension-installer:1.5.37 /usr/bin/install-php-extensions /usr/local/bin/
 RUN install-php-extensions \
-    mysqli \
-    opcache \
-    pdo_mysql \
-    redis \
-    zip
+        mysqli \
+        opcache \
+        pdo_mysql \
+        redis \
+        zip
 COPY --from=docker.io/composer:2.4.1 /usr/bin/composer /usr/local/bin/composer
 
 FROM base as vendor
@@ -41,10 +41,11 @@ COPY phpunit.xml .
 RUN XDEBUG_MODE=coverage php artisan test --parallel --coverage-cobertura coverage.cobertura.xml
 
 FROM application as production
-RUN apk add --no-cache fcgiwrap \
-    netcat-openbsd \
-    procps \
-    tini \
+RUN apk add --no-cache \
+        fcgiwrap \
+        netcat-openbsd \
+        procps \
+        tini \
     && echo "pm.status_path = /status" >> /usr/local/etc/php-fpm.d/zz-docker.conf \
     && mv "$PHP_INI_DIR/php.ini-production" "$PHP_INI_DIR/php.ini"
 COPY containers/php/conf.d /usr/local/etc/php/conf.d
