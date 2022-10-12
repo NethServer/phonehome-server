@@ -16,30 +16,30 @@
     "packageRules": [
         {
             "matchPackageNames": [
-                "docker.io/php"
+                "php"
             ],
             "allowedVersions": "<= 8.0"
         },
         {
             "matchPackageNames": [
-                "docker.io/composer"
+                "composer"
             ]
         },
         {
             "matchPackageNames": [
-                "docker.io/node"
+                "node"
             ],
             "allowedVersions": "<= 16"
         },
         {
             "matchPackageNames": [
-                "docker.io/mariadb"
+                "mariadb"
             ],
             "allowedVersions": "<= 10.6"
         },
         {
             "matchPackageNames": [
-                "docker.io/redis"
+                "redis"
             ],
             "allowedVersions": "<= 6"
         }
