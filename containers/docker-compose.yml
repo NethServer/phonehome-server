@@ -1,11 +1,11 @@
 name: phone-home
 services:
     redis:
-        image: docker.io/redis:6.2.7-alpine
+        image: redis:6.2.7-alpine
         healthcheck:
             test: [ "CMD", "redis-cli", "--raw", "incr", "ping" ]
     database:
-        image: docker.io/mariadb:10.6.10
+        image: mariadb:10.6.10
         healthcheck:
             test: [ "CMD", "mysql", "-uphonehome", "-pphonehome", "-e", "SELECT 1" ]
         volumes:
@@ -16,7 +16,7 @@ services:
             MYSQL_USER: phonehome
             MYSQL_PASSWORD: phonehome
     setup:
-        image: docker.io/tbaile/phonehome-app:master
+        image: tbaile/phonehome-app:master
         depends_on:
             - database
             - redis
@@ -29,7 +29,7 @@ services:
         environment:
             ROLE: "setup"
     app:
-        image: docker.io/tbaile/phonehome-app:master
+        image: tbaile/phonehome-app:master
         healthcheck:
             test: [ "CMD", "php-fpm-healthcheck" ]
         depends_on:
@@ -42,7 +42,7 @@ services:
             -   source: env_file
                 target: /var/www/html/.env
     web:
-        image: docker.io/tbaile/phonehome-web:master
+        image: tbaile/phonehome-web:master
         healthcheck:
             test: [ "CMD", "curl", "--fail", "--silent", "--output", "/dev/null", "http://localhost" ]
         ports:
