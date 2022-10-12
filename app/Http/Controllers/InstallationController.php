@@ -11,8 +11,8 @@ class InstallationController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     * @param  StoreInstallationRequest  $request
+     * @return \Illuminate\Http\JsonResponse
      */
     public function store(StoreInstallationRequest $request, GeoIpLocator $geoIpLocator)
     {
