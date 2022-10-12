@@ -4,6 +4,8 @@ namespace App\Providers;
 
 use App\Logic\GeoIpLocator;
 use App\Logic\GeoIpLocatorImpl;
+use GeoIp2\Database\Reader;
+use Illuminate\Container\Container;
 use Illuminate\Support\ServiceProvider;
 
 class GeoIpProvider extends ServiceProvider
@@ -15,9 +17,12 @@ class GeoIpProvider extends ServiceProvider
      */
     public function register()
     {
-        $this->app->singleton(GeoIpLocator::class, function ($app) {
-            return new GeoIpLocatorImpl(config('geoip.geoip_directory'));
+        $this->app->singleton(Reader::class, function () {
+            return new Reader(config('geoip.geoip_directory') . '/GeoLite2-Country/GeoLite2-Country.mmdb');
+        });
+
+        $this->app->singleton(GeoIpLocator::class, function (Container $app) {
+            return new GeoIpLocatorImpl($app->make(Reader::class));
         });
     }
-
 }
