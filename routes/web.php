@@ -18,4 +18,4 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::post('/', [InstallationController::class, 'store']);
+Route::post('/', [InstallationController::class, 'store'])->name('installation.store');
