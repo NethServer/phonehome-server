@@ -39,7 +39,7 @@ jobs:
           jq '{ "target": { "testing": { "cache-from": ."target"."docker-metadata-action"."tags" | map_values("type=registry,ref=" + .) } } }' ${{ steps.meta-cache-from.outputs.bake-file }} > "$cache_from_file"
           echo "::set-output name=cache-from::$cache_from_file"
 
-      - uses: docker/bake-action@v2.2.0
+      - uses: docker/bake-action@v2.3.0
         with:
           files: |
             ./docker-bake.hcl
