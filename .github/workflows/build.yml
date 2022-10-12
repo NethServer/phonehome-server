@@ -86,7 +86,7 @@ jobs:
           username: ${{ secrets.registry_username }}
           password: ${{ secrets.registry_password }}
 
-      - uses: docker/bake-action@v2.2.0
+      - uses: docker/bake-action@v2.3.0
         with:
           targets: ${{ matrix.image }}-release
           set: |
