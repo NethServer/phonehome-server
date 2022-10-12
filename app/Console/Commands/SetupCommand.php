@@ -31,6 +31,8 @@ class SetupCommand extends Command
         shell_exec('wait-for -t 30 '.config('database.connections.mysql.host').':'.config('database.connections.mysql.port'));
         $this->info('Cheching if the redis is ready');
         shell_exec('wait-for -t 30 '.config('database.redis.cache.host').':'.config('database.redis.cache.port'));
+        $this->info('Copying public folder contents to web container...');
+        shell_exec('cp -r public /app');
         $this->info('Setting up Laravel');
         $this->callSilently('config:cache');
         $this->callSilently('view:cache');
