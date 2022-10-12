@@ -11,6 +11,8 @@ else
         exec php-fpm
     elif [ "$ROLE" = "setup" ]; then
         exec php artisan app:setup
+    elif [ "$ROLE" = "scheduler" ]; then
+        exec tini php artisan schedule:work
     else
         echo "Unknown role '$ROLE'"
         exit 1
