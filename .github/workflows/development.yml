@@ -3,6 +3,7 @@ on:
   push:
     branches:
       - "master"
+      - "!renovate/**"
 env:
   REPOSITORY: tbaile/phonehome
 jobs:
