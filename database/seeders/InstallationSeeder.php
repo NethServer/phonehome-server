@@ -2,10 +2,13 @@
 
 namespace Database\Seeders;
 
+use App\Models\Country;
 use App\Models\Installation;
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
+use App\Models\Version;
 use Illuminate\Database\Eloquent\Factories\Sequence;
 use Illuminate\Database\Seeder;
+
+use function Pest\version;
 
 class InstallationSeeder extends Seeder
 {
@@ -16,17 +19,35 @@ class InstallationSeeder extends Seeder
      */
     public function run()
     {
-        $versions = collect([
+        $tags = collect([
             '6.10',
             '6.5',
             '7.2.1511',
             '7.9.2009'
         ]);
-        Installation::factory()
-            ->count(2000)
-            ->state(new Sequence(
-                fn () => ['release' => $versions->random()]
-            ))
-            ->create();
+        $tags->each(function ($item) {
+            Version::factory()->create([
+                'tag' => $item
+            ]);
+        });
+
+        $countryIsoCode = collect([
+            'IT',
+            'US',
+            'GB',
+            'DE'
+        ]);
+        $countryIsoCode->each(function ($item) {
+            Country::factory()->create([
+                'code' => $item
+            ]);
+        });
+
+        for ($i=0; $i < 50; $i++) {
+            Installation::factory()->create([
+                'country_id' => Country::all()->random()->id,
+                'version_id' => Version::all()->random()->id
+            ]);
+        }
     }
 }
