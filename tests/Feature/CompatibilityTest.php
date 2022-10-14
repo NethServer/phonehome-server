@@ -20,8 +20,8 @@ test('cannot insert invalid type')
     ->assertUnprocessable()
     ->assertInvalid(['type' => 'in']);
 
-test('cannot insert invalid version', function (string $release) {
-    $this->postJson('/', ['release' => $release])
+test('cannot insert invalid version', function (string $tag) {
+    $this->postJson('/', ['release' => $tag])
         ->assertUnprocessable()
         ->assertInvalid(['release' => 'format']);
 })->with([
@@ -46,7 +46,7 @@ it('can handle post data', function () {
         [
             'method' => 'add_info',
             'uuid' => $installation->uuid,
-            'release' => $installation->release,
+            'release' => $installation->version->tag,
             'type' => $installation->type
         ]
     )->assertStatus(200);
@@ -69,7 +69,7 @@ it('can handle if ip is not found', function () {
         [
             'method' => 'add_info',
             'uuid' => $installation->uuid,
-            'release' => $installation->release,
+            'release' => $installation->version->tag,
             'type' => $installation->type
         ]
     );
