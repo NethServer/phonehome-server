@@ -11,6 +11,14 @@ class Country extends Model
     use HasFactory;
 
     /**
+     * @inheritdoc
+     */
+    protected $fillable = [
+        'name',
+        'code'
+    ];
+
+    /**
      * Get all of the installations for the Country
      *
      * @return \Illuminate\Database\Eloquent\Relations\HasMany

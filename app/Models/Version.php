@@ -11,6 +11,13 @@ class Version extends Model
     use HasFactory;
 
     /**
+     * @inheritdoc
+     */
+    protected $fillable = [
+        'tag'
+    ];
+
+    /**
      * Get all of the installations for the Version
      *
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
