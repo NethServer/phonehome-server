@@ -3,8 +3,10 @@
 use App\Logic\GeoIpLocator;
 use App\Models\Installation;
 use GeoIp2\Exception\AddressNotFoundException;
+use GeoIp2\Record\Country;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Testing\Fluent\AssertableJson;
 use Mockery\MockInterface;
 use Symfony\Component\HttpKernel\Exception\UnprocessableEntityHttpException;
 
@@ -33,10 +35,14 @@ test('cannot insert invalid version', function (string $tag) {
 ]);
 
 it('can handle post data', function () {
-    $this->mock(GeoIpLocator::class, function (MockInterface $mock) {
+    $country = $this->mock(Country::class);
+    $country->name = 'Italy';
+    $country->isoCode = 'IT';
+
+    $this->mock(GeoIpLocator::class, function (MockInterface $mock) use ($country) {
         $mock->shouldReceive('locate')
             ->once()
-            ->andReturn('IT');
+            ->andReturn($country);
     });
 
     $installation = Installation::factory()->make();
@@ -50,9 +56,7 @@ it('can handle post data', function () {
             'type' => $installation->type
         ]
     )->assertStatus(200);
-    $this->get('/api/installations')
-        ->assertStatus(200);
-})->skip(fn () => !Route::has('installation.index'));
+});
 
 it('can handle if ip is not found', function () {
     /** @var Tests\TestCase $this */
