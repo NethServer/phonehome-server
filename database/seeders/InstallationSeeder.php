@@ -5,10 +5,7 @@ namespace Database\Seeders;
 use App\Models\Country;
 use App\Models\Installation;
 use App\Models\Version;
-use Illuminate\Database\Eloquent\Factories\Sequence;
 use Illuminate\Database\Seeder;
-
-use function Pest\version;
 
 class InstallationSeeder extends Seeder
 {
