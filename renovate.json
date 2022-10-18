@@ -7,11 +7,19 @@
         "Tbaile"
     ],
     "patch": {
-        "automerge": true,
-        "schedule": [
-            "every weekend"
+        "automerge": true
+    },
+    "dockerfile": {
+        "fileMatch": [
+            "(^|/|\\.)Dockerfile$",
+            "(^|/)Dockerfile[^/]*$",
+            "(^|/|\\.)Containerfile$",
+            "(^|/)Containerfile[^/]*$"
         ]
     },
+    "schedule": [
+        "* 2 * * 1"
+    ],
     "packageRules": [
         {
             "matchManagers": [
