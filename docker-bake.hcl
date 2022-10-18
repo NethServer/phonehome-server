@@ -10,6 +10,7 @@ variable "REPOSITORY" {
 target "docker-metadata-action" {}
 
 target "base" {
+    inherits = ["docker-metadata-action"]
     target = "production"
     context = "."
 }

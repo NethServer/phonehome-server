@@ -25,7 +25,7 @@ jobs:
           images: |
             ${{ env.repository }}-app
           tags: |
-            type=raw,value=develop
+            type=raw,value=master
             type=ref,event=branch
             type=ref,event=pr
           flavor: |
@@ -36,8 +36,8 @@ jobs:
         id: bake-cache
         run: |
           cache_from_file="$(mktemp)"
-          jq '{ "target": { "testing": { "cache-from": ."target"."docker-metadata-action"."tags" | map_values("type=registry,ref=" + .) } } }' ${{ steps.meta-cache-from.outputs.bake-file }} > "$cache_from_file"
-          echo "::set-output name=cache-from::$cache_from_file"
+          jq '{ "target": { "docker-metadata-action": { "cache-from": ."target"."docker-metadata-action"."tags" | map_values("type=registry,ref=" + .) } } }' ${{ steps.meta-cache-from.outputs.bake-file }} > "$cache_from_file"
+          echo "cache-from=$cache_from_file" >> $GITHUB_OUTPUT
 
       - uses: docker/bake-action@v2.3.0
         with:
