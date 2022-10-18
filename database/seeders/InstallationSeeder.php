@@ -5,6 +5,9 @@ namespace Database\Seeders;
 use App\Models\Country;
 use App\Models\Installation;
 use App\Models\Version;
+use Database\Factories\CountryFactory;
+use Database\Factories\VersionFactory;
+use Illuminate\Database\Eloquent\Factories\Sequence;
 use Illuminate\Database\Seeder;
 
 class InstallationSeeder extends Seeder
@@ -16,35 +19,16 @@ class InstallationSeeder extends Seeder
      */
     public function run()
     {
-        $tags = collect([
-            '6.10',
-            '6.5',
-            '7.2.1511',
-            '7.9.2009'
-        ]);
-        $tags->each(function ($item) {
-            Version::factory()->create([
-                'tag' => $item
-            ]);
-        });
-
-        $countryIsoCode = collect([
-            'IT',
-            'US',
-            'GB',
-            'DE'
-        ]);
-        $countryIsoCode->each(function ($item) {
-            Country::factory()->create([
-                'code' => $item
-            ]);
-        });
-
-        for ($i=0; $i < 50; $i++) {
-            Installation::factory()->create([
-                'country_id' => Country::all()->random()->id,
-                'version_id' => Version::all()->random()->id
-            ]);
-        }
+        $this->call(VersionSeeder::class);
+        $this->call(CountrySeeder::class);
+        Installation::factory()
+            ->count(50)
+            ->state(new Sequence(
+                fn() => [
+                    'country_id' => Country::all()->random()->id,
+                    'version_id' => Version::all()->random()->id
+                ]
+            ))
+            ->create();
     }
 }
