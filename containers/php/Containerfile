@@ -32,6 +32,9 @@ COPY composer.json .
 COPY composer.lock .
 
 FROM base as testing
+ENV APP_KEY=base64:Y6qJHTnzxMzrqw3wrm/jMsWACRWTykYARWxw9mkPqC8=
+ENV DB_CONNECTION=sqlite
+ENV DB_DATABASE=:memory:
 RUN install-php-extensions xdebug
 COPY --from=application /var/www/html /var/www/html
 COPY --from=vendor /var/www/html/vendor_test /var/www/html/vendor
