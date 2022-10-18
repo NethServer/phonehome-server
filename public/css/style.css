@@ -1,0 +1,277 @@
+@import "https://cdn.jsdelivr.net/npm/bulma@0.9.1/css/bulma.min.css";
+html,
+body {
+  height: 100%;
+  margin: 0;
+  overflow-y: hidden !important;
+}
+#map-container {
+  z-index: 2;
+}
+#map {
+  height: 100%;
+  zoom: 1.5;
+  width: 100%;
+  min-height: 100%;
+  z-index: 9;
+  filter: blur(10px);
+  position: absolute;
+  top: 0;
+  -webkit-transition: 1s -webkit-filter linear;
+  -moz-transition: 1s -moz-filter linear;
+  -moz-transition: 1s filter linear;
+  -ms-transition: 1s -ms-filter linear;
+  -o-transition: 1s -o-filter linear;
+  transition: 1s filter linear, 1s -webkit-filter linear;
+}
+.current_interval{
+  visibility: hidden;
+}
+.loader {
+  font-size: 60;
+  left: 0%;
+  top:25%;
+  margin-left: -4em;
+  z-index: 13;
+  margin: 50px auto;
+  border-bottom-color: #368CBD !important;
+}
+.loader:after{
+  animation: spinner .6s linear infinite;
+}
+@keyframes loader{
+  to {transform: rotate(360deg);}
+}
+.button {
+  background-color: #fff;
+  border-color: #dbdbdb;
+  border-width: 1px;
+  color: #363636;
+  cursor: pointer;
+  justify-content: center;
+  top: -20;
+  z-index: 10000;
+  margin-left: 0;
+  padding-bottom: calc(0.5em - 1px);
+  padding-left: 1em;
+  padding-right: 1em;
+  padding-top: calc(0.5em - 1px);
+  text-align: center;
+  white-space: nowrap; 
+}
+td {
+  text-align: center;
+  border-radius: 20px;
+}
+tr {
+  text-align: center;
+}
+b{
+  font-weight: normal;
+}
+.labels {
+  color: white;
+  font-size: 14px;
+  font-weight: bold;
+}
+.leaflet-popup-content-wrapper {
+  padding: 0px;
+  border-radius: 5px;
+  background-color: whitesmoke;
+}
+.icon {
+  font-size: 25px;
+}
+.table {
+  font-size: 11px;
+  border-radius: 4px;
+}
+.table.is-bordered th {
+  background-color: #2793da;
+  color: antiquewhite;
+}
+.table.is-bordered {
+  background-color: transparent;
+}
+.table.is-bordered tr:last-child td,
+.table.is-bordered tr:last-child th {
+  border-bottom-width: 0px;
+}
+table td:first-child {
+  border-left: none;
+}
+table td:last-child {
+  border-right: none;
+}
+.table tbody th {
+  border-bottom-width: 0;
+  background-color: #2793da;
+  color: white;
+  font-weight: normal;
+}
+.dropdown-content {
+  background-color: #fff;
+  border-radius: 4px;
+  box-shadow: 0 0.5em 1em -0.125em rgb(10 10 10 / 10%),
+    0 0 0 1px rgb(10 10 10 / 2%);
+  padding-bottom: 0.5rem;
+  padding-top: 0.5rem;
+  margin-top: -28px;
+  margin-left: 4px;
+  padding-left: -1px;
+  margin-right: -5px;
+}
+a.dropdown-item.is-active{
+  background-color: #1F3549 !important;
+  margin-top: -8px;
+  margin-bottom: -13px;
+}
+.leaflet-touch .leaflet-control-layers,
+.leaflet-touch .leaflet-bar {
+  border: none;
+}
+.leaflet-touch .leaflet-bar a:first-child {
+  border-top-left-radius: 4px;
+  border-top-right-radius: 4px;
+  color: #2793da;
+  border-bottom-left-radius: 4px;
+  border-bottom-right-radius: 4px;
+}
+.leaflet-touch .leaflet-bar a:last-child {
+  border-bottom-left-radius: 4px;
+  border-bottom-right-radius: 4px;
+  color: #2793da;
+  border-top-left-radius: 4px;
+  border-top-right-radius: 4px;
+}
+.leaflet-top,
+.leaflet-bottom {
+  position: absolute;
+  z-index: 1000;
+  pointer-events: none;
+  margin-left: 1200;
+}
+.leaflet-left .leaflet-control {
+  margin-left: 33px;
+  margin-top: 42px;
+  margin-right: 1226px;
+}
+.leaflet-container a {
+  color: #0078a8;
+  border-radius: 4px;
+}
+.leaflet-control-layers-expanded {
+  padding: 8px 15px 8px px;
+  color: black !important;
+  background-color: white !important;
+}
+element.style {
+  background-color: transparent;
+}
+.button.is-medium {
+  font-size: 1.25rem;
+  width: 193px;
+}
+.leaflet-container {
+  font: 9px/2 "Fira Sans", "Droid Sans", "Helvetica Neue", Helvetica, Arial,
+    sans-serif;
+}
+.leaflet-touch .leaflet-control-layers-toggle {
+  height: 35px !important;
+  background-size: 58% 60%;
+  width: 29px;
+}
+.leaflet-top .leaflet-control {
+  position: fixed;
+  top: 0px;
+  width: max-content;
+  right: -7px;
+}
+.leaflet-top,
+.leaflet-bottom {
+  z-index: 1000;
+  pointer-events: none;
+  margin-left: 1200;
+}
+.leaflet-bottom .leaflet-control {
+  margin-bottom: 12px;
+}
+/* hide the zoom button at the charghing of the page  */
+.leaflet-control-zoom {
+  visibility: hidden;
+}
+.leaflet-control-layers-toggle {
+visibility: hidden;
+}
+.leaflet-control-zoom-in{
+  margin-bottom:1px;
+}
+.leaflet-bottom {
+  bottom: -9px;
+}
+.leaflet-right {
+  right: -7px;
+}
+.leaflet-popup-content {
+  margin: -2px;
+}
+input[type="checkbox"],
+input[type="radio"] {
+  vertical-align: sub;
+}
+.leaflet-control-layers-selector {
+  margin-top: 4px;
+  position: relative;
+}
+.leaflet-touch .leaflet-control-layers-toggle {
+  width: 37px;
+  height: 37px;
+}
+.leaflet-control-layers.leaflet-control {
+  margin-top: 3px;
+  border-radius: 4px !important;
+}
+.button.is-info {
+  background-color: #3298dc;
+  border-color: transparent;
+  color: #fff;
+  margin-left: 4px !important;
+  visibility: hidden;
+  z-index: 11px  !important;
+}
+.beautify-marker {
+  text-align: center;
+  font-weight: 800;
+  font-family: monospace;
+  position: absolute;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+  border-color: white !important;
+  border-width: 1px  !important;
+  background-color: rgb(0, 171, 220) !important;
+}
+.beautify-marker.marker {
+  border-top-left-radius: 50%;
+  border-top-right-radius: 50% 100%;
+  border-bottom-left-radius: 100% 50%;
+  border-bottom-right-radius: 0%;
+  width: 26px !important;
+  height: 26px !important;
+  transform: rotate(
+  45deg
+  );
+}
+.beautify-marker.marker > * {
+  color: white !important;
+}
+/* totalUnity */
+#totalUnity{
+  background-color: #1F3549;
+  color: white;
+  border-width: 0;
+  height: 50px;
+  width: auto;
+  font-weight: bold;
+  visibility: hidden;
+}
