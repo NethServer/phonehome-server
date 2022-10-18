@@ -46,4 +46,4 @@ jobs:
             ${{ steps.bake-cache.outputs.cache-from }}
           targets: testing
           set: |
-            *.platform=linux/amd64,linux/arm64
+            *.platform=linux/amd64
