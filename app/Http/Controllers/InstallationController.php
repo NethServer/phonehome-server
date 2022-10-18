@@ -9,11 +9,37 @@ use App\Models\Installation;
 use App\Models\Version;
 use GeoIp2\Exception\AddressNotFoundException;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Symfony\Component\HttpKernel\Exception\UnprocessableEntityHttpException;
 
 class InstallationController extends Controller
 {
+
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function index(): JsonResponse
+    {
+        // retro-compatible query
+        $query = DB::table('countries')
+            ->selectRaw('countries.name as country_name, countries.code as country_code, versions.tag, COUNT(installations.uuid) as num')
+            ->join('installations', 'installations.country_id', '=', 'countries.id')
+            ->join('versions', 'versions.id', '=', 'installations.version_id')
+            ->groupBy('countries.name', 'countries.code', 'versions.tag')
+            ->orderBy('versions.tag');
+        $query = DB::table(DB::raw('(' . $query->toSql() . ') as base'))
+            ->select('country_name', 'country_code', DB::raw('GROUP_CONCAT(CONCAT( tag, \'#\', num )) AS installations'))
+            ->groupBy('country_name', 'country_code')
+            ->orderBy('country_code');
+
+        return response()->json(
+            $query->get()
+        );
+    }
+
     /**
      * Store a newly created resource in storage.
      *
