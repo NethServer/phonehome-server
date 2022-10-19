@@ -34,8 +34,8 @@ class GeoIpLocateCommand extends Command
             $this->info('Location: ' . $country->name . ' (' . $country->isoCode .')');
         } catch (Exception $exception) {
             $this->error($exception->getMessage());
-            return $this::FAILURE;
+            return self::FAILURE;
         }
-        return $this::SUCCESS;
+        return self::SUCCESS;
     }
 }
