@@ -18,7 +18,7 @@ return new class extends Migration
         Schema::create('installations', function (Blueprint $table) {
             $table->id();
             $table->uuid('uuid');
-            $table->string('type');
+            $table->string('type')->nullable();
             $table->foreignIdFor(Country::class)->constrained();
             $table->foreignIdFor(Version::class)->constrained();
             $table->timestamps();
