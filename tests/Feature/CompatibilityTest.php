@@ -16,7 +16,7 @@ uses(RefreshDatabase::class);
 test('cannot send empty request')
     ->postJson('/')
     ->assertUnprocessable()
-    ->assertInvalid(['uuid', 'release', 'type']);
+    ->assertInvalid(['uuid', 'release']);
 
 test('cannot insert invalid type')
     ->postJson('/', ['type' => 'hello'])
@@ -279,3 +279,32 @@ test('check if interval works', function () {
         );
 
 })->skip(fn() => config('database.default') == 'sqlite', 'Cannot run on sqlite.');
+
+it('can insert nullable type', function() {
+    $country = $this->mock(Country::class);
+    $country->name = 'Italy';
+    $country->isoCode = 'IT';
+
+    /** @var Tests\TestCase $this */
+    $this->mock(GeoIpLocator::class, fn(MockInterface $mock) =>
+        $mock->shouldReceive('locate')
+            ->andReturn($country)
+    );
+
+    $installation = Installation::factory()->make();
+    $this->postJson(
+        '/',
+        [
+            'uuid' => $installation->uuid,
+            'release' => $installation->version->tag,
+            'type' => ''
+        ]
+    )->assertStatus(200);
+
+    $this->assertDatabaseCount('installations', 1);
+    $this->assertDatabaseHas('installations', [
+        'uuid' => $installation->uuid,
+        'version_id' => $installation->version->id,
+        'type' => null
+    ]);
+});
