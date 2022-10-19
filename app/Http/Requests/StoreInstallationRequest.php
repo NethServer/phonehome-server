@@ -19,7 +19,7 @@ class StoreInstallationRequest extends FormRequest
                 'required',
                 'regex:/^\d+\.\d+\.?\d*$/m' // uses preg_match
             ],
-            'type' => 'required|in:community,enterprise,subscription'
+            'type' => 'nullable|in:community,enterprise,subscription'
         ];
     }
 }
