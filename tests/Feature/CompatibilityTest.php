@@ -51,13 +51,18 @@ it('can handle post data', function () {
     $this->postJson(
         '/',
         [
-            'method' => 'add_info',
             'uuid' => $installation->uuid,
             'release' => $installation->version->tag,
             'type' => $installation->type
         ]
     )->assertStatus(200);
-    // TODO: CHECK DATABASE
+
+    $this->assertDatabaseCount('installations', 1);
+    $this->assertDatabaseHas('installations', [
+        'uuid' => $installation->uuid,
+        'version_id' => $installation->version->id,
+        'type' => $installation->type
+    ]);
 });
 
 it('can handle if ip is not found', function () {
