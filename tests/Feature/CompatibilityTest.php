@@ -65,6 +65,39 @@ it('can handle post data', function () {
     ]);
 });
 
+it('updates existing record at every ping', function() {
+    $installation = Installation::factory()->create();
+
+    $country = $this->mock(Country::class);
+    $country->name = $installation->country->name;
+    $country->isoCode = $installation->country->code;
+
+    /** @var Tests\TestCase $this */
+    $this->mock(GeoIpLocator::class, fn(MockInterface $mock) =>
+        $mock->shouldReceive('locate')
+            ->andReturn($country)
+    );
+
+    $this->travel(1)->day();
+
+    $this->postJson(
+        '/',
+        [
+            'uuid' => $installation->uuid,
+            'release' => $installation->version->tag,
+            'type' => $installation->type
+        ]
+    )->assertStatus(200);
+
+    $this->assertDatabaseHas('installations', [
+        'uuid' => $installation->uuid,
+        'version_id' => $installation->version->id,
+        'type' => $installation->type,
+        'updated_at' => $installation->updated_at->addDay()
+    ]);
+
+});
+
 it('can insert data with same uuid', function () {
     $country = $this->mock(Country::class);
     $country->name = 'Italy';

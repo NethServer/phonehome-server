@@ -52,6 +52,12 @@ class InstallationController extends Controller
         $installation = Installation::firstOrNew([
             'uuid' => $request->get('uuid')
         ]);
+
+        // if record exists, update the timestamp
+        if ($installation->exists()) {
+            $installation->touch();
+        }
+
         // Apply type from request
         $installation->type = $request->get('type');
 
