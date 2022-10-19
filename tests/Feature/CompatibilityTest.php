@@ -65,6 +65,60 @@ it('can handle post data', function () {
     ]);
 });
 
+it('can insert data with same uuid', function () {
+    $country = $this->mock(Country::class);
+    $country->name = 'Italy';
+    $country->isoCode = 'IT';
+
+    /** @var Tests\TestCase $this */
+    $this->mock(GeoIpLocator::class, fn(MockInterface $mock) =>
+        $mock->shouldReceive('locate')
+            ->andReturn($country)
+    );
+
+    $installation = Installation::factory()->make();
+
+    $this->postJson(
+        '/',
+        [
+            'uuid' => $installation->uuid,
+            'release' => $installation->version->tag,
+            'type' => 'community'
+        ]
+    )->assertStatus(200);
+
+    $version = Version::factory()->create();
+
+    $this->postJson(
+        '/',
+        [
+            'uuid' => $installation->uuid,
+            'release' => $version->tag,
+            'type' => 'enterprise'
+        ]
+    )->assertStatus(200);
+
+    $this->assertDatabaseHas('installations', [
+        'uuid' => $installation->uuid,
+        'version_id' => $version->id,
+        'type' => 'enterprise'
+    ]);
+
+    $newInstallation = Installation::factory()->create();
+
+    $this->postJson(
+        '/',
+        [
+            'uuid' => $newInstallation->uuid,
+            'release' => $newInstallation->version->tag,
+            'type' => $newInstallation->type
+        ]
+    )->assertStatus(200);
+
+    $this->assertDatabaseCount('installations', 2);
+
+});
+
 it('can handle if ip is not found', function () {
     /** @var Tests\TestCase $this */
     $this->mock(GeoIpLocator::class, function (MockInterface $mock) {

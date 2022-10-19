@@ -48,8 +48,14 @@ class InstallationController extends Controller
      */
     public function store(StoreInstallationRequest $request, GeoIpLocator $geoIpLocator): JsonResponse
     {
-        // Fill installation with data from request
-        $installation = new Installation($request->validated());
+        // Search if same UUID sent a request before
+        $installation = Installation::firstOrNew([
+            'uuid' => $request->get('uuid')
+        ]);
+        // Apply type from request
+        $installation->type = $request->get('type');
+
+        // Locate IP
         try {
             $countryRecord = $geoIpLocator->locate($request->ip());
         } catch (AddressNotFoundException) {
