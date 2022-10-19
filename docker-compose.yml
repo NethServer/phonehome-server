@@ -25,6 +25,7 @@ services:
         depends_on:
             - mariadb
             - redis
+            - mailhog
     mariadb:
         image: mariadb:10.6.10
         ports:
@@ -53,6 +54,8 @@ services:
             ADMINER_DEFAULT_SERVER: mariadb
         networks:
             - sail
+        depends_on:
+            - mariadb
     redis:
         image: redis:6.2.7-alpine
         ports:
