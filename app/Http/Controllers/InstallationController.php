@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\IndexInstallationRequest;
 use App\Http\Requests\StoreInstallationRequest;
 use App\Logic\GeoIpLocator;
 use App\Models\Country;
@@ -21,14 +22,17 @@ class InstallationController extends Controller
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function index(): JsonResponse
+    public function index(IndexInstallationRequest $request): JsonResponse
     {
         // retro-compatible query
         $query = DB::table('countries')
             ->selectRaw('countries.name as country_name, countries.code as country_code, versions.tag, COUNT(installations.uuid) as num')
             ->join('installations', 'installations.country_id', '=', 'countries.id')
-            ->join('versions', 'versions.id', '=', 'installations.version_id')
-            ->groupBy('countries.name', 'countries.code', 'versions.tag')
+            ->join('versions', 'versions.id', '=', 'installations.version_id');
+        if ($request->get('interval') != '1') {
+            $query = $query->whereRaw('installations.updated_at > "' . today()->subDays($request->get('interval'))->toDateString() . '"');
+        }
+        $query = $query->groupBy('countries.name', 'countries.code', 'versions.tag')
             ->orderBy('versions.tag');
         $query = DB::table(DB::raw('(' . $query->toSql() . ') as base'))
             ->select('country_name', 'country_code', DB::raw('GROUP_CONCAT(CONCAT( tag, \'#\', num )) AS installations'))

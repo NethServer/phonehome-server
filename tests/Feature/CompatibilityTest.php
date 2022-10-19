@@ -232,7 +232,7 @@ it('can show installations', function() {
         'country_id' => $countryIt
     ]);
 
-    $this->getJson('/api/installation')
+    $this->getJson('/api/installation?interval=7')
         ->assertStatus(200)
         ->assertJson(fn (AssertableJson $json) =>
             $json->has(3)
@@ -250,4 +250,32 @@ it('can show installations', function() {
                         ->has('installations')
                 )
         );
+})->skip(fn() => config('database.default') == 'sqlite', 'Cannot run on sqlite.');
+
+
+test('check if interval works', function () {
+    $installation = Installation::factory()->create();
+    Installation::factory()->create([
+        'updated_at' => now()->subMonth(5)
+    ]);
+
+    $this->getJson('/api/installation?interval=7')
+        ->assertStatus(200)
+        ->assertJson(fn (AssertableJson $json) =>
+            $json->has(1)
+                ->has('0', fn (AssertableJson $json) =>
+                    $json->where('country_name', $installation->country->name)
+                        ->where('country_code', $installation->country->code)
+                        ->has('installations')
+                )
+        );
+
+    $this->travel(2)->weeks();
+
+    $this->getJson('/api/installation?interval=7')
+        ->assertStatus(200)
+        ->assertJson(fn (AssertableJson $json) =>
+            $json->has(0)
+        );
+
 })->skip(fn() => config('database.default') == 'sqlite', 'Cannot run on sqlite.');
