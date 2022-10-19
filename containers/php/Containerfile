@@ -12,10 +12,10 @@ COPY --from=composer:2.4.3 /usr/bin/composer /usr/local/bin/composer
 FROM base as vendor
 COPY composer.json .
 COPY composer.lock .
-RUN composer check-platform-reqs --quiet \
-    && composer i --optimize-autoloader --no-scripts --quiet --no-ansi --no-interaction --no-progress --prefer-dist \
+RUN composer check-platform-reqs \
+    && composer i --optimize-autoloader --no-scripts --no-ansi --no-interaction --no-progress --prefer-dist \
     && mv vendor vendor_test \
-    && composer i --optimize-autoloader --no-scripts --quiet --no-dev --no-ansi --no-interaction --no-progress --prefer-dist
+    && composer i --optimize-autoloader --no-scripts --no-dev --no-ansi --no-interaction --no-progress --prefer-dist
 
 FROM base as application
 COPY app ./app
@@ -38,7 +38,7 @@ ENV DB_DATABASE=:memory:
 RUN install-php-extensions xdebug
 COPY --from=application /var/www/html /var/www/html
 COPY --from=vendor /var/www/html/vendor_test /var/www/html/vendor
-RUN composer run post-autoload-dump --quiet --no-ansi --no-plugins
+RUN composer run post-autoload-dump --no-ansi --no-plugins
 COPY tests ./tests
 COPY phpunit.xml .
 RUN XDEBUG_MODE=coverage php artisan test --parallel --coverage-cobertura coverage.cobertura.xml
