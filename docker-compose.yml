@@ -46,12 +46,14 @@ services:
             test: ["CMD", "mysqladmin", "ping", "-p${DB_PASSWORD}"]
             retries: 3
             timeout: 5s
-    adminer:
-        image: adminer:4.8.1
+    phpmyadmin:
+        image: phpmyadmin/phpmyadmin:5.2.0
         ports:
-          - '${FORWARD_ADMINER_PORT:-8080}:8080'
+          - '${FORWARD_PHPMYADMIN_PORT:-8080}:80'
         environment:
-            ADMINER_DEFAULT_SERVER: mariadb
+            PMA_HOST: mariadb
+            PMA_USER: root
+            PMA_PASSWORD: '${DB_PASSWORD}'
         networks:
             - sail
         depends_on:
