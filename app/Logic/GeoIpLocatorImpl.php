@@ -40,11 +40,11 @@ class GeoIpLocatorImpl implements GeoIpLocator
         try {
             return $this->resolver->country($ip)->country;
         } catch (InvalidDatabaseException $exception) {
-            $returnCode = Artisan::call('app:geoip:download');
-            if ($returnCode != 0 && $retries >= 3) {
-                Log::emergency("Cannot recover from invalid MaxMind DB.");
+            if ($retries > 2) {
+                Log::emergency('Cannot recover from invalid MaxMind DB.');
                 throw $exception;
             }
+            Artisan::call('app:geoip:download');
             return $this->retryLocate($ip, $retries + 1);
         }
     }
