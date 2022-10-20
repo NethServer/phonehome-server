@@ -6,6 +6,9 @@ use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Config;
 use tronovav\GeoIP2Update\Client as GeoIp2UpdateClient;
 
+/**
+ * @codeCoverageIgnore
+ */
 class GeoIPDownloadCommand extends Command
 {
     /**

@@ -6,6 +6,9 @@ use App\Logic\GeoIpLocator;
 use Exception;
 use Illuminate\Console\Command;
 
+/**
+ * @codeCoverageIgnore
+ */
 class GeoIpLocateCommand extends Command
 {
     /**

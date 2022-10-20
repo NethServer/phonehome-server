@@ -8,6 +8,9 @@ use GeoIp2\Database\Reader;
 use Illuminate\Container\Container;
 use Illuminate\Support\ServiceProvider;
 
+/**
+ * @codeCoverageIgnore
+ */
 class GeoIpProvider extends ServiceProvider
 {
     /**

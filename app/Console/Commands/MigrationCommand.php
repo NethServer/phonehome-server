@@ -11,8 +11,10 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\MessageBag;
-use stdClass;
 
+/**
+ * @codeCoverageIgnore
+ */
 class MigrationCommand extends Command
 {
     /**
