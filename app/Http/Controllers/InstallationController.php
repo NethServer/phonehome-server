@@ -67,7 +67,7 @@ class InstallationController extends Controller
 
         // Locate IP
         try {
-            $countryRecord = $geoIpLocator->locate($request->ip());
+            $countryRecord = $geoIpLocator->locate($request->ip() ?: "");
         } catch (AddressNotFoundException) {
             Log::error("Couldn't resolve location for: " . $request->ip() . '(' . $request->get('uuid') . ')');
             throw new UnprocessableEntityHttpException();

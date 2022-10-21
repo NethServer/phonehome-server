@@ -8,8 +8,10 @@ class StoreInstallationRequest extends FormRequest
 {
     /**
      * Rules that are applied to the store request for the Installation
+     *
+     * @var array<string, mixed>
      */
-    public static $rules = [
+    public static array $rules = [
         'uuid' => 'required|uuid',
         'release' => [
             'required',

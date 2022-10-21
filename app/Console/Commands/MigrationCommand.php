@@ -100,11 +100,11 @@ class MigrationCommand extends Command
                             $installation->created_at = $row->reg_date;
                             $installation->updated_at = $row->reg_date;
 
-                            $country = Country::where('code', $row->country_code)->first();
+                            $country = Country::where('code', $row->country_code)->firstOrFail();
                             $installation->country()->associate($country);
                             $country->save();
 
-                            $version = Version::where('tag', $row->release_tag)->first();
+                            $version = Version::where('tag', $row->release_tag)->firstOrFail();
                             $installation->version()->associate($version);
                             $country->save();
                             $installation->save();

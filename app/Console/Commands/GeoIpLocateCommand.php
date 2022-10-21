@@ -33,7 +33,7 @@ class GeoIpLocateCommand extends Command
     public function handle(GeoIpLocator $geoIpLocator)
     {
         try {
-            $country = $geoIpLocator->locate($this->argument('ip'));
+            $country = $geoIpLocator->locate(strval($this->argument('ip')));
             $this->info('Location: ' . $country->name . ' (' . $country->isoCode .')');
         } catch (Exception $exception) {
             $this->error($exception->getMessage());

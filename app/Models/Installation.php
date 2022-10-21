@@ -21,7 +21,7 @@ class Installation extends Model
     /**
      * Get the country associated with the Installation
      *
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo<\App\Models\Country, \App\Models\Installation>
      */
     public function country(): BelongsTo
     {
@@ -31,7 +31,7 @@ class Installation extends Model
     /**
      * Get the version associated with the Installation
      *
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo<\App\Models\Version, \App\Models\Installation>
      */
     public function version(): BelongsTo
     {

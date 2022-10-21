@@ -29,8 +29,8 @@ class GeoIpLocatorImpl implements GeoIpLocator
     /**
      * Allows to try 3 times the recovery from a invalid database.
      *
-     * @param String ip to look for in the database
-     * @param int current retry of the recursion, max 3 tries
+     * @param String $ip to look for in the database
+     * @param int $retries current retry of the recursion, max 3 tries
      *
      * @return \GeoIp2\Record\Country resolved by given IP
      * @throws \GeoIp2\Exception\AddressNotFoundException if IP doesn't exists in database
