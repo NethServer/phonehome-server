@@ -3,7 +3,8 @@ on:
   pull_request:
   workflow_call:
 env:
-  repository: tbaile/phonehome
+  REPOSITORY: tbaile/phonehome
+  TAG: ${{ github.ref_name }}
 jobs:
   test-app-image:
     name: Test app image
@@ -12,38 +13,13 @@ jobs:
       - name: Checkout repo
         uses: actions/checkout@v3
 
-      - name: Setup QEMU
-        uses: docker/setup-qemu-action@v2
-
       - name: Create new buildx builder
         uses: docker/setup-buildx-action@v2
-
-      - name: Generate cache-from tags
-        uses: docker/metadata-action@v4
-        id: meta-cache-from
-        with:
-          images: |
-            ${{ env.repository }}-app
-          tags: |
-            type=raw,value=master
-            type=ref,event=branch
-            type=ref,event=pr
-          flavor: |
-            latest=false
-            suffix=-cache
-
-      - name: Transform cache tags
-        id: bake-cache
-        run: |
-          cache_from_file="$(mktemp)"
-          jq '{ "target": { "docker-metadata-action": { "cache-from": ."target"."docker-metadata-action"."tags" | map_values("type=registry,ref=" + .) } } }' ${{ steps.meta-cache-from.outputs.bake-file }} > "$cache_from_file"
-          echo "cache-from=$cache_from_file" >> $GITHUB_OUTPUT
 
       - uses: docker/bake-action@v2.3.0
         with:
           files: |
             ./docker-bake.hcl
-            ${{ steps.bake-cache.outputs.cache-from }}
           targets: testing
           set: |
             *.platform=linux/amd64

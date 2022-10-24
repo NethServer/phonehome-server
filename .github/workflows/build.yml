@@ -9,7 +9,7 @@ on:
       registry_password:
         required: true
 env:
-  repository: tbaile/phonehome
+  REPOSITORY: tbaile/phonehome
 jobs:
   build-image:
     name: Build ${{ matrix.image }} image and push
@@ -23,9 +23,6 @@ jobs:
       - name: Checkout repo
         uses: actions/checkout@v3
 
-      - name: Setup QEMU
-        uses: docker/setup-qemu-action@v2
-
       - name: Create new buildx builder
         uses: docker/setup-buildx-action@v2
 
@@ -34,52 +31,15 @@ jobs:
         id: meta
         with:
           images: |
-            ${{ env.repository }}-${{ matrix.image }}
+            ${{ env.REPOSITORY }}-${{ matrix.image }}
           tags: |
+            type=raw,value=latest,enable={{is_default_branch}}
             type=ref,event=branch
-            type=ref,event=pr
             type=semver,pattern={{version}}
             type=semver,pattern={{major}}.{{minor}}
             type=semver,pattern={{major}},enable=${{ !startsWith(github.ref, 'refs/tags/v0.') }}
 
-      - name: Generate cache-from tags
-        uses: docker/metadata-action@v4
-        id: meta-cache-from
-        with:
-          images: |
-            ${{ env.repository }}-${{ matrix.image }}
-          tags: |
-            type=raw,value=master
-            type=ref,event=branch
-            type=ref,event=pr
-          flavor: |
-            latest=false
-            suffix=-cache
-
-      - name: Generate cache-to tags
-        uses: docker/metadata-action@v4
-        id: meta-cache-to
-        with:
-          images: |
-            ${{ env.repository }}-${{ matrix.image }}
-          tags: |
-            type=ref,event=branch
-            type=ref,event=pr
-          flavor: |
-            latest=false
-            suffix=-cache
-
-      - name: Transform cache tags
-        id: bake-cache
-        run: |
-          cache_from_file="$(mktemp)"
-          jq '{ "target": { "docker-metadata-action": { "cache-from": ."target"."docker-metadata-action"."tags" | map_values("type=registry,ref=" + .) } } }' ${{ steps.meta-cache-from.outputs.bake-file }} > "$cache_from_file"
-          echo "cache-from=$cache_from_file" >> $GITHUB_OUTPUT
-          cache_to_file="$(mktemp)"
-          jq '{ "target": { "docker-metadata-action": { "cache-to": ."target"."docker-metadata-action"."tags" | map_values("type=registry,ref=" + . + ",mode=max") } } }' ${{ steps.meta-cache-to.outputs.bake-file }} > "$cache_to_file"
-          echo "cache-to=$cache_to_file" >> $GITHUB_OUTPUT
-
-      - name: Login to Docker
+      - name: Login to Registry
         uses: docker/login-action@v2
         with:
           username: ${{ secrets.registry_username }}
@@ -88,11 +48,8 @@ jobs:
       - uses: docker/bake-action@v2.3.0
         with:
           targets: ${{ matrix.image }}-release
-          set: |
-            *.platform=linux/amd64
           files: |
             ./docker-bake.hcl
             ${{ steps.meta.outputs.bake-file }}
-            ${{ steps.bake-cache.outputs.cache-from }}
-            ${{ steps.bake-cache.outputs.cache-to }}
-          push: true
+          set: |
+            *.platform=linux/amd64
