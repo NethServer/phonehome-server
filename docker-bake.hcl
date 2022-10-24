@@ -6,58 +6,86 @@ variable "REPOSITORY" {
     default = "tbaile/phonehome"
 }
 
-# Docker Metadata Action
-target "docker-metadata-action" {}
+variable "LATEST" {
+    default = false
+}
 
 target "base" {
-    inherits = ["docker-metadata-action"]
     target = "production"
     context = "."
 }
 
 target "app" {
+    inherits = ["base"]
     dockerfile = "containers/php/Containerfile"
-}
-
-target "app-release" {
-    inherits = ["base", "app"]
     cache-from = [
+        "type=registry,ref=${REPOSITORY}-app:latest",
+        "type=registry,ref=${REPOSITORY}-app:master",
+        "type=registry,ref=${REPOSITORY}-app:master-cache",
         "type=registry,ref=${REPOSITORY}-app:${TAG}",
         "type=registry,ref=${REPOSITORY}-app:${TAG}-cache"
     ]
 }
 
+target "app-release" {
+    inherits = ["app"]
+    tags = [
+        equal(true, LATEST) ? "${REPOSITORY}-app:latest" : "",
+        "${REPOSITORY}-app:${TAG}"
+    ]
+    cache-to = [
+        "type=registry,ref=${REPOSITORY}-app:${TAG}-cache,mode=max"
+    ]
+    output = ["type=registry"]
+}
+
 target "app-develop" {
-    inherits = ["app-release"]
-    tags = ["${REPOSITORY}-app:master"]
+    inherits = ["app"]
+    tags = ["${REPOSITORY}-app:latest"]
     output = ["type=docker"]
 }
 
 target "web" {
+    inherits = ["base"]
     dockerfile = "containers/nginx/Containerfile"
-}
-
-target "web-release" {
-    inherits = ["base", "web"]
     cache-from = [
+        "type=registry,ref=${REPOSITORY}-web:latest",
+        "type=registry,ref=${REPOSITORY}-web:master",
+        "type=registry,ref=${REPOSITORY}-web:master-cache",
         "type=registry,ref=${REPOSITORY}-web:${TAG}",
         "type=registry,ref=${REPOSITORY}-web:${TAG}-cache"
     ]
 }
 
+target "web-release" {
+    inherits = ["web"]
+    tags = [
+        equal(true, LATEST) ? "${REPOSITORY}-web:latest" : "",
+        "${REPOSITORY}-web:${TAG}"
+    ]
+    cache-to = [
+        "type=registry,ref=${REPOSITORY}-web:${TAG}-cache,mode=max"
+    ]
+    output = ["type=registry"]
+}
+
 target "web-develop" {
-    inherits = ["web-release"]
-    tags = ["${REPOSITORY}-web:master"]
+    inherits = ["web"]
+    tags = ["${REPOSITORY}-web:latest"]
     output = ["type=docker"]
 }
 
 target "testing" {
-    inherits = ["app-release"]
+    inherits = ["app-develop"]
     target = "testing"
 }
 
 group "develop" {
     targets = ["app-develop", "web-develop"]
+}
+
+group "release" {
+    targets = ["app-release", "web-release"]
 }
 
 group "default" {
