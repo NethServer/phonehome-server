@@ -6,10 +6,6 @@ variable "REPOSITORY" {
     default = "tbaile/phonehome"
 }
 
-variable "LATEST" {
-    default = false
-}
-
 target "base" {
     target = "production"
     context = "."
@@ -30,7 +26,6 @@ target "app" {
 target "app-release" {
     inherits = ["app"]
     tags = [
-        equal(true, LATEST) ? "${REPOSITORY}-app:latest" : "",
         "${REPOSITORY}-app:${TAG}"
     ]
     cache-to = [
@@ -60,7 +55,6 @@ target "web" {
 target "web-release" {
     inherits = ["web"]
     tags = [
-        equal(true, LATEST) ? "${REPOSITORY}-web:latest" : "",
         "${REPOSITORY}-web:${TAG}"
     ]
     cache-to = [
@@ -78,6 +72,7 @@ target "web-develop" {
 target "testing" {
     inherits = ["app-develop"]
     target = "testing"
+    output = [""]
 }
 
 group "develop" {
