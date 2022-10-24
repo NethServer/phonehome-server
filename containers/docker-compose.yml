@@ -16,7 +16,7 @@ services:
             MYSQL_USER: phonehome
             MYSQL_PASSWORD: phonehome
     setup:
-        image: tbaile/phonehome-app:master
+        image: tbaile/phonehome-app:${TAG:-latest}
         depends_on:
             - database
             - redis
@@ -28,7 +28,7 @@ services:
         environment:
             ROLE: "setup"
     app:
-        image: tbaile/phonehome-app:master
+        image: tbaile/phonehome-app:${TAG:-latest}
         healthcheck:
             test: [ "CMD", "php-fpm-healthcheck" ]
         depends_on:
@@ -41,7 +41,7 @@ services:
             -   source: env_file
                 target: /var/www/html/.env
     scheduler:
-        image: tbaile/phonehome-app:master
+        image: tbaile/phonehome-app:${TAG:-latest}
         depends_on:
             setup:
                 condition: service_completed_successfully
@@ -53,7 +53,7 @@ services:
         environment:
             ROLE: "scheduler"
     web:
-        image: tbaile/phonehome-web:master
+        image: tbaile/phonehome-web:${TAG:-latest}
         healthcheck:
             test: [ "CMD", "curl", "--fail", "--silent", "--output", "/dev/null", "http://localhost" ]
         ports:
