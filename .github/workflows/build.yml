@@ -43,8 +43,9 @@ jobs:
       - name: Login to Registry
         uses: docker/login-action@v2
         with:
-          username: ${{ secrets.registry_username }}
-          password: ${{ secrets.registry_password }}
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
 
       - uses: docker/bake-action@v2.3.0
         with:
