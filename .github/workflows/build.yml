@@ -30,6 +30,7 @@ jobs:
         uses: docker/metadata-action@v4
         id: meta
         with:
+          bake-target: ${{ matrix.image }}-release
           images: |
             ${{ env.REPOSITORY }}-${{ matrix.image }}
           tags: |
