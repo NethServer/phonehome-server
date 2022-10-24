@@ -43,7 +43,7 @@ COPY tests ./tests
 COPY phpunit.xml .
 RUN XDEBUG_MODE=coverage php artisan test --parallel --coverage-cobertura coverage.cobertura.xml
 
-FROM application as production
+FROM base as production
 RUN apk add --no-cache \
         fcgiwrap \
         netcat-openbsd \
@@ -55,6 +55,7 @@ COPY containers/php/conf.d /usr/local/etc/php/conf.d
 ADD https://raw.githubusercontent.com/renatomefi/php-fpm-healthcheck/v0.5.0/php-fpm-healthcheck /usr/local/bin/
 ADD https://github.com/eficode/wait-for/releases/download/v2.2.3/wait-for /usr/local/bin/
 COPY containers/php/entrypoint.sh /usr/local/bin/entrypoint
+COPY --from=application /var/www/html /var/www/html
 COPY --from=vendor /var/www/html/vendor /var/www/html/vendor
 RUN chmod u+x /usr/local/bin/php-fpm-healthcheck \
     && chmod u+x /usr/local/bin/wait-for \
