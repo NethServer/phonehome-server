@@ -1,9 +1,13 @@
-variable "TAG" {
-    default = "master"
+variable "REGISTRY" {
+    default = "ghcr.io"
 }
 
 variable "REPOSITORY" {
     default = "tbaile/phonehome"
+}
+
+variable "TAG" {
+    default = "master"
 }
 
 target "base" {
@@ -15,28 +19,28 @@ target "app" {
     inherits = ["base"]
     dockerfile = "containers/php/Containerfile"
     cache-from = [
-        "type=registry,ref=${REPOSITORY}-app:latest",
-        "type=registry,ref=${REPOSITORY}-app:master",
-        "type=registry,ref=${REPOSITORY}-app:master-cache",
-        "type=registry,ref=${REPOSITORY}-app:${TAG}",
-        "type=registry,ref=${REPOSITORY}-app:${TAG}-cache"
+        "type=registry,ref=${REGISTRY}/${REPOSITORY}-app:latest",
+        "type=registry,ref=${REGISTRY}/${REPOSITORY}-app:master",
+        "type=registry,ref=${REGISTRY}/${REPOSITORY}-app:master-cache",
+        "type=registry,ref=${REGISTRY}/${REPOSITORY}-app:${TAG}",
+        "type=registry,ref=${REGISTRY}/${REPOSITORY}-app:${TAG}-cache"
     ]
 }
 
 target "app-release" {
     inherits = ["app"]
     tags = [
-        "${REPOSITORY}-app:${TAG}"
+        "${REGISTRY}/${REPOSITORY}-app:${TAG}"
     ]
     cache-to = [
-        "type=registry,ref=${REPOSITORY}-app:${TAG}-cache,mode=max"
+        "type=registry,ref=${REGISTRY}/${REPOSITORY}-app:${TAG}-cache,mode=max"
     ]
     output = ["type=registry"]
 }
 
 target "app-develop" {
     inherits = ["app"]
-    tags = ["${REPOSITORY}-app:latest"]
+    tags = ["${REGISTRY}/${REPOSITORY}-app:latest"]
     output = ["type=docker"]
 }
 
@@ -44,28 +48,28 @@ target "web" {
     inherits = ["base"]
     dockerfile = "containers/nginx/Containerfile"
     cache-from = [
-        "type=registry,ref=${REPOSITORY}-web:latest",
-        "type=registry,ref=${REPOSITORY}-web:master",
-        "type=registry,ref=${REPOSITORY}-web:master-cache",
-        "type=registry,ref=${REPOSITORY}-web:${TAG}",
-        "type=registry,ref=${REPOSITORY}-web:${TAG}-cache"
+        "type=registry,ref=${REGISTRY}/${REPOSITORY}-web:latest",
+        "type=registry,ref=${REGISTRY}/${REPOSITORY}-web:master",
+        "type=registry,ref=${REGISTRY}/${REPOSITORY}-web:master-cache",
+        "type=registry,ref=${REGISTRY}/${REPOSITORY}-web:${TAG}",
+        "type=registry,ref=${REGISTRY}/${REPOSITORY}-web:${TAG}-cache"
     ]
 }
 
 target "web-release" {
     inherits = ["web"]
     tags = [
-        "${REPOSITORY}-web:${TAG}"
+        "${REGISTRY}/${REPOSITORY}-web:${TAG}"
     ]
     cache-to = [
-        "type=registry,ref=${REPOSITORY}-web:${TAG}-cache,mode=max"
+        "type=registry,ref=${REGISTRY}/${REPOSITORY}-web:${TAG}-cache,mode=max"
     ]
     output = ["type=registry"]
 }
 
 target "web-develop" {
     inherits = ["web"]
-    tags = ["${REPOSITORY}-web:latest"]
+    tags = ["${REGISTRY}/${REPOSITORY}-web:latest"]
     output = ["type=docker"]
 }
 
