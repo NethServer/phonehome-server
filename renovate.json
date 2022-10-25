@@ -55,11 +55,6 @@
         },
         {
             "matchPackageNames": [
-                "composer"
-            ]
-        },
-        {
-            "matchPackageNames": [
                 "node"
             ],
             "allowedVersions": "<= 16"
