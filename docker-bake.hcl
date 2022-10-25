@@ -7,7 +7,7 @@ variable "REPOSITORY" {
 }
 
 variable "TAG" {
-    default = "master"
+    default = "latest"
 }
 
 target "base" {
@@ -17,7 +17,7 @@ target "base" {
 
 target "app" {
     inherits = ["base"]
-    dockerfile = "containers/php/Containerfile"
+    dockerfile = "containers/php/Dockerfile"
     cache-from = [
         "type=registry,ref=${REGISTRY}/${REPOSITORY}-app:latest",
         "type=registry,ref=${REGISTRY}/${REPOSITORY}-app:master",
@@ -46,7 +46,7 @@ target "app-develop" {
 
 target "web" {
     inherits = ["base"]
-    dockerfile = "containers/nginx/Containerfile"
+    dockerfile = "containers/nginx/Dockerfile"
     cache-from = [
         "type=registry,ref=${REGISTRY}/${REPOSITORY}-web:latest",
         "type=registry,ref=${REGISTRY}/${REPOSITORY}-web:master",

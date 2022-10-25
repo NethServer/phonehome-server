@@ -9,14 +9,6 @@
     "patch": {
         "automerge": true
     },
-    "dockerfile": {
-        "fileMatch": [
-            "(^|/|\\.)Dockerfile$",
-            "(^|/)Dockerfile[^/]*$",
-            "(^|/|\\.)Containerfile$",
-            "(^|/)Containerfile[^/]*$"
-        ]
-    },
     "schedule": [
         "* 2 * * 1"
     ],
