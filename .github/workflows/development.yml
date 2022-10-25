@@ -4,8 +4,6 @@ on:
     branches:
       - "master"
       - "!renovate/**"
-env:
-  REPOSITORY: tbaile/phonehome
 jobs:
   test-app-image:
     uses: ./.github/workflows/test.yml
