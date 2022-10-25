@@ -18,4 +18,7 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::post('/', [InstallationController::class, 'store'])->name('installation.store');
+Route::post('/', [InstallationController::class, 'store'])
+    ->name('installation.store')
+    ->withoutMiddleware('web')
+    ->middleware('api');
