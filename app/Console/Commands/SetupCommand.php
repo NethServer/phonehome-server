@@ -1,5 +1,10 @@
 <?php
 
+#
+# Copyright (C) 2022 Nethesis S.r.l.
+# SPDX-License-Identifier: AGPL-3.0-or-later
+#
+
 namespace App\Console\Commands;
 
 use Illuminate\Console\Command;
