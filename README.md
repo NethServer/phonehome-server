@@ -154,9 +154,9 @@ Make sure when using this commands you're logged in to the used `REGISTRY`, othe
 Be wary that only one tag is produced by the script, additional tags will need to be provided by using [`docker tag`](https://docs.docker.com/engine/reference/commandline/tag/).
 
 ### Production environment
-Inside the `containers` folder, a `docker-compose.yml` is provided to emulate a production environment using upstream images or `docker buildx bake develop` images.
+Inside the `deploy/docker-compose` folder, a `docker-compose.yml` is provided to emulate a production environment using upstream images or `docker buildx bake develop` images.
 
-Simply enter the `containers` folder, copy the given `containers/.env.example` to `containers/.env` and just add `APP_KEY` and `GEOIP_TOKEN`. Once done you can just run `docker-compose up -d` and a production environment will be running on `http://localhost` in no time.
+Simply enter the `deploy/docker-compose` folder, copy the given `deploy/docker-compose/.env.example` to `deploy/docker-compose/.env` and just add `APP_KEY` and `GEOIP_TOKEN`. Once done you can just run `docker-compose up -d` and a production environment will be running on `http://localhost` in no time.
 
 ## Migration
 To migrate the data from the [old phonehome](https://github.com/NethServer/nethserver-phonehome) the command `app:phonehome:migrate` is provided, to configure the database source of the data, the 'migration' entry in `config/database.php` is provided, that can be overridden by environment.
