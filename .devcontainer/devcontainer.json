@@ -18,8 +18,7 @@
 		"bmewburn.vscode-intelephense-client",
 		"xdebug.php-debug",
 		"redhat.vscode-yaml",
-		"eamodio.gitlens",
-		"SanderRonde.phpstan-vscode"
+		"eamodio.gitlens"
 	],
 	"remoteUser": "sail",
 	"initializeCommand": "if [ ! -f .env ]; then cp .env.example .env; fi",
