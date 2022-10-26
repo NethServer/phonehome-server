@@ -3,7 +3,7 @@ on:
   pull_request:
   workflow_call:
 env:
-  REPOSITORY: ${{ github.repository }}
+  REPOSITORY: tbaile/phonehome
   TAG: ${{ github.ref_name }}
 jobs:
   test-app-image:

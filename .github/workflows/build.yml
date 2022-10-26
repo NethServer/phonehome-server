@@ -10,7 +10,7 @@ on:
         required: true
 env:
   REGISTRY: ghcr.io
-  REPOSITORY: ${{ github.repository }}
+  REPOSITORY: tbaile/phonehome
 jobs:
   build-image:
     name: Build ${{ matrix.image }} image and push
