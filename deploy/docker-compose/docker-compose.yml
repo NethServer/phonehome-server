@@ -21,6 +21,7 @@ services:
             - database
             - redis
         volumes:
+            - public:/app/public
             - storage:/var/www/html/storage
         secrets:
             -   source: env_file
@@ -35,7 +36,6 @@ services:
             setup:
                 condition: service_completed_successfully
         volumes:
-            - public:/app/public
             - storage:/var/www/html/storage
         secrets:
             -   source: env_file
