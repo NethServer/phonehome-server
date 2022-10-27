@@ -42,19 +42,10 @@ class SetupCommand extends Command
         $this->callSilently('config:cache');
         $this->callSilently('view:cache');
         $this->callSilently('storage:link');
-        if (config('app.env') == 'production') {
-            $this->info('Migrating database');
-            $this->callSilently('migrate', [
-                '--force' => true,
-                '--seed' => true
-            ]);
-        } else {
-            $this->info('Application in development mode, resetting database...');
-            $this->callSilently('migrate:fresh', [
-                '--force' => true,
-                '--seed' => true
-            ]);
-        }
+        $this->info('Migrating database');
+        $this->callSilently('migrate', [
+            '--force' => true
+        ]);
         $this->info('Setting up Application');
         $this->callSilently('app:geoip:download');
         $this->info('Setup completed, exiting.');
