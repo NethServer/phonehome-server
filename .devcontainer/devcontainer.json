@@ -18,7 +18,9 @@
 		"bmewburn.vscode-intelephense-client",
 		"xdebug.php-debug",
 		"redhat.vscode-yaml",
-		"eamodio.gitlens"
+		"eamodio.gitlens",
+		"coolbear.systemd-unit-file",
+		"ms-python.vscode-pylance"
 	],
 	"remoteUser": "sail",
 	"initializeCommand": "if [ ! -f .env ]; then cp .env.example .env; fi",
