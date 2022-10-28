@@ -11,6 +11,7 @@ on:
 env:
   REGISTRY: ghcr.io
   REPOSITORY: tbaile/phonehome
+  TAG: ${{ github.ref_name }}
 jobs:
   build-image:
     name: Build ${{ matrix.image }} image and push
