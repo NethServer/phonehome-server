@@ -20,7 +20,8 @@
 		"redhat.vscode-yaml",
 		"eamodio.gitlens",
 		"coolbear.systemd-unit-file",
-		"ms-python.vscode-pylance"
+		"ms-python.vscode-pylance",
+		"Vue.volar"
 	],
 	"remoteUser": "sail",
 	"initializeCommand": "if [ ! -f .env ]; then cp .env.example .env; fi",
