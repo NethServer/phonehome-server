@@ -1,9 +1,8 @@
 name: Development Pipeline
 on:
   push:
-    branches:
-      - "master"
-      - "!renovate/**"
+    branches-ignore:
+      - "renovate/**"
 jobs:
   test-app-image:
     uses: ./.github/workflows/test.yml
