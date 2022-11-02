@@ -14,9 +14,9 @@ config = {
     'hostname': os.environ.get('TRAEFIK_HOST', 'None'),
     'geoip_token': os.environ.get('GEOIP_TOKEN', 'None'),
     'log_level': os.environ.get('LOG_LEVEL', 'None'),
-    'debug': os.environ.get('APP_DEBUG', 'None'),
-    'http_to_https': os.environ.get('TRAEFIK_HTTP2HTTPS', 'None'),
-    'lets_encrypt': os.environ.get('TRAEFIK_LETS_ENCRYPT', 'None')
+    'debug': os.environ.get('APP_DEBUG', 'None') == 'True',
+    'http_to_https': os.environ.get('TRAEFIK_HTTP2HTTPS', 'None') == 'True',
+    'lets_encrypt': os.environ.get('TRAEFIK_LETS_ENCRYPT', 'None') == 'True'
 }
 
 json.dump(config, fp=sys.stdout)
