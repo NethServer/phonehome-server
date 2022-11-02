@@ -1,7 +1,7 @@
 {
     "$schema": "http://json-schema.org/draft-07/schema#",
     "title": "Configure Phonehome",
-    "$id": "http://nethserver.org/json-schema/task/input/phonehome/configure",
+    "$id": "http://schema.nethserver.org/phonehome/configure-module-input.json",
     "description": "Configure Phonehome",
     "examples": [
       {
