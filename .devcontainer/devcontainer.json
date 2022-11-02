@@ -22,7 +22,8 @@
 		"coolbear.systemd-unit-file",
 		"ms-python.vscode-pylance",
 		"Vue.volar",
-		"timonwong.shellcheck"
+		"timonwong.shellcheck",
+		"yzhang.markdown-all-in-one"
 	],
 	"remoteUser": "sail",
 	"initializeCommand": "if [ ! -f .env ]; then cp .env.example .env; fi",
