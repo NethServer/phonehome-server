@@ -108,7 +108,8 @@ export default {
       error: {
         getConfiguration: "",
         configureModule: "",
-        hostname: ""
+        hostname: "",
+        geoIpToken: ""
       }
     };
   },
