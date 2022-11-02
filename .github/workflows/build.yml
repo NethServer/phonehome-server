@@ -66,9 +66,6 @@ jobs:
       - name: Checkout repo
         uses: actions/checkout@v3
 
-      - name: Create new buildx builder
-        uses: docker/setup-buildx-action@v2
-
       - name: Generate tags
         uses: docker/metadata-action@v4
         id: meta
@@ -90,13 +87,18 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
-        # TODO: when rolling releases are a thing, remember to update the PHONEHOME_TAG
-      - uses: docker/bake-action@v2.3.0
-        with:
-          targets: ns8-release
-          files: |
-            ./docker-bake.hcl
-            ${{ steps.meta.outputs.bake-file }}
-          set: |
-            *.platform=linux/amd64
-            *.args.PHONEHOME_TAG=latest
+      # TODO: when rolling releases are a thing, remember to update the PHONEHOME_TAG
+      - name: Build image with buildah
+        env:
+          TAGS: ${{ steps.meta.outputs.tags }}
+          LABELS: ${{ steps.meta.outputs.labels }}
+          ARGS: PHONEHOME_TAG=latest
+        working-directory: deploy/ns8
+        run: |
+          ./build-images.sh
+
+      - name: Push image to registry
+        run: |
+          for tag in '${{ steps.meta.outputs.tags }}'; do
+            podman push "$tag"
+          done
