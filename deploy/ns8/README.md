@@ -1,66 +1,58 @@
-# ns8-kickstart
+# ns8-phonehome
+Configuration and files to generate a NethServer 8 compliant module.
 
-This is a template module for [NethServer 8](https://github.com/NethServer/ns8-core).
-To start a new module from it:
-
-1. Click on [Use this template](https://github.com/NethServer/ns8-kickstart/generate).
-   Name your repo with `ns8-` prefix (e.g. `ns8-mymodule`). 
-   Do not end your module name with a number, like ~~`ns8-baaad2`~~!
-
-1. An automated initialization workflow starts: wait for its completion.
-   You can follow the run inside the "Actions" tab, the workflow is named "Initial commit"
-
-1. You can now clone the repository
-
-1. Edit this `README.md` file, by replacing this section with your module
-   description
-
-1. Commit and push your local changes
-
+- [ns8-phonehome](#ns8-phonehome)
+  - [Install](#install)
+  - [Configure](#configure)
+  - [Uninstall](#uninstall)
+  - [Testing](#testing)
+  -
 ## Install
 
 Instantiate the module with:
-
-    add-module ghcr.io/nethserver/kickstart:latest 1
+```bash
+add-module ghcr.io/tbaile/phonehome:latest
+```
 
 The output of the command will return the instance name.
 Output example:
-
-    {"module_id": "kickstart1", "image_name": "kickstart", "image_url": "ghcr.io/nethserver/kickstart:latest"}
+```
+{"module_id": "phonehome1", "image_name": "phonehome", "image_url": "ghcr.io/tbaile/phonehome:latest"}
+```
 
 ## Configure
 
-Let's assume that the kickstart instance is named `kickstart1`.
+Let's assume that the phonehome instance is named `phonehome1`.
 
 Launch `configure-module`, by setting the following parameters:
-- `<MODULE_PARAM1_NAME>`: <MODULE_PARAM1_DESCRIPTION>
-- `<MODULE_PARAM2_NAME>`: <MODULE_PARAM2_DESCRIPTION>
-- ...
+- `hostname`: Hostname where phonehome will be reachable from, for example `phonehome.nethserver.org`;
+- `geoip_token`: Valid token from MadMax, for more info [see the documentation](https://github.com/Tbaile/phonehome#geoip2);
+- `http_to_https`: Sets up Traefik to redirect all the requests from http to https, can be `true` or `false`;
+- `lets_encrypt`: Boolean value that tells traefik to generate the certificates for the `hostname`.
 
 Example:
-
-    api-cli run module/kickstart1/configure-module --data '{}'
+```bash
+api-cli run module/phonehome2/configure-module --data '{ "hostname": "phonehome.nethserver.org", "geoip_token": "XXXXXXXXXXX", "http_to_https": false, "lets_encrypt": false }
+```
 
 The above command will:
-- start and configure the kickstart instance
-- (describe configuration process)
-- ...
+- start and configure the phonehome instance;
+- start all the services, might take a while for the application to get online.
 
-Send a test HTTP request to the kickstart backend service:
-
-    curl http://127.0.0.1/kickstart/
+To check if the application is online, simply visit the `hostname` given during the configuration.
 
 ## Uninstall
 
 To uninstall the instance:
-
-    remove-module --no-preserve kickstart1
+```bash
+remove-module --no-preserve phonehome1
+```
 
 ## Testing
 
 Test the module using the `test-module.sh` script:
-
-
-    ./test-module.sh <NODE_ADDR> ghcr.io/nethserver/kickstart:latest
+```bash
+./test-module.sh <NODE_ADDR> ghcr.io/tbaile/phonehome:latest
+```
 
 The tests are made using [Robot Framework](https://robotframework.org/)
