@@ -26,10 +26,8 @@ agent.set_env('DB_PASSWORD', 'phonehome')
 
 agent.set_env('BROADCAST_DRIVER', 'redis')
 agent.set_env('CACHE_DRIVER', 'redis')
-agent.set_env('FILESYSTEM_DISK', 'local')
 agent.set_env('QUEUE_CONNECTION', 'redis')
 agent.set_env('SESSION_DRIVER', 'redis')
-agent.set_env('SESSION_LIFETIME', '120')
 
 agent.set_env('PHONEHOME_REDIS_HOST', 'redis')
 agent.set_env('PHONEHOME_REDIS_PASSWORD', 'null')

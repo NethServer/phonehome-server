@@ -23,7 +23,7 @@
     "properties": {
       "hostname": {
         "type": "string",
-        "description": "Host name for phonehome instance, like 'wiki.nethserver.org'.",
+        "description": "Host name for phonehome instance, like 'phonehome.nethserver.org'.",
         "format": "idn-hostname"
       },
       "geoip_token": {
