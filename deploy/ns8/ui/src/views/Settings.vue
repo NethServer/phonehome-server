@@ -11,44 +11,54 @@
     </cv-row>
     <cv-row v-if="error.getConfiguration">
       <cv-column>
-        <NsInlineNotification
-          kind="error"
-          :title="$t('action.get-configuration')"
-          :description="error.getConfiguration"
-          :showCloseButton="false"
-        />
+        <NsInlineNotification kind="error" :title="$t('action.get-configuration')" :description="error.getConfiguration"
+          :showCloseButton="false" />
       </cv-column>
     </cv-row>
     <cv-row>
       <cv-column>
         <cv-tile light>
           <cv-form @submit.prevent="configureModule">
-            <!-- TODO remove test field and code configuration fields -->
-            <cv-text-input
-              :label="$t('settings.test_field')"
-              v-model="testField"
-              :placeholder="$t('settings.test_field')"
-              :disabled="loading.getConfiguration || loading.configureModule"
-              :invalid-message="error.testField"
-              ref="testField"
-            ></cv-text-input>
+            <cv-text-input :label="$t('settings.hostname')" v-model="hostname" placeholder="phonehome.nethserver.org"
+              :disabled="loading.getConfiguration || loading.configureModule" :invalid-message="error.hostname"
+              ref="hostname"></cv-text-input>
+            <cv-text-input :label="$t('settings.geoip_token')" v-model="geoIpToken"
+              placeholder="XXXXXXXXXXXX" :disabled="loading.getConfiguration || loading.configureModule"
+              :invalid-message="error.geoIpToken" ref="geo_ip_token"></cv-text-input>
+              {{ error.geoIpToken }}
+            <cv-select :label="$t('settings.log_level')" :placeholder="$t('settings.log_level')"
+              :disabled="loading.getConfiguration || loading.configureModule" :invalid-message="error.logLevel"
+              v-model="logLevel" ref="log_level">
+              <cv-select-option disabled selected hidden>Choose an option</cv-select-option>
+              <cv-select-option value="emergency">{{ $t('settings.log_level_emergency') }}</cv-select-option>
+              <cv-select-option value="alert">{{ $t('settings.log_level_alert') }}</cv-select-option>
+              <cv-select-option value="critical">{{ $t('settings.log_level_critical') }}</cv-select-option>
+              <cv-select-option value="error">{{ $t('settings.log_level_error') }}</cv-select-option>
+              <cv-select-option value="warning">{{ $t('settings.log_level_warning') }}</cv-select-option>
+              <cv-select-option value="notice">{{ $t('settings.log_level_notice') }}</cv-select-option>
+              <cv-select-option value="info">{{ $t('settings.log_level_info') }}</cv-select-option>
+              <cv-select-option value="debug">{{ $t('settings.log_level_debug') }}</cv-select-option>
+            </cv-select>
+            <cv-toggle value="debug" :label="$t('settings.debug')"
+              :disabled="loading.getConfiguration || loading.configureModule" :invalid-message="error.debug"
+              v-model="debug">
+            </cv-toggle>
+            <cv-toggle value="http_to_https" :label="$t('settings.http_to_https')"
+              :disabled="loading.getConfiguration || loading.configureModule" :invalid-message="error.httpToHttps"
+              v-model="httpToHttps">
+            </cv-toggle>
+            <cv-toggle value="lets_encrypt" :label="$t('settings.lets_encrypt')"
+              :disabled="loading.getConfiguration || loading.configureModule" :invalid-message="error.letsEncrypt"
+              v-model="letsEncrypt">
+            </cv-toggle>
             <cv-row v-if="error.configureModule">
               <cv-column>
-                <NsInlineNotification
-                  kind="error"
-                  :title="$t('action.configure-module')"
-                  :description="error.configureModule"
-                  :showCloseButton="false"
-                />
+                <NsInlineNotification kind="error" :title="$t('action.configure-module')"
+                  :description="error.configureModule" :showCloseButton="false" />
               </cv-column>
             </cv-row>
-            <NsButton
-              kind="primary"
-              :icon="Save20"
-              :loading="loading.configureModule"
-              :disabled="loading.getConfiguration || loading.configureModule"
-              >{{ $t("settings.save") }}</NsButton
-            >
+            <NsButton kind="primary" :icon="Save20" :loading="loading.configureModule"
+              :disabled="loading.getConfiguration || loading.configureModule">{{ $t("settings.save") }}</NsButton>
           </cv-form>
         </cv-tile>
       </cv-column>
@@ -85,16 +95,21 @@ export default {
         page: "settings",
       },
       urlCheckInterval: null,
-      testField: "", // TODO remove
+      hostname: "",
+      geoIpToken: "",
+      logLevel: "",
+      debug: false,
+      httpToHttps: false,
+      letsEncrypt: false,
       loading: {
         getConfiguration: false,
-        configureModule: false,
+        configureModule: false
       },
       error: {
         getConfiguration: "",
         configureModule: "",
-        testField: "", // TODO remove
-      },
+        hostname: ""
+      }
     };
   },
   computed: {
@@ -160,26 +175,32 @@ export default {
       this.loading.getConfiguration = false;
       const config = taskResult.output;
 
-      // TODO set configuration fields
-      // ...
+      this.hostname = config.hostname
+      this.geoIpToken = config.geoip_token
+      this.logLevel = config.log_level
+      this.debug = config.debug
+      this.httpToHttps = config.http_to_https
+      this.letsEncrypt = config.lets_encrypt
 
-      // TODO remove
-      console.log("config", config);
-
-      // TODO focus first configuration field
-      this.focusElement("testField");
+      this.focusElement("hostname");
     },
     validateConfigureModule() {
       this.clearErrors(this);
       let isValidationOk = true;
 
-      // TODO remove testField and validate configuration fields
-      if (!this.testField) {
-        // test field cannot be empty
-        this.error.testField = this.$t("common.required");
+      if (!this.hostname) {
+        this.error.hostname = this.$t("common.required");
 
         if (isValidationOk) {
-          this.focusElement("testField");
+          this.focusElement("hostname");
+          isValidationOk = false;
+        }
+      }
+      if (!this.geoIpToken) {
+        this.error.geoIpToken = this.$t("common.required");
+
+        if (isValidationOk) {
+          this.focusElement("geo_ip_token");
           isValidationOk = false;
         }
       }
@@ -227,7 +248,12 @@ export default {
         this.createModuleTaskForApp(this.instanceName, {
           action: taskAction,
           data: {
-            // TODO configuration fields
+            hostname: this.hostname,
+            geoip_token: this.geoIpToken,
+            log_level: this.log_level,
+            debug: this.debug,
+            http_to_https: this.httpToHttps,
+            lets_encrypt: this.letsEncrypt
           },
           extra: {
             title: this.$t("settings.configure_instance", {
