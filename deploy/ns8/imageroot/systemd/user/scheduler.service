@@ -1,0 +1,31 @@
+[Unit]
+Description=PhoneHome scheduler
+PartOf=phonehome.service
+After=setup.service
+
+[Service]
+Environment=PODMAN_SYSTEMD_UNIT=%n
+EnvironmentFile=%S/state/environment
+WorkingDirectory=%S/state
+Restart=always
+ExecStartPre=/bin/rm -f %t/scheduler.pid %t/scheduler.ctr-id
+ExecStart=/usr/bin/podman run \
+    --pod=phonehome \
+    --detach \
+    --conmon-pidfile=%t/scheduler.pid \
+    --cidfile=%t/scheduler.ctr-id \
+    --cgroups=no-conmon \
+    --replace --name=%N \
+    --volume storage:/var/www/html/storage \
+    --env-file %S/state/environment \
+    --env REDIS_HOST=${PHONEHOME_REDIS_HOST} \
+    --env REDIS_PASSWORD=${PHONEHOME_REDIS_PASSWORD} \
+    --env ROLE=scheduler \
+    ${PHONEHOME_APP_IMAGE}
+ExecStop=/usr/bin/podman stop --ignore --cidfile %t/scheduler.ctr-id -t 10
+ExecStopPost=/usr/bin/podman rm --ignore -f --cidfile %t/scheduler.ctr-id
+PIDFile=%t/scheduler.pid
+Type=forking
+
+[Install]
+WantedBy=default.target

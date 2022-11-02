@@ -1,7 +1,7 @@
 [Unit]
 Description=Phonehome pod
-Wants=database.service redis.service setup.service app.service web.service
-Before=database.service redis.service setup.service app.service web.service
+Wants=database.service redis.service setup.service app.service web.service scheduler.service
+Before=database.service redis.service setup.service app.service web.service scheduler.service
 
 [Service]
 Environment=PODMAN_SYSTEMD_UNIT=%n
