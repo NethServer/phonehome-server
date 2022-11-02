@@ -90,3 +90,29 @@ group "release" {
 group "default" {
     targets = ["develop"]
 }
+
+target "ns8-develop" {
+    target = "production"
+    context = "deploy/ns8"
+    dockerfile = "Dockerfile"
+    cache-from = [
+        "type=registry,ref=${REGISTRY}/${REPOSITORY}:latest",
+        "type=registry,ref=${REGISTRY}/${REPOSITORY}:master",
+        "type=registry,ref=${REGISTRY}/${REPOSITORY}:master-cache",
+        "type=registry,ref=${REGISTRY}/${REPOSITORY}:${TAG}",
+        "type=registry,ref=${REGISTRY}/${REPOSITORY}:${TAG}-cache"
+    ]
+    tags = ["${REGISTRY}/${REPOSITORY}:latest"]
+    output = ["type=docker"]
+}
+
+target "ns8-release" {
+    inherits = ["ns8-develop"]
+    tags = [
+        "${REGISTRY}/${REPOSITORY}:${TAG}"
+    ]
+    cache-to = [
+        "type=registry,ref=${REGISTRY}/${REPOSITORY}:${TAG}-cache,mode=max"
+    ]
+    output = ["type=registry"]
+}
