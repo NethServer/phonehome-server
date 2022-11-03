@@ -8,7 +8,6 @@
 import json
 import sys
 import os
-import agent
 
 config = {
     'hostname': os.environ.get('TRAEFIK_HOST', ''),
