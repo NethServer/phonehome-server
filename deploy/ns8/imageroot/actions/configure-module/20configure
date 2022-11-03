@@ -5,15 +5,14 @@
 # SPDX-License-Identifier: GPL-3.0-or-later
 #
 
-import json
-import sys
 import agent
 import agent.tasks
-import os
+import json
+import sys
 
 data = json.load(sys.stdin)
 
-# Get data from request, set optional parameters
+# Get data from request, set defaults parameters
 hostname = data.get("hostname")
 geoip_token = data.get("geoip_token")
 log_level = data.get("log_level", "warning")
@@ -26,29 +25,16 @@ if http_to_https == True:
 else:
     protocol = 'http://'
 
-# Setup configuration from user input.
-agent.set_env("TRAEFIK_HOST", hostname)
-agent.set_env("TRAEFIK_HTTP2HTTPS", http_to_https)
-agent.set_env("TRAEFIK_LETS_ENCRYPT", lets_encrypt)
-
+# Setup Application
 agent.set_env('APP_DEBUG', debug)
 agent.set_env('APP_URL', protocol + hostname)
 agent.set_env('APP_DOMAIN', hostname)
 agent.set_env('LOG_LEVEL', log_level)
 agent.set_env('GEOIP_TOKEN', geoip_token)
+# Setup Traefik
+agent.set_env('TRAEFIK_HOST', hostname)
+agent.set_env('TRAEFIK_HTTP2HTTPS', http_to_https)
+agent.set_env('TRAEFIK_LETS_ENCRYPT', lets_encrypt)
 
-# Configure Traefik to route requests from hostname to phonehome web service.
-response = agent.tasks.run(
-    agent_id=agent.resolve_agent_id('traefik@node'),
-    action='set-route',
-    data={
-        'instance': os.environ['MODULE_ID'],
-        'url':  'http://127.0.0.1:' + os.environ["TCP_PORT"],
-        'http2https': http_to_https,
-        'lets_encrypt': lets_encrypt,
-        'host': hostname
-    },
-)
-
-# Check if traefik configuration has been successfull
-agent.assert_exp(response['exit_code'] == 0)
+# Apply environment
+agent.dump_env()
