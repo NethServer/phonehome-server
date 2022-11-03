@@ -28,7 +28,10 @@
 	"remoteUser": "sail",
 	"initializeCommand": "if [ ! -f .env ]; then cp .env.example .env; fi",
 	"postCreateCommand": "chown -R 1000:1000 /var/www/html",
-	"postStartCommand": "composer i && php artisan migrate && php artisan ide:generate && php artisan ide:models -N"
+	"postStartCommand": "composer i && php artisan migrate && php artisan ide:generate && php artisan ide:models -N",
+	"containerEnv": {
+		"NODE_OPTIONS": "--openssl-legacy-provider"
+	}
 	// "forwardPorts": [],
 	// "runServices": [],
 	// "shutdownAction": "none",

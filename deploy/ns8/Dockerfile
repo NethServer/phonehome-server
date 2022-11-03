@@ -16,6 +16,7 @@ COPY ui/babel.config.js .
 COPY ui/vue.config.js .
 COPY ui/public public
 COPY ui/src src
+ENV NODE_OPTIONS=--openssl-legacy-provider
 RUN yarn build
 
 FROM scratch as production
