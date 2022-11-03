@@ -92,7 +92,7 @@ jobs:
         env:
           TAGS: ${{ steps.meta.outputs.tags }}
           LABELS: ${{ steps.meta.outputs.labels }}
-          ARGS: PHONEHOME_TAG=latest
+          ARGS: PHONEHOME_TAG=${{ github.ref_name }}
         working-directory: deploy/ns8
         run: |
           ./build-images.sh
