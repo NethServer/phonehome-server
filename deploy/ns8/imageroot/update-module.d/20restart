@@ -1,0 +1,10 @@
+#!/usr/bin/env sh
+
+#
+# Copyright (C) 2022 Nethesis S.r.l.
+# SPDX-License-Identifier: GPL-3.0-or-later
+#
+
+# Upon image download, simply restart the services.
+
+systemctl --user restart phonehome.service
