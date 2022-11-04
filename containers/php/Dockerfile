@@ -13,9 +13,12 @@ FROM base as vendor
 COPY composer.json .
 COPY composer.lock .
 RUN composer check-platform-reqs \
-    && composer i --optimize-autoloader --no-scripts --no-ansi --no-interaction --no-progress --prefer-dist \
-    && mv vendor vendor_test \
-    && composer i --optimize-autoloader --no-scripts --no-dev --no-ansi --no-interaction --no-progress --prefer-dist
+    && composer i --optimize-autoloader --no-scripts --no-ansi --no-interaction --no-progress --prefer-dist --no-dev
+
+FROM base as vendor_test
+COPY composer.json .
+COPY composer.lock .
+RUN composer i --optimize-autoloader --no-scripts --no-ansi --no-interaction --no-progress --prefer-dist
 
 FROM base as application
 COPY app ./app
@@ -26,7 +29,7 @@ COPY lang ./lang
 COPY public ./public
 COPY resources ./resources
 COPY routes ./routes
-COPY --chown=www-data:www-data storage ./storage
+COPY storage ./storage
 COPY artisan .
 COPY composer.json .
 COPY composer.lock .
@@ -37,8 +40,9 @@ ENV DB_CONNECTION=sqlite
 ENV DB_DATABASE=:memory:
 RUN install-php-extensions xdebug
 COPY --from=application /var/www/html /var/www/html
-COPY --from=vendor /var/www/html/vendor_test /var/www/html/vendor
-RUN composer run post-autoload-dump --no-ansi --no-plugins
+COPY --from=vendor_test /var/www/html/vendor /var/www/html/vendor
+RUN composer run post-autoload-dump --no-ansi --no-plugins \
+    && chown -R www-data:www-data storage
 COPY tests ./tests
 COPY phpunit.xml .
 RUN XDEBUG_MODE=coverage php artisan test --parallel --coverage-cobertura coverage.cobertura.xml
@@ -60,6 +64,7 @@ COPY --from=vendor /var/www/html/vendor /var/www/html/vendor
 RUN chmod u+x /usr/local/bin/php-fpm-healthcheck \
     && chmod u+x /usr/local/bin/wait-for \
     && chmod u+x /usr/local/bin/entrypoint \
+    && chown -R www-data:www-data storage \
     && composer run post-autoload-dump --no-ansi --no-plugins \
     && echo -n "opcache.max_accelerated_files=" >> "$PHP_INI_DIR/conf.d/opcache.ini" \
     && echo $(find . -name "*.php" | wc -l | awk '{print (int($1/1000)+2)*1000}') >> "$PHP_INI_DIR/conf.d/opcache.ini" \
