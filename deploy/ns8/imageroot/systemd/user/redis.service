@@ -14,6 +14,7 @@ ExecStart=/usr/bin/podman run \
     --conmon-pidfile %t/redis.pid \
     --cidfile %t/redis.ctr-id \
     --cgroups no-conmon \
+    --volume redis:/data
     --replace \
     --name %N \
     ${REDIS_IMAGE}
