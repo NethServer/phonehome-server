@@ -10,12 +10,13 @@ WorkingDirectory=%S/state
 Restart=on-failure
 ExecStartPre=/bin/rm -f %t/setup.pid %t/setup.ctr-id
 ExecStart=/usr/bin/podman run \
-    --pod=phonehome \
+    --pod phonehome \
     --detach \
-    --conmon-pidfile=%t/setup.pid \
-    --cidfile=%t/setup.ctr-id \
-    --cgroups=no-conmon \
-    --replace --name=%N \
+    --conmon-pidfile %t/setup.pid \
+    --cidfile %t/setup.ctr-id \
+    --cgroups no-conmon \
+    --replace \
+    --name %N \
     --volume public:/app/public \
     --volume storage:/var/www/html/storage \
     --env-file %S/state/environment \

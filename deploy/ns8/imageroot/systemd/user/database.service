@@ -9,13 +9,14 @@ WorkingDirectory=%S/state
 Restart=always
 ExecStartPre=/bin/rm -f %t/database.pid %t/database.ctr-id
 ExecStart=/usr/bin/podman run \
-    --pod=phonehome \
+    --pod phonehome \
     --detach \
-    --conmon-pidfile=%t/database.pid \
-    --cidfile=%t/database.ctr-id \
-    --cgroups=no-conmon \
-    --volume=database:/var/lib/mysql \
-    --replace --name=%N \
+    --conmon-pidfile %t/database.pid \
+    --cidfile %t/database.ctr-id \
+    --cgroups no-conmon \
+    --volume database:/var/lib/mysql \
+    --replace \
+    --name %N \
     --env MARIADB_RANDOM_ROOT_PASSWORD=true \
     --env MYSQL_DATABASE=phonehome \
     --env MYSQL_USER=phonehome \

@@ -10,12 +10,13 @@ WorkingDirectory=%S/state
 Restart=always
 ExecStartPre=/bin/rm -f %t/web.pid %t/web.ctr-id
 ExecStart=/usr/bin/podman run \
-    --pod=phonehome \
+    --pod phonehome \
     --detach \
-    --conmon-pidfile=%t/web.pid \
-    --cidfile=%t/web.ctr-id \
-    --cgroups=no-conmon \
-    --replace --name=%N \
+    --conmon-pidfile %t/web.pid \
+    --cidfile %t/web.ctr-id \
+    --cgroups no-conmon \
+    --replace \
+    --name %N \
     --volume public:/var/www/html/public:ro \
     --env APP_DOMAIN=${APP_DOMAIN} \
     --env FPM_URL=app \

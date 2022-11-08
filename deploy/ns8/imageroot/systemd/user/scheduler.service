@@ -10,12 +10,13 @@ WorkingDirectory=%S/state
 Restart=always
 ExecStartPre=/bin/rm -f %t/scheduler.pid %t/scheduler.ctr-id
 ExecStart=/usr/bin/podman run \
-    --pod=phonehome \
+    --pod phonehome \
     --detach \
-    --conmon-pidfile=%t/scheduler.pid \
-    --cidfile=%t/scheduler.ctr-id \
-    --cgroups=no-conmon \
-    --replace --name=%N \
+    --conmon-pidfile %t/scheduler.pid \
+    --cidfile %t/scheduler.ctr-id \
+    --cgroups no-conmon \
+    --replace \
+    --name %N \
     --volume storage:/var/www/html/storage \
     --env-file %S/state/environment \
     --env REDIS_HOST=${PHONEHOME_REDIS_HOST} \
