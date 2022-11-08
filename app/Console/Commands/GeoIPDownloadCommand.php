@@ -46,7 +46,7 @@ class GeoIPDownloadCommand extends Command
         // Careful, this library is not so great, be sure to test it very well.
         $client = new GeoIp2UpdateClient(array(
             'license_key' => Config::get('geoip.geoip_token'),
-            'dir' => Config::get('geoip.geoip_directory'),
+            'dir' => storage_path('app'),
             'editions' => array('GeoLite2-Country'),
         ));
         $client->run();

@@ -15,14 +15,4 @@ return [
 
     'geoip_token' => env('GEOIP_TOKEN'),
 
-    /*
-    |--------------------------------------------------------------------------
-    | GeoLite2 Storage configuration options
-    |--------------------------------------------------------------------------
-    |
-    | Directory to save in the updated database. You will most likely not need to use this.
-    |
-    */
-    'geoip_directory' => env('GEOIP_DIRECTORY', 'storage/app')
-
 ];

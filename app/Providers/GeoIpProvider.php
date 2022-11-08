@@ -21,7 +21,7 @@ class GeoIpProvider extends ServiceProvider
     public function register()
     {
         $this->app->singleton(Reader::class, function () {
-            return new Reader(config('geoip.geoip_directory') . '/GeoLite2-Country/GeoLite2-Country.mmdb');
+            return new Reader(storage_path('app/GeoLite2-Country/GeoLite2-Country.mmdb'));
         });
 
         $this->app->singleton(GeoIpLocator::class, function (Container $app) {
