@@ -24,7 +24,7 @@ services:
             - redis
         volumes:
             - public:/app/public
-            - bootstrap:/var/www/html/bootstrap/cache
+            - bootstrap:/var/www/html/bootstrap
             - storage:/var/www/html/storage
         secrets:
             -   source: env_file
@@ -39,7 +39,7 @@ services:
             setup:
                 condition: service_completed_successfully
         volumes:
-            - bootstrap:/var/www/html/bootstrap/cache
+            - bootstrap:/var/www/html/bootstrap
             - storage:/var/www/html/storage
         secrets:
             -   source: env_file
@@ -49,8 +49,9 @@ services:
         depends_on:
             setup:
                 condition: service_completed_successfully
+        stop_signal: SIGKILL
         volumes:
-            - bootstrap:/var/www/html/bootstrap/cache
+            - bootstrap:/var/www/html/bootstrap
             - storage:/var/www/html/storage
         secrets:
             -   source: env_file

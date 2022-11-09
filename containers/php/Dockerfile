@@ -13,12 +13,13 @@ FROM base as vendor
 COPY composer.json .
 COPY composer.lock .
 RUN composer check-platform-reqs \
-    && composer i --optimize-autoloader --no-scripts --no-ansi --no-interaction --no-progress --prefer-dist --no-dev
+    && composer install --no-scripts
 
 FROM base as vendor_test
 COPY composer.json .
 COPY composer.lock .
-RUN composer i --optimize-autoloader --no-scripts --no-ansi --no-interaction --no-progress --prefer-dist
+RUN composer check-platform-reqs \
+    && composer i --no-scripts
 
 FROM base as application
 COPY app ./app
@@ -41,10 +42,11 @@ ENV DB_DATABASE=:memory:
 RUN install-php-extensions xdebug
 COPY --from=application /var/www/html /var/www/html
 COPY --from=vendor_test /var/www/html/vendor /var/www/html/vendor
-RUN composer run post-autoload-dump --no-ansi --no-plugins \
-    && chown -R www-data:www-data storage
 COPY tests ./tests
 COPY phpunit.xml .
+RUN COMPOSER_ALLOW_SUPERUSER=1 composer dump-autoload \
+    && chown -R www-data:www-data storage
+USER www-data
 RUN XDEBUG_MODE=coverage php artisan test --parallel --coverage-cobertura coverage.cobertura.xml
 
 FROM base as production
@@ -52,7 +54,6 @@ RUN apk add --no-cache \
         fcgiwrap \
         netcat-openbsd \
         procps \
-        tini \
     && echo "pm.status_path = /status" >> /usr/local/etc/php-fpm.d/zz-docker.conf \
     && mv "$PHP_INI_DIR/php.ini-production" "$PHP_INI_DIR/php.ini"
 COPY containers/php/conf.d /usr/local/etc/php/conf.d
@@ -65,9 +66,10 @@ RUN chmod u+x /usr/local/bin/php-fpm-healthcheck \
     && chmod u+x /usr/local/bin/wait-for \
     && chmod u+x /usr/local/bin/entrypoint \
     && chown -R www-data:www-data storage \
-    && composer run post-autoload-dump --no-ansi --no-plugins \
+    && COMPOSER_ALLOW_SUPERUSER=1 composer dump-autoload --optimize \
     && echo -n "opcache.max_accelerated_files=" >> "$PHP_INI_DIR/conf.d/opcache.ini" \
     && echo $(find . -name "*.php" | wc -l | awk '{print (int($1/1000)+2)*1000}') >> "$PHP_INI_DIR/conf.d/opcache.ini" \
     && rm /usr/local/bin/composer \
     && rm /usr/local/bin/install-php-extensions
+VOLUME ["/var/www/html/bootstrap", "/var/www/html/storage"]
 ENTRYPOINT ["entrypoint"]

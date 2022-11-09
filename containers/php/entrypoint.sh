@@ -10,9 +10,9 @@ else
     if [ "$ROLE" = "app" ]; then
         exec php-fpm
     elif [ "$ROLE" = "setup" ]; then
-        exec php artisan app:setup
+        php artisan app:setup
     elif [ "$ROLE" = "scheduler" ]; then
-        exec tini php artisan schedule:work
+        su -s '/bin/sh' -c 'php artisan schedule:work' www-data
     else
         echo "Unknown role '$ROLE'"
         exit 1
