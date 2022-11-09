@@ -18,6 +18,7 @@ ExecStart=/usr/bin/podman run \
     --replace \
     --name %N \
     --volume public:/app/public \
+    --volume bootstrap:/var/www/html/bootstrap \
     --volume storage:/var/www/html/storage \
     --env-file %S/state/environment \
     --env ROLE=setup \

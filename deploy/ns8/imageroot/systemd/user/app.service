@@ -17,6 +17,7 @@ ExecStart=/usr/bin/podman run \
     --cgroups no-conmon \
     --replace \
     --name %N \
+    --volume bootstrap:/var/www/html/bootstrap \
     --volume storage:/var/www/html/storage \
     --env-file %S/state/environment \
     --env REDIS_HOST=${PHONEHOME_REDIS_HOST} \
