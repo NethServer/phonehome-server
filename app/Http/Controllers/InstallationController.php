@@ -63,7 +63,7 @@ class InstallationController extends Controller
         ]);
 
         // if record exists, update the timestamp
-        if ($installation->exists()) {
+        if ($installation->exists) {
             $installation->touch();
         }
 

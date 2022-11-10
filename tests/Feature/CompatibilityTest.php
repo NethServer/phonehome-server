@@ -308,3 +308,51 @@ it('can insert nullable type', function() {
         'type' => null
     ]);
 });
+
+it('can handle two request with same location', function () {
+    $country = $this->mock(Country::class);
+    $country->name = 'Italy';
+    $country->isoCode = 'IT';
+
+    $this->mock(GeoIpLocator::class, function (MockInterface $mock) use ($country) {
+        $mock->shouldReceive('locate')
+            ->twice()
+            ->andReturn($country);
+    });
+
+    $installation = Installation::factory()->make();
+    /** @var Tests\TestCase $this */
+    $this->postJson(
+        '/',
+        [
+            'uuid' => $installation->uuid,
+            'release' => $installation->version->tag,
+            'type' => $installation->type
+        ]
+    )->assertStatus(200);
+
+    $this->assertDatabaseCount('installations', 1);
+    $this->assertDatabaseHas('installations', [
+        'uuid' => $installation->uuid,
+        'version_id' => $installation->version->id,
+        'type' => $installation->type
+    ]);
+
+    $installation = Installation::factory()->make();
+    /** @var Tests\TestCase $this */
+    $this->postJson(
+        '/',
+        [
+            'uuid' => $installation->uuid,
+            'release' => $installation->version->tag,
+            'type' => $installation->type
+        ]
+    )->assertStatus(200);
+
+    $this->assertDatabaseCount('installations', 2);
+    $this->assertDatabaseHas('installations', [
+        'uuid' => $installation->uuid,
+        'version_id' => $installation->version->id,
+        'type' => $installation->type
+    ]);
+});
