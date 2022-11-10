@@ -21,7 +21,7 @@ response = agent.tasks.run(
     action='set-route',
     data={
         'instance': os.environ['MODULE_ID'],
-        'url':  'http://127.0.0.1:' + os.environ["TCP_PORT"],
+        'url': 'http://127.0.0.1:' + os.environ["TCP_PORT"],
         'http2https': os.environ['TRAEFIK_HTTP2HTTPS'] == 'True',
         'lets_encrypt': os.environ['TRAEFIK_LETS_ENCRYPT'] == 'True',
         'host': os.environ['TRAEFIK_HOST']
