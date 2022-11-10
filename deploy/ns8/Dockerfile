@@ -22,7 +22,7 @@ RUN yarn build
 FROM scratch as production
 COPY imageroot /imageroot
 COPY --from=node_build /app/dist /ui
-LABEL org.nethserver.authorizations="traefik@any:routeadm"
+LABEL org.nethserver.authorizations="traefik@node:routeadm"
 LABEL org.nethserver.tcp-ports-demand="1"
 LABEL org.nethserver.rootfull="0"
 ARG PHONEHOME_TAG=latest
