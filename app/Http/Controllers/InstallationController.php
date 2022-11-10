@@ -72,10 +72,13 @@ class InstallationController extends Controller
 
         // Locate IP
         try {
-            $countryRecord = $geoIpLocator->locate($request->ip() ?: "");
+            $countryRecord = $geoIpLocator->locate($request->ip() ?: '');
         } catch (AddressNotFoundException) {
-            Log::error("Couldn't resolve location for: " . $request->ip() . '(' . $request->get('uuid') . ')');
-            throw new UnprocessableEntityHttpException();
+            $exception = new UnprocessableEntityHttpException(
+                'Couldn\'t resolve location for: ' . $request->ip() . ' (' . $request->get('uuid') . ')'
+            );
+            Log::error($exception->getMessage());
+            throw $exception;
         }
 
         // Find or create new Country and associate
