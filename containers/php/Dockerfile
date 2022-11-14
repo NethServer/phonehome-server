@@ -13,13 +13,13 @@ FROM base as vendor
 COPY composer.json .
 COPY composer.lock .
 RUN composer check-platform-reqs \
-    && composer install --no-scripts
+    && composer i --optimize-autoloader --no-scripts --no-ansi --no-interaction --no-progress --prefer-dist --no-dev
 
 FROM base as vendor_test
 COPY composer.json .
 COPY composer.lock .
 RUN composer check-platform-reqs \
-    && composer i --no-scripts
+    && composer i --optimize-autoloader --no-scripts --no-ansi --no-interaction --no-progress --prefer-dist
 
 FROM base as application
 COPY app ./app
@@ -42,6 +42,7 @@ ENV DB_DATABASE=:memory:
 RUN install-php-extensions xdebug
 COPY --from=application /var/www/html /var/www/html
 COPY --from=vendor_test /var/www/html/vendor /var/www/html/vendor
+RUN composer run post-autoload-dump --no-ansi --no-plugins
 COPY tests ./tests
 COPY phpunit.xml .
 RUN COMPOSER_ALLOW_SUPERUSER=1 composer dump-autoload \

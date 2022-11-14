@@ -1,0 +1,19 @@
+{
+  "name": "Phonehome",
+  "description": {
+    "en": "PhoneHome Server"
+  },
+  "categories": [],
+  "authors": [
+    {
+      "name": "Tommaso Bailetti",
+      "email": "tommaso.bailetti@nethesis.it"
+    }
+  ],
+  "docs": {
+    "documentation_url": "https://github.com/Tbaile/phonehome",
+    "bug_url": "https://github.com/NethServer/dev",
+    "code_url": "https://github.com/Tbaile/phonehome"
+  },
+  "source": "ghcr.io/tbaile/phonehome"
+}

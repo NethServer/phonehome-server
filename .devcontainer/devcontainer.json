@@ -18,12 +18,20 @@
 		"bmewburn.vscode-intelephense-client",
 		"xdebug.php-debug",
 		"redhat.vscode-yaml",
-		"eamodio.gitlens"
+		"eamodio.gitlens",
+		"coolbear.systemd-unit-file",
+		"ms-python.vscode-pylance",
+		"Vue.volar",
+		"timonwong.shellcheck",
+		"yzhang.markdown-all-in-one"
 	],
 	"remoteUser": "sail",
 	"initializeCommand": "if [ ! -f .env ]; then cp .env.example .env; fi",
 	"postCreateCommand": "chown -R 1000:1000 /var/www/html",
-	"postStartCommand": "composer i && php artisan migrate && php artisan ide:generate && php artisan ide:models -N"
+	"postStartCommand": "composer i && php artisan migrate && php artisan ide:generate && php artisan ide:models -N",
+	"containerEnv": {
+		"NODE_OPTIONS": "--openssl-legacy-provider"
+	}
 	// "forwardPorts": [],
 	// "runServices": [],
 	// "shutdownAction": "none",

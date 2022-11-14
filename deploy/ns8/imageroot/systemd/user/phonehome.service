@@ -1,0 +1,25 @@
+[Unit]
+Description=Phonehome pod
+Wants=database.service redis.service setup.service app.service web.service scheduler.service
+Before=database.service redis.service setup.service app.service web.service scheduler.service
+
+[Service]
+Environment=PODMAN_SYSTEMD_UNIT=%n
+EnvironmentFile=%S/state/environment
+WorkingDirectory=%S/state
+Restart=always
+ExecStartPre=/bin/rm -f %t/phonehome.pid %t/phonehome.pod-id
+ExecStartPre=/usr/bin/podman pod create \
+    --infra-conmon-pidfile %t/phonehome.pid \
+    --pod-id-file %t/phonehome.pod-id \
+    --name phonehome \
+    --publish ${TCP_PORT}:80 \
+    --replace
+ExecStart=/usr/bin/podman pod start --pod-id-file %t/phonehome.pod-id
+ExecStop=/usr/bin/podman pod stop --ignore --pod-id-file %t/phonehome.pod-id -t 10
+ExecStopPost=/usr/bin/podman pod rm --ignore -f --pod-id-file %t/phonehome.pod-id
+PIDFile=%t/phonehome.pid
+Type=forking
+
+[Install]
+WantedBy=default.target
