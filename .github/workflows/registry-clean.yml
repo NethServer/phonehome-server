@@ -1,16 +1,16 @@
-name: "Clean up registry"
+name: Clean Registry
 
 on:
   delete:
   workflow_dispatch:
 
 jobs:
-  delete_images:
-    name: "Delete ghcr.io images ${{ github.event.ref }}"
-    runs-on: ubuntu-latest
+  clean-registry:
+    name: Clean Registry images for ${{ github.ref_name }}
+    runs-on: ubuntu-22.04
     environment: Registry
     steps:
       - uses: NethServer/ns8-github-actions/.github/actions/delete-image@v1
         with:
-          images: "kickstart"
+          images: "phonehome-web phonehome-app phonehome"
           delete_image_token: ${{ secrets.IMAGES_CLEANUP_TOKEN }}
