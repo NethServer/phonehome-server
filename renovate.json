@@ -12,6 +12,11 @@
     "schedule": [
         "* 2 * * 1"
     ],
+    "npm": {
+        "fileMatch": [
+            "^package\\.json$"
+        ]
+    },
     "packageRules": [
         {
             "matchManagers": [
