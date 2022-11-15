@@ -12,11 +12,9 @@
     "schedule": [
         "* 2 * * 1"
     ],
-    "npm": {
-        "fileMatch": [
-            "^package\\.json$"
-        ]
-    },
+    "ignorePaths": [
+        "**/deploy/ns8/ui/**"
+    ],
     "packageRules": [
         {
             "matchManagers": [
