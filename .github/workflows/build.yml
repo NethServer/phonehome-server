@@ -99,6 +99,7 @@ jobs:
 
       - name: Push image to registry
         run: |
-          for tag in '${{ steps.meta.outputs.tags }}'; do
+          PUSH_TAGS='${{ steps.meta.outputs.tags }}'
+          for tag in $PUSH_TAGS; do
             podman push "$tag"
           done
