@@ -26,7 +26,7 @@ LABEL org.nethserver.authorizations="traefik@node:routeadm"
 LABEL org.nethserver.tcp-ports-demand="1"
 LABEL org.nethserver.rootfull="0"
 ARG PHONEHOME_TAG=latest
-LABEL org.nethserver.images="docker.io/mariadb:10.6.10 \
+LABEL org.nethserver.images="docker.io/mariadb:10.6.11 \
         docker.io/redis:6.2.7-alpine \
         ghcr.io/tbaile/phonehome-app:$PHONEHOME_TAG \
         ghcr.io/tbaile/phonehome-web:$PHONEHOME_TAG"
