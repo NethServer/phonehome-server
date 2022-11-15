@@ -1,0 +1,61 @@
+name: Clean Jobs
+on:
+  delete:
+  schedule:
+    - cron: '0 20 * * *'
+  workflow_dispatch:
+env:
+  GITHUB_TOKEN: ${{ secrets.PACKAGES_TOKEN }}
+jobs:
+  clean-dangling-images:
+    name: Clean Dangling Images from Registry
+    runs-on: ubuntu-22.04
+    strategy:
+      matrix:
+        container:
+          - phonehome
+          - phonehome-app
+          - phonehome-web
+    steps:
+      - name: Delete dangling images from container releases
+        run: |
+          echo "Scanning ${{ matrix.container }} for dangling images..."
+          endpoint=${{ github.event.repository.owner.url }}/packages/container/${{ matrix.container }}/versions
+          no_tag_versions=$(gh api --paginate --jq '.[] | select(.metadata.container.tags == []) | .id' "$endpoint")
+          for tag in $no_tag_versions; do
+              echo "Deleting $tag in ${{ matrix.container }}..."
+              gh api --input /dev/null -X DELETE --silent "$endpoint/$tag"
+          done
+  clean-ref-images:
+    name: Remove Images from Deleted Refs
+    runs-on: ubuntu-22.04
+    if: github.event_name == 'delete'
+    strategy:
+      matrix:
+        container:
+          - phonehome
+          - phonehome-app
+          - phonehome-web
+    steps:
+      - name: Delete Refs from Registry
+        run: |
+          echo "Scanning ${{ matrix.container }} for removed refs..."
+          ref=$(basename ${{ github.event.ref }})
+          endpoint=${{ github.event.repository.owner.url }}/packages/container/${{ matrix.container }}/versions
+          jq_query=".[] | select(.metadata.container.tags == [\"${ref}\"]) | .id"
+          versions_to_delete=$(gh api --paginate --jq "$jq_query"  "$endpoint")
+          for version in $versions_to_delete; do
+              echo "Deleting $version in ${{ matrix.container }}..."
+              gh api --input /dev/null -X DELETE --silent "$endpoint/$version"
+          done
+      - name: Delete Refs Cache
+        run: |
+          echo "Scanning ${{ matrix.container }} for removed refs cache..."
+          ref=$(basename ${{ github.event.ref }})
+          endpoint=${{ github.event.repository.owner.url }}/packages/container/${{ matrix.container }}/versions
+          jq_query=".[] | select(.metadata.container.tags == [\"${ref}-cache\"]) | .id"
+          versions_to_delete=$(gh api --paginate --jq "$jq_query"  "$endpoint")
+          for version in $versions_to_delete; do
+              echo "Deleting $version in ${{ matrix.container }}..."
+              gh api --input /dev/null -X DELETE --silent "$endpoint/$version"
+          done
