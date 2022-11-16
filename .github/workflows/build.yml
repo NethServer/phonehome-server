@@ -96,8 +96,8 @@ jobs:
           LABELS: ${{ steps.meta.outputs.labels }}
           ARGS: |
             PHONEHOME_TAG=${{ github.ref_name }}
-            PHONEHOME_SERVER_APP=$REPOSITORY-app
-            PHONEHOME_SERVER_WEB=$REPOSITORY-web
+            PHONEHOME_SERVER_APP=${{ env.REGISTRY }}/${{ env.REPOSITORY }}-app
+            PHONEHOME_SERVER_WEB=${{ env.REGISTRY }}/${{ env.REPOSITORY }}-web
         working-directory: deploy/ns8
         run: |
           ./build-images.sh
