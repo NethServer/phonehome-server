@@ -35,12 +35,12 @@ class InstallationController extends Controller
             ->join('installations', 'installations.country_id', '=', 'countries.id')
             ->join('versions', 'versions.id', '=', 'installations.version_id');
         if ($request->get('interval') != '1') {
-            $query = $query->whereRaw('installations.updated_at > "' . today()->subDays($request->get('interval'))->toDateString() . '"');
+            $query = $query->whereRaw('installations.updated_at > \'' . today()->subDays($request->get('interval'))->toDateString() . '\'');
         }
         $query = $query->groupBy('countries.name', 'countries.code', 'versions.tag')
             ->orderBy('versions.tag');
         $query = DB::table(DB::raw('(' . $query->toSql() . ') as base'))
-            ->select('country_name', 'country_code', DB::raw('GROUP_CONCAT(CONCAT( tag, \'#\', num )) AS installations'))
+            ->select('country_name', 'country_code', DB::raw('array_agg(CONCAT( tag, \'#\', num )) AS installations'))
             ->groupBy('country_name', 'country_code')
             ->orderBy('country_code');
 
