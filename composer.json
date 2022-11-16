@@ -1,9 +1,11 @@
 {
     "require": {
         "php": "^8.0.2",
-        "ext-mysqli": "*",
+        "ext-pcntl": "*",
         "ext-pdo": "*",
-        "ext-pdo_mysql": "*",
+        "ext-pdo_pgsql": "*",
+        "ext-pgsql": "*",
+        "ext-posix": "*",
         "ext-redis": "*",
         "geoip2/geoip2": "2.13.0",
         "guzzlehttp/guzzle": "7.5.0",
