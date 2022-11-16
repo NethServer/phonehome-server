@@ -3,11 +3,6 @@ on:
   schedule:
     - cron: "0 0 * * *"
   workflow_call:
-    secrets:
-      registry_username:
-        required: true
-      registry_password:
-        required: true
 env:
   REGISTRY: ghcr.io
 jobs:
