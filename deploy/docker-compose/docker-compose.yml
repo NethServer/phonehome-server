@@ -7,16 +7,15 @@ services:
         volumes:
             - redis:/data
     database:
-        image: mariadb:10.6.11
+        image: postgres:14.6-alpine
         healthcheck:
-            test: [ "CMD", "mysql", "-uphonehome", "-pphonehome", "-e", "SELECT 1" ]
+            test: [ "CMD", "pg_isready", "-q", "-d", "phonehome", "-U", "phonehome" ]
         volumes:
-            - database:/var/lib/mysql
+            - database:/var/lib/postgresql/data
         environment:
-            MYSQL_RANDOM_ROOT_PASSWORD: true
-            MYSQL_DATABASE: phonehome
-            MYSQL_USER: phonehome
-            MYSQL_PASSWORD: phonehome
+            POSTGRES_DB: phonehome
+            POSTGRES_USER: phonehome
+            POSTGRES_PASSWORD: phonehome
     setup:
         image: ghcr.io/nethserver/phonehome-server-app:${TAG:-latest}
         depends_on:
