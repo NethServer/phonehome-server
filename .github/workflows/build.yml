@@ -8,6 +8,8 @@ on:
         required: true
       registry_password:
         required: true
+env:
+  REGISTRY: ghcr.io
 jobs:
   build-image:
     name: Build ${{ matrix.image }} image and push
