@@ -1,9 +1,4 @@
 {
-    "name": "tbaile/phonehome",
-    "type": "project",
-    "description": "Rewrite of old NethServer/nethserver-phonehome.",
-    "keywords": ["nethesis", "ns", "nethserver", "phonehome", "laravel"],
-    "license": "MIT",
     "require": {
         "php": "^8.0.2",
         "ext-mysqli": "*",
