@@ -18,7 +18,7 @@ agent.set_env('APP_KEY', ''.join(secrets.choice(alphabet) for i in range(32)))
 agent.set_env('LOG_CHANNEL', 'stderr')
 agent.set_env('LOG_DEPRECATIONS_CHANNEL', 'stderr')
 
-agent.set_env('DB_CONNECTION', 'mysql')
+agent.set_env('DB_CONNECTION', 'pgsql')
 agent.set_env('DB_HOST', 'database')
 agent.set_env('DB_DATABASE', 'phonehome')
 agent.set_env('DB_USERNAME', 'phonehome')

@@ -14,14 +14,13 @@ ExecStart=/usr/bin/podman run \
     --conmon-pidfile %t/database.pid \
     --cidfile %t/database.ctr-id \
     --cgroups no-conmon \
-    --volume database:/var/lib/mysql \
+    --volume database:/var/lib/postgresql/data \
     --replace \
     --name %N \
-    --env MARIADB_RANDOM_ROOT_PASSWORD=true \
-    --env MYSQL_DATABASE=phonehome \
-    --env MYSQL_USER=phonehome \
-    --env MYSQL_PASSWORD=phonehome \
-    ${MARIADB_IMAGE}
+    --env POSTGRES_DB=phonehome \
+    --env POSTGRES_USER=phonehome \
+    --env POSTGRES_PASSWORD=phonehome \
+    ${POSTGRES_IMAGE}
 ExecStop=/usr/bin/podman stop --ignore --cidfile %t/database.ctr-id -t 10
 ExecStopPost=/usr/bin/podman rm --ignore -f --cidfile %t/database.ctr-id
 PIDFile=%t/database.pid
