@@ -5,7 +5,7 @@ on:
     - cron: '0 20 * * *'
   workflow_dispatch:
 env:
-  GITHUB_TOKEN: ${{ secrets.PACKAGES_TOKEN }}
+  GITHUB_TOKEN: ${{ secrets.IMAGES_CLEANUP_TOKEN }}
 jobs:
   clean-dangling-images:
     name: Clean Dangling Images from Registry
