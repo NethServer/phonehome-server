@@ -8,10 +8,6 @@ on:
         required: true
       registry_password:
         required: true
-env:
-  REGISTRY: ghcr.io
-  REPOSITORY: tbaile/phonehome
-  TAG: ${{ github.ref_name }}
 jobs:
   build-image:
     name: Build ${{ matrix.image }} image and push
@@ -34,7 +30,7 @@ jobs:
         with:
           bake-target: ${{ matrix.image }}-release
           images: |
-            ${{ env.REGISTRY }}/${{ env.REPOSITORY }}-${{ matrix.image }}
+            ${{ env.REGISTRY }}/${{ github.repository }}-${{ matrix.image }}
           tags: |
             type=raw,value=latest,enable={{is_default_branch}}
             type=ref,event=branch
@@ -49,7 +45,13 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
+      - name: Set REPOSITORY environment variable
+        run: |
+          echo "REPOSITORY=${GITHUB_REPOSITORY,,}" >> $GITHUB_ENV
+
       - uses: docker/bake-action@v2.3.0
+        env:
+          TAG: ${{ github.ref_name }}
         with:
           targets: ${{ matrix.image }}-release
           files: |
@@ -72,7 +74,7 @@ jobs:
         with:
           bake-target: ns8-release
           images: |
-            ${{ env.REGISTRY }}/${{ env.REPOSITORY }}
+            ${{ env.REGISTRY }}/${{ github.repository }}
           tags: |
             type=raw,value=latest,enable={{is_default_branch}}
             type=ref,event=branch
@@ -87,12 +89,18 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
-      # TODO: when rolling releases are a thing, remember to update the PHONEHOME_TAG
+      - name: Set REPOSITORY environment variable
+        run: |
+          echo "REPOSITORY=${GITHUB_REPOSITORY,,}" >> $GITHUB_ENV
+
       - name: Build image with buildah
         env:
           TAGS: ${{ steps.meta.outputs.tags }}
           LABELS: ${{ steps.meta.outputs.labels }}
-          ARGS: PHONEHOME_TAG=${{ github.ref_name }}
+          ARGS: |
+            PHONEHOME_TAG=${{ github.ref_name }}
+            PHONEHOME_SERVER_APP=$REPOSITORY-app
+            PHONEHOME_SERVER_WEB=$REPOSITORY-web
         working-directory: deploy/ns8
         run: |
           ./build-images.sh

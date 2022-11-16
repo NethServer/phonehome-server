@@ -3,7 +3,7 @@ variable "REGISTRY" {
 }
 
 variable "REPOSITORY" {
-    default = "tbaile/phonehome"
+    default = "nethserver/phonehome-server"
 }
 
 variable "TAG" {

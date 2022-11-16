@@ -11,9 +11,9 @@
     }
   ],
   "docs": {
-    "documentation_url": "https://github.com/Tbaile/phonehome",
+    "documentation_url": "https://github.com/NethServer/phonehome-server",
     "bug_url": "https://github.com/NethServer/dev",
-    "code_url": "https://github.com/Tbaile/phonehome"
+    "code_url": "https://github.com/NethServer/phonehome-server"
   },
-  "source": "ghcr.io/tbaile/phonehome"
+  "source": "ghcr.io/nethserver/phonehome-server"
 }

@@ -1,7 +1,7 @@
 # PhoneHome
 Complete rewrite from ground-up of [NethServer/nethserver-phonehome](https://github.com/NethServer/nethserver-phonehome), powered by [Laravel](https://laravel.com/).
 
-[![Development Pipeline](https://github.com/Tbaile/phonehome/actions/workflows/development.yml/badge.svg?event=push)](https://github.com/Tbaile/phonehome/actions/workflows/development.yml)
+[![Development Pipeline](https://github.com/NethServer/phonehome-server/actions/workflows/development.yml/badge.svg?event=push)](https://github.com/NethServer/phonehome-server/actions/workflows/development.yml)
 
 - [PhoneHome](#phonehome)
   - [Development](#development)
@@ -141,7 +141,7 @@ docker buildx bake web-develop
 ### Environment variables
 There are few variables that handle the tags of the generated images:
  - `REGISTRY`: the registry that the image will be pushed to, will be appended before the `REPOSITORY` on every tag. Defaults to 'ghcr.io';
- - `REPOSITORY`: the name of the image, defaults to 'tbaile/phonehome';
+ - `REPOSITORY`: the name of the image, defaults to 'nethserver/phonehome-server';
  - `TAG`: tag of the produced image, defaults to 'latest'.
 
 ### Release process

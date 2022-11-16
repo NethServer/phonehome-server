@@ -8,7 +8,7 @@
 set -e
 
 # Set up all variables needed to build the arguments
-tags=${TAGS:-ghcr.io/tbaile/phonehome:latest}
+tags=${TAGS:-ghcr.io/nethserver/phonehome-server:latest}
 labels=${LABELS:-}
 args=${ARGS:-}
 

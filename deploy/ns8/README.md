@@ -11,13 +11,13 @@ Configuration and files to generate a NethServer 8 compliant module.
 
 Instantiate the module with:
 ```bash
-add-module ghcr.io/tbaile/phonehome:latest
+add-module ghcr.io/nethserver/phonehome-server:latest
 ```
 
 The output of the command will return the instance name.
 Output example:
 ```
-{"module_id": "phonehome1", "image_name": "phonehome", "image_url": "ghcr.io/tbaile/phonehome:latest"}
+{"module_id": "phonehome1", "image_name": "phonehome", "image_url": "ghcr.io/nethserver/phonehome-server:latest"}
 ```
 
 ## Configure
@@ -26,7 +26,7 @@ Let's assume that the phonehome instance is named `phonehome1`.
 
 Launch `configure-module`, by setting the following parameters:
 - `hostname`: Hostname where phonehome will be reachable from, for example `phonehome.nethserver.org`;
-- `geoip_token`: Valid token from MadMax, for more info [see the documentation](https://github.com/Tbaile/phonehome#geoip2);
+- `geoip_token`: Valid token from MadMax, for more info [see the documentation](https://github.com/NethServer/phonehome-server#geoip2);
 - `http_to_https`: Sets up Traefik to redirect all the requests from http to https, can be `true` or `false`;
 - `lets_encrypt`: Boolean value that tells traefik to generate the certificates for the `hostname`.
 
@@ -52,7 +52,7 @@ remove-module --no-preserve phonehome1
 
 Test the module using the `test-module.sh` script:
 ```bash
-./test-module.sh <NODE_ADDR> ghcr.io/tbaile/phonehome:latest
+./test-module.sh <NODE_ADDR> ghcr.io/nethserver/phonehome-server:latest
 ```
 
 The tests are made using [Robot Framework](https://robotframework.org/)
