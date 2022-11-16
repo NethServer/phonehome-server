@@ -21,7 +21,7 @@ ExecStart=/usr/bin/podman run \
     --env APP_DOMAIN=${APP_DOMAIN} \
     --env FPM_URL=app \
     --env FPM_PORT=9000 \
-    ${PHONEHOME_WEB_IMAGE}
+    ${PHONEHOME_SERVER_WEB_IMAGE}
 ExecStop=/usr/bin/podman stop --ignore --cidfile %t/web.ctr-id -t 10
 ExecStopPost=/usr/bin/podman rm --ignore -f --cidfile %t/web.ctr-id
 PIDFile=%t/web.pid

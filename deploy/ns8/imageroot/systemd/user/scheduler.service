@@ -24,7 +24,7 @@ ExecStart=/usr/bin/podman run \
     --env REDIS_HOST=${PHONEHOME_REDIS_HOST} \
     --env REDIS_PASSWORD=${PHONEHOME_REDIS_PASSWORD} \
     --env ROLE=scheduler \
-    ${PHONEHOME_APP_IMAGE}
+    ${PHONEHOME_SERVER_APP_IMAGE}
 ExecStop=/usr/bin/podman stop --ignore --cidfile %t/scheduler.ctr-id -t 10
 ExecStopPost=/usr/bin/podman rm --ignore -f --cidfile %t/scheduler.ctr-id
 PIDFile=%t/scheduler.pid
