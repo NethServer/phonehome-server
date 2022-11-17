@@ -12,6 +12,7 @@
     "schedule": [
         "* 2 * * 1"
     ],
+    "dependencyDashboard": false,
     "ignorePaths": [
         "**/deploy/ns8/ui/**"
     ],
@@ -64,9 +65,9 @@
         },
         {
             "matchPackageNames": [
-                "mariadb"
+                "postgres"
             ],
-            "allowedVersions": "<= 10.6"
+            "allowedVersions": "<= 14.6"
         },
         {
             "matchPackageNames": [
