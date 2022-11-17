@@ -159,4 +159,10 @@ Inside the `deploy/docker-compose` folder, a `docker-compose.yml` is provided to
 Simply enter the `deploy/docker-compose` folder, copy the given `deploy/docker-compose/.env.example` to `deploy/docker-compose/.env` and just add `APP_KEY` and `GEOIP_TOKEN`. Once done you can just run `docker-compose up -d` and a production environment will be running on `http://localhost` in no time.
 
 ## Migration
-To migrate the data from the [old phonehome](https://github.com/NethServer/nethserver-phonehome) the command `app:phonehome:migrate` is provided, to configure the database source of the data, the 'migration' entry in `config/database.php` is provided, that can be overridden by environment.
+To migrate the data from the [old phonehome](https://github.com/NethServer/nethserver-phonehome) the command `php artisan app:phonehome:migrate` is provided.
+A dump in CSV format of the table `phone_home_tb` will be asked by the command, the file MUST HAVE:
+ - headers, the format needs to be: `"uuid","release_tag","ip","country_code","country_name","reg_date","type"`
+ - comma separated values
+ - newline separated rows
+
+The file needs to be available to the `app` container, [`podman cp`](https://docs.podman.io/en/latest/markdown/podman-cp.1.html) is your friend.

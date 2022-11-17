@@ -7,15 +7,14 @@
 
 namespace App\Console\Commands;
 
-use App\Http\Requests\StoreInstallationRequest;
 use App\Models\Country;
 use App\Models\Installation;
 use App\Models\Version;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Schema;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Validator;
-use Illuminate\Support\MessageBag;
+use League\Csv\Reader;
 
 /**
  * @codeCoverageIgnore
@@ -43,156 +42,102 @@ class MigrationCommand extends Command
      */
     public function handle(): int
     {
-        $this->table(['config', 'value'], [
-            ['host', config('database.connections.migration.host')],
-            ['port', config('database.connections.migration.port')],
-            ['database', config('database.connections.migration.database')],
-            ['username', config('database.connections.migration.username')],
-            ['password', config('database.connections.migration.password')],
-        ]);
-        if (!$this->confirm('Do you confirm this configuration for the data migration? The application will be put in maintainance mode.')) {
-            return self::SUCCESS;
+        $filePath = $this->ask(
+            'Please provide the relative path to the CSV file (currently in "' . getcwd() . '" directory)',
+            'phone_home_tb.csv'
+        );
+        if (!file_exists($filePath)) {
+            $this->error('File ' . $filePath . ' cannot be found.');
+            return self::FAILURE;
         }
 
-        if (!Schema::connection('migration')->hasTable('phone_home_tb')) {
-            $this->error('Cannot find `phone_home_tb` table.');
-            return self::FAILURE;
+        $reader = Reader::createFromPath($filePath);
+        $reader->setHeaderOffset(0);
+        $totalRows = $reader->count();
+
+        $this->info('In total, ' . $totalRows . ' records will be imported, the first 3 are:');
+        $this->info(collect($reader->fetchOne(0)));
+        $this->info(collect($reader->fetchOne(1)));
+        $this->info(collect($reader->fetchOne(2)));
+        $this->info('While the last one is:');
+        $this->info(collect($reader->fetchOne($totalRows - 1)));
+
+        if (!$this->confirm('Do you want to proceed? The application will be put in maintainance mode during the migration.')) {
+            return self::SUCCESS;
         }
 
         $this->info('Migrating data inside a transaction, please wait...');
         $this->call('down');
-        DB::transaction(function () {
-            $this->info('Migrating countries...');
-            $this->importCountries();
-            $this->newLine();
-            $this->info('Countries migrated.');
 
-            $this->info('Migrating releases...');
-            $this->importReleases();
-            $this->newLine();
-            $this->info('Releases migrated.');
-
-            $bar = $this->output->createProgressBar(DB::connection('migration')->table('phone_home_tb')->count());
+        DB::transaction(function () use ($reader, $totalRows) {
+            $bar = $this->output->createProgressBar($totalRows);
             $bar->start();
+
             $validator = Validator::make(
                 [],
-                array_merge(
-                    StoreInstallationRequest::$rules,
-                    [
-                        'country_code' => 'required|max:2',
-                        'country_name' => 'required'
-                    ]
-                )
+                [
+                    'uuid' => 'required|uuid',
+                    'release_tag' => [
+                        'required',
+                        'regex:/^\d+\.\d+\.?\d*$/m' // uses preg_match
+                    ],
+                    'country_code' => 'required|string|max:2',
+                    'country_name' => 'required|string',
+                    'reg_date' => 'required|date',
+                    'type' => 'required|in:community,enterprise,subscription,NULL'
+                ]
             );
-            DB::connection('migration')->table('phone_home_tb')->orderBy('uuid')
-                ->lazy()->each(
-                    function ($row) use ($bar, $validator) {
-                        $validator = $validator->setData(
-                            [
-                                'uuid' => $row->uuid,
-                                'release' => $row->release_tag,
-                                'type' => $row->type,
-                                'country_code' => $row->country_code,
-                                'country_name' => $row->country_name
-                            ]
-                        );
-                        if ($validator->passes()) {
-                            $installation = Installation::firstOrNew([
-                                'uuid' => $row->uuid
-                            ], [
-                                'type' => $row->type
-                            ]);
-                            $installation->created_at = $row->reg_date;
-                            $installation->updated_at = $row->reg_date;
 
-                            $country = Country::where('code', $row->country_code)->firstOrFail();
-                            $installation->country()->associate($country);
-                            $country->save();
+            $migrationLogger = Log::build([
+                'driver' => 'single',
+                'path' => storage_path('logs/migration.log')
+            ]);
+            $migrationLogger->notice('Migration Started.');
 
-                            $version = Version::where('tag', $row->release_tag)->firstOrFail();
-                            $installation->version()->associate($version);
-                            $country->save();
-                            $installation->save();
-                        } else {
-                            $this->printValidationErrors($validator->errors());
-                        }
-                        $bar->advance();
-                    }
-                );
+            $validationFailureCount = 0;
+            foreach ($reader->getRecords() as $record) {
+                $validator->setData($record);
+                if ($validator->passes()) {
+                    $installation = Installation::firstOrNew([
+                        'uuid' => $record['uuid']
+                    ], [
+                        'type' => $record['type'] == 'NULL' ? null : $record['type']
+                    ]);
+                    $installation->created_at = $record['reg_date'];
+                    $installation->updated_at = $record['reg_date'];
+
+                    $installation->country()->associate(
+                        Country::firstOrCreate([
+                            'code' => $record['country_code']
+                        ], [
+                            'name' => $record['country_name']
+                        ])
+                    );
+
+                    $installation->version()->associate(
+                        Version::firstOrCreate([
+                            'tag' => $record['release_tag']
+                        ])
+                    );
+
+                    $installation->save();
+                } else {
+                    $validationFailureCount++;
+                    $migrationLogger->warning('Validation failed: ' . $validator->errors(), $record);
+                }
+                $bar->advance();
+            }
             $bar->finish();
+            $this->newLine(2);
+            if ($validationFailureCount > 0) {
+                $this->warn($validationFailureCount.' records failed the validation process, please check '. storage_path('logs/migration.log'). ' for more info.');
+            }
+            $migrationLogger->notice('Migration Finished.');
         });
 
-        $this->newLine();
+        $this->info('Migration successful, you may now remove the CSV file.');
         $this->call('up');
-        $this->info('Migration successful, you may now remove additional environment variables starting with "MIGRATION_*"');
 
         return self::SUCCESS;
-    }
-
-    private function importCountries(): void
-    {
-        // query executed
-        $countries = DB::connection('migration')
-            ->table('phone_home_tb')->select('country_name', 'country_code')
-            ->groupBy('country_name', 'country_code')->orderBy('country_code')->get();
-        // validator instance to run data against
-        $validator = Validator::make([], [
-            'country_code' => 'required|max:2',
-            'country_name' => 'required'
-        ]);
-        // iterate through all data
-        $this->withProgressBar($countries, function ($row) use ($validator) {
-            // set data in validator instance
-            $validator->setData([
-                'country_code' => $row->country_code,
-                'country_name' => $row->country_name
-            ]);
-            if ($validator->passes()) {
-                Country::firstOrCreate([
-                    'code' => $row->country_code
-                ], [
-                    'name' => $row->country_name
-                ]);
-            } else {
-                $this->printValidationErrors($validator->errors());
-            }
-        });
-    }
-
-    private function importReleases(): void
-    {
-        // query executed
-        $releases = DB::connection('migration')
-            ->table('phone_home_tb')->select('release_tag')
-            ->groupBy('release_tag')->orderBy('release_tag')->get();
-        // validator instance to run data against
-        $validator = Validator::make([], [
-            'release' => [
-                'required',
-                'regex:/^\d+\.\d+\.?\d*$/m' // uses preg_match
-            ]
-        ]);
-        // iterate through all data
-        $this->withProgressBar($releases, function ($row) use ($validator) {
-            // set data in validator instance
-            $validator->setData([
-                'release' => $row->release_tag
-            ]);
-            if ($validator->passes()) {
-                Version::firstOrCreate([
-                    'tag' => $row->release_tag
-                ]);
-            } else {
-                $this->printValidationErrors($validator->errors());
-            }
-        });
-    }
-
-
-    private function printValidationErrors(MessageBag $errors): void
-    {
-        $this->newLine();
-        $this->warn('Validation failed with: ');
-        $this->warn($errors);
     }
 }
