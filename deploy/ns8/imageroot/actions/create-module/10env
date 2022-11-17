@@ -20,6 +20,7 @@ agent.set_env('LOG_DEPRECATIONS_CHANNEL', 'stderr')
 
 agent.set_env('DB_CONNECTION', 'pgsql')
 agent.set_env('DB_HOST', 'database')
+agent.set_env('DB_PORT', '5432')
 agent.set_env('DB_DATABASE', 'phonehome')
 agent.set_env('DB_USERNAME', 'phonehome')
 agent.set_env('DB_PASSWORD', 'phonehome')
