@@ -40,7 +40,7 @@ class InstallationController extends Controller
         $query = $query->groupBy('countries.name', 'countries.code', 'versions.tag')
             ->orderBy('versions.tag');
         $query = DB::table(DB::raw('(' . $query->toSql() . ') as base'))
-            ->select('country_name', 'country_code', DB::raw('array_agg(CONCAT( tag, \'#\', num )) AS installations'))
+            ->select('country_name', 'country_code', DB::raw('array_to_string(array_agg(concat( tag, \'#\', num )), \',\') AS installations'))
             ->groupBy('country_name', 'country_code')
             ->orderBy('country_code');
 
