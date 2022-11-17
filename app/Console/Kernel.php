@@ -16,7 +16,7 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
-        $schedule->command(GeoIPDownloadCommand::class)->monthly();
+        $schedule->command(GeoIPDownloadCommand::class)->daily();
     }
 
     /**
