@@ -5,6 +5,7 @@ on:
       - "renovate/**"
     tags:
       - "**"
+  workflow_dispatch:
 jobs:
   test-app-image:
     uses: ./.github/workflows/test.yml
