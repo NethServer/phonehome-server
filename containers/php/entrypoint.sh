@@ -12,7 +12,7 @@ else
     elif [ "$ROLE" = "setup" ]; then
         php artisan app:setup
     elif [ "$ROLE" = "scheduler" ]; then
-        su -s '/bin/sh' -c 'php artisan schedule:work' www-data
+        su -s '/bin/sh' -c 'php artisan schedule:work --quiet' www-data
     else
         echo "Unknown role '$ROLE'"
         exit 1
