@@ -29,6 +29,7 @@ server {
     fastcgi_pass ${FPM_URL}:${FPM_PORT};
     fastcgi_param SCRIPT_FILENAME $realpath_root$fastcgi_script_name;
     include fastcgi_params;
+    access_log off;
   }
 
   # Include the basic h5bp config set

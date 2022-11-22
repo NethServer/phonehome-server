@@ -60,7 +60,7 @@ services:
     web:
         image: ghcr.io/nethserver/phonehome-server-web:${TAG:-latest}
         healthcheck:
-            test: [ "CMD", "curl", "--fail", "--silent", "--output", "/dev/null", "http://localhost" ]
+            test: [ "CMD", "curl", "--fail", "--silent", "--output", "/dev/null", "http://localhost/status" ]
         volumes:
             - public:/var/www/html/public:ro
         environment:
