@@ -55,7 +55,9 @@ it('can handle post data', function () {
             'release' => $installation->version->tag,
             'type' => $installation->type
         ]
-    )->assertStatus(200);
+    )
+        ->assertStatus(200)
+        ->assertContent('');
 
     $this->assertDatabaseCount('installations', 1);
     $this->assertDatabaseHas('installations', [
@@ -65,7 +67,7 @@ it('can handle post data', function () {
     ]);
 });
 
-it('updates existing record at every ping', function() {
+it('updates existing record at every ping', function () {
     $installation = Installation::factory()->create();
 
     $country = $this->mock(Country::class);
@@ -73,7 +75,9 @@ it('updates existing record at every ping', function() {
     $country->isoCode = $installation->country->code;
 
     /** @var Tests\TestCase $this */
-    $this->mock(GeoIpLocator::class, fn(MockInterface $mock) =>
+    $this->mock(
+        GeoIpLocator::class,
+        fn (MockInterface $mock) =>
         $mock->shouldReceive('locate')
             ->andReturn($country)
     );
@@ -95,7 +99,6 @@ it('updates existing record at every ping', function() {
         'type' => $installation->type,
         'updated_at' => $installation->updated_at->addDay()
     ]);
-
 });
 
 it('can insert data with same uuid', function () {
@@ -104,7 +107,9 @@ it('can insert data with same uuid', function () {
     $country->isoCode = 'IT';
 
     /** @var Tests\TestCase $this */
-    $this->mock(GeoIpLocator::class, fn(MockInterface $mock) =>
+    $this->mock(
+        GeoIpLocator::class,
+        fn (MockInterface $mock) =>
         $mock->shouldReceive('locate')
             ->andReturn($country)
     );
@@ -149,7 +154,6 @@ it('can insert data with same uuid', function () {
     )->assertStatus(200);
 
     $this->assertDatabaseCount('installations', 2);
-
 });
 
 it('can handle if ip is not found', function () {
@@ -173,7 +177,7 @@ it('can handle if ip is not found', function () {
     );
 })->throws(UnprocessableEntityHttpException::class);
 
-it('can show installations', function() {
+it('can show installations', function () {
     $version7 = Version::factory()->create(['tag' => '7.9.2009']);
     $version6 = Version::factory()->create(['tag' => '6.10']);
 
@@ -234,23 +238,30 @@ it('can show installations', function() {
 
     $this->getJson('/api/installation?interval=7')
         ->assertStatus(200)
-        ->assertJson(fn (AssertableJson $json) =>
+        ->assertJson(
+            fn (AssertableJson $json) =>
             $json->has(3)
-                ->has('0', fn (AssertableJson $json) =>
+                ->has(
+                    '0',
+                    fn (AssertableJson $json) =>
                     $json->where('country_name', $countryDe->name)
                         ->where('country_code', $countryDe->code)
                         ->has('installations')
-                )->has('1', fn (AssertableJson $json) =>
-                $json->where('country_name', $countryGb->name)
-                    ->where('country_code', $countryGb->code)
-                    ->has('installations')
-                )->has('2', fn (AssertableJson $json) =>
+                )->has(
+                    '1',
+                    fn (AssertableJson $json) =>
+                    $json->where('country_name', $countryGb->name)
+                        ->where('country_code', $countryGb->code)
+                        ->has('installations')
+                )->has(
+                    '2',
+                    fn (AssertableJson $json) =>
                     $json->where('country_name', $countryIt->name)
                         ->where('country_code', $countryIt->code)
                         ->has('installations')
                 )
         );
-})->skip(fn() => config('database.default') == 'sqlite', 'Cannot run on sqlite.');
+})->skip(fn () => config('database.default') == 'sqlite', 'Cannot run on sqlite.');
 
 
 test('check if interval works', function () {
@@ -261,9 +272,12 @@ test('check if interval works', function () {
 
     $this->getJson('/api/installation?interval=7')
         ->assertStatus(200)
-        ->assertJson(fn (AssertableJson $json) =>
+        ->assertJson(
+            fn (AssertableJson $json) =>
             $json->has(1)
-                ->has('0', fn (AssertableJson $json) =>
+                ->has(
+                    '0',
+                    fn (AssertableJson $json) =>
                     $json->where('country_name', $installation->country->name)
                         ->where('country_code', $installation->country->code)
                         ->has('installations')
@@ -274,19 +288,21 @@ test('check if interval works', function () {
 
     $this->getJson('/api/installation?interval=7')
         ->assertStatus(200)
-        ->assertJson(fn (AssertableJson $json) =>
+        ->assertJson(
+            fn (AssertableJson $json) =>
             $json->has(0)
         );
+})->skip(fn () => config('database.default') == 'sqlite', 'Cannot run on sqlite.');
 
-})->skip(fn() => config('database.default') == 'sqlite', 'Cannot run on sqlite.');
-
-it('can insert nullable type', function() {
+it('can insert nullable type', function () {
     $country = $this->mock(Country::class);
     $country->name = 'Italy';
     $country->isoCode = 'IT';
 
     /** @var Tests\TestCase $this */
-    $this->mock(GeoIpLocator::class, fn(MockInterface $mock) =>
+    $this->mock(
+        GeoIpLocator::class,
+        fn (MockInterface $mock) =>
         $mock->shouldReceive('locate')
             ->andReturn($country)
     );

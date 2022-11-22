@@ -15,6 +15,7 @@ use App\Models\Installation;
 use App\Models\Version;
 use GeoIp2\Exception\AddressNotFoundException;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Response;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Symfony\Component\HttpKernel\Exception\UnprocessableEntityHttpException;
@@ -53,9 +54,9 @@ class InstallationController extends Controller
      * Store a newly created resource in storage.
      *
      * @param  \App\Http\Requests\StoreInstallationRequest  $request
-     * @return \Illuminate\Http\JsonResponse
+     * @return \Illuminate\Http\Response
      */
-    public function store(StoreInstallationRequest $request, GeoIpLocator $geoIpLocator): JsonResponse
+    public function store(StoreInstallationRequest $request, GeoIpLocator $geoIpLocator): Response
     {
         // Search if same UUID sent a request before
         $installation = Installation::firstOrNew([
@@ -99,6 +100,6 @@ class InstallationController extends Controller
 
         // Save installation
         $installation->save();
-        return response()->json();
+        return response(null);
     }
 }
