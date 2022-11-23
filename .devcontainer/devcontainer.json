@@ -1,6 +1,6 @@
 // https://aka.ms/devcontainer.json
 {
-	"name": "PhoneHome Sail",
+	"name": "Laravel Sail",
 	"dockerComposeFile": [
 		"../docker-compose.yml"
 	],
