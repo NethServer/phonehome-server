@@ -57,6 +57,7 @@ RUN apk add --no-cache \
         netcat-openbsd \
         procps \
     && echo "pm.status_path = /status" >> /usr/local/etc/php-fpm.d/zz-docker.conf \
+    && echo "access.log = /dev/null" >> /usr/local/etc/php-fpm.d/zz-docker.conf \
     && mv "$PHP_INI_DIR/php.ini-production" "$PHP_INI_DIR/php.ini"
 COPY containers/php/conf.d /usr/local/etc/php/conf.d
 ADD https://raw.githubusercontent.com/renatomefi/php-fpm-healthcheck/v0.5.0/php-fpm-healthcheck /usr/local/bin/
