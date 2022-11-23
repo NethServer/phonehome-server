@@ -15,19 +15,22 @@ uses(RefreshDatabase::class);
 test('cannot send empty request', function () {
     $this->mock(GeoIpLocator::class);
     $this->postJson('/')
-        ->assertUnprocessable();
+        ->assertUnprocessable()
+        ->assertContent('');
 });
 
 test('cannot insert invalid type', function () {
     $this->mock(GeoIpLocator::class);
     $this->postJson('/', ['type' => 'hello'])
-        ->assertUnprocessable();
+        ->assertUnprocessable()
+        ->assertContent('');
 });
 
 test('cannot insert invalid version', function (string $tag) {
     $this->mock(GeoIpLocator::class);
     $this->postJson('/', ['release' => $tag])
-        ->assertUnprocessable();
+        ->assertUnprocessable()
+        ->assertContent('');
 })->with([
     'hello',
     'x.y.z',
@@ -56,9 +59,7 @@ it('can handle post data', function () {
             'release' => $installation->version->tag,
             'type' => $installation->type
         ]
-    )
-        ->assertStatus(200)
-        ->assertContent('');
+    )->assertStatus(200)->assertContent('');
 
     $this->assertDatabaseCount('installations', 1);
     $this->assertDatabaseHas('installations', [
@@ -92,7 +93,7 @@ it('updates existing record at every ping', function () {
             'release' => $installation->version->tag,
             'type' => $installation->type
         ]
-    )->assertStatus(200);
+    )->assertStatus(200)->assertContent('');
 
     $this->assertDatabaseHas('installations', [
         'uuid' => $installation->uuid,
@@ -124,7 +125,7 @@ it('can insert data with same uuid', function () {
             'release' => $installation->version->tag,
             'type' => 'community'
         ]
-    )->assertStatus(200);
+    )->assertStatus(200)->assertContent('');
 
     $version = Version::factory()->create();
 
@@ -135,7 +136,7 @@ it('can insert data with same uuid', function () {
             'release' => $version->tag,
             'type' => 'enterprise'
         ]
-    )->assertStatus(200);
+    )->assertStatus(200)->assertContent('');
 
     $this->assertDatabaseHas('installations', [
         'uuid' => $installation->uuid,
@@ -152,7 +153,8 @@ it('can insert data with same uuid', function () {
             'release' => $newInstallation->version->tag,
             'type' => $newInstallation->type
         ]
-    )->assertStatus(200);
+    )->assertStatus(200)->assertContent('');
+
 
     $this->assertDatabaseCount('installations', 2);
 });
@@ -175,7 +177,7 @@ it('can handle if ip is not found', function () {
             'release' => $installation->version->tag,
             'type' => $installation->type
         ]
-    )->assertUnprocessable();
+    )->assertUnprocessable()->assertContent('');
 });
 
 it('can show installations', function () {
@@ -316,7 +318,7 @@ it('can insert nullable type', function () {
             'release' => $installation->version->tag,
             'type' => ''
         ]
-    )->assertStatus(200);
+    )->assertStatus(200)->assertContent('');
 
     $this->assertDatabaseCount('installations', 1);
     $this->assertDatabaseHas('installations', [
@@ -346,7 +348,7 @@ it('can handle two request with same location', function () {
             'release' => $installation->version->tag,
             'type' => $installation->type
         ]
-    )->assertStatus(200);
+    )->assertStatus(200)->assertContent('');
 
     $this->assertDatabaseCount('installations', 1);
     $this->assertDatabaseHas('installations', [
@@ -364,7 +366,7 @@ it('can handle two request with same location', function () {
             'release' => $installation->version->tag,
             'type' => $installation->type
         ]
-    )->assertStatus(200);
+    )->assertStatus(200)->assertContent('');
 
     $this->assertDatabaseCount('installations', 2);
     $this->assertDatabaseHas('installations', [
