@@ -19,10 +19,7 @@ target "app" {
     inherits = ["base"]
     dockerfile = "containers/php/Dockerfile"
     cache-from = [
-        "type=registry,ref=${REGISTRY}/${REPOSITORY}-app:latest",
-        "type=registry,ref=${REGISTRY}/${REPOSITORY}-app:master",
         "type=registry,ref=${REGISTRY}/${REPOSITORY}-app:master-cache",
-        "type=registry,ref=${REGISTRY}/${REPOSITORY}-app:${TAG}",
         "type=registry,ref=${REGISTRY}/${REPOSITORY}-app:${TAG}-cache"
     ]
 }
@@ -33,7 +30,7 @@ target "app-release" {
         "${REGISTRY}/${REPOSITORY}-app:${TAG}"
     ]
     cache-to = [
-        "type=registry,ref=${REGISTRY}/${REPOSITORY}-app:${TAG}-cache,mode=max"
+        "type=registry,ref=,mode=max"
     ]
     output = ["type=registry"]
 }
@@ -48,10 +45,7 @@ target "web" {
     inherits = ["base"]
     dockerfile = "containers/nginx/Dockerfile"
     cache-from = [
-        "type=registry,ref=${REGISTRY}/${REPOSITORY}-web:latest",
-        "type=registry,ref=${REGISTRY}/${REPOSITORY}-web:master",
         "type=registry,ref=${REGISTRY}/${REPOSITORY}-web:master-cache",
-        "type=registry,ref=${REGISTRY}/${REPOSITORY}-web:${TAG}",
         "type=registry,ref=${REGISTRY}/${REPOSITORY}-web:${TAG}-cache"
     ]
 }
@@ -60,9 +54,6 @@ target "web-release" {
     inherits = ["web"]
     tags = [
         "${REGISTRY}/${REPOSITORY}-web:${TAG}"
-    ]
-    cache-to = [
-        "type=registry,ref=${REGISTRY}/${REPOSITORY}-web:${TAG}-cache,mode=max"
     ]
     output = ["type=registry"]
 }
@@ -83,36 +74,6 @@ group "develop" {
     targets = ["app-develop", "web-develop"]
 }
 
-group "release" {
-    targets = ["app-release", "web-release"]
-}
-
 group "default" {
     targets = ["develop"]
-}
-
-target "ns8-develop" {
-    target = "production"
-    context = "deploy/ns8"
-    dockerfile = "Dockerfile"
-    cache-from = [
-        "type=registry,ref=${REGISTRY}/${REPOSITORY}:latest",
-        "type=registry,ref=${REGISTRY}/${REPOSITORY}:master",
-        "type=registry,ref=${REGISTRY}/${REPOSITORY}:master-cache",
-        "type=registry,ref=${REGISTRY}/${REPOSITORY}:${TAG}",
-        "type=registry,ref=${REGISTRY}/${REPOSITORY}:${TAG}-cache"
-    ]
-    tags = ["${REGISTRY}/${REPOSITORY}:latest"]
-    output = ["type=docker"]
-}
-
-target "ns8-release" {
-    inherits = ["ns8-develop"]
-    tags = [
-        "${REGISTRY}/${REPOSITORY}:${TAG}"
-    ]
-    cache-to = [
-        "type=registry,ref=${REGISTRY}/${REPOSITORY}:${TAG}-cache,mode=max"
-    ]
-    output = ["type=registry"]
 }
