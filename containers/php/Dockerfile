@@ -14,13 +14,14 @@ FROM base as vendor
 COPY composer.json .
 COPY composer.lock .
 RUN composer check-platform-reqs \
-    && composer i --optimize-autoloader --no-scripts --no-ansi --no-interaction --no-progress --prefer-dist --no-dev
+    && composer i --no-scripts --no-dev
 
 FROM base as vendor_test
 COPY composer.json .
 COPY composer.lock .
+COPY --from=vendor /var/www/html/vendor /var/www/html/vendor
 RUN composer check-platform-reqs \
-    && composer i --optimize-autoloader --no-scripts --no-ansi --no-interaction --no-progress --prefer-dist
+    && composer i --no-scripts
 
 FROM base as application
 COPY app ./app
