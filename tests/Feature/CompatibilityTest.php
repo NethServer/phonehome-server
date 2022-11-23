@@ -9,24 +9,25 @@ use GeoIp2\Record\Country;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Testing\Fluent\AssertableJson;
 use Mockery\MockInterface;
-use Symfony\Component\HttpKernel\Exception\UnprocessableEntityHttpException;
 
 uses(RefreshDatabase::class);
 
-test('cannot send empty request')
-    ->postJson('/')
-    ->assertUnprocessable()
-    ->assertInvalid(['uuid', 'release']);
+test('cannot send empty request', function () {
+    $this->mock(GeoIpLocator::class);
+    $this->postJson('/')
+        ->assertUnprocessable();
+});
 
-test('cannot insert invalid type')
-    ->postJson('/', ['type' => 'hello'])
-    ->assertUnprocessable()
-    ->assertInvalid(['type' => 'in']);
+test('cannot insert invalid type', function () {
+    $this->mock(GeoIpLocator::class);
+    $this->postJson('/', ['type' => 'hello'])
+        ->assertUnprocessable();
+});
 
 test('cannot insert invalid version', function (string $tag) {
+    $this->mock(GeoIpLocator::class);
     $this->postJson('/', ['release' => $tag])
-        ->assertUnprocessable()
-        ->assertInvalid(['release' => 'format']);
+        ->assertUnprocessable();
 })->with([
     'hello',
     'x.y.z',
@@ -174,8 +175,8 @@ it('can handle if ip is not found', function () {
             'release' => $installation->version->tag,
             'type' => $installation->type
         ]
-    );
-})->throws(UnprocessableEntityHttpException::class);
+    )->assertUnprocessable();
+});
 
 it('can show installations', function () {
     $version7 = Version::factory()->create(['tag' => '7.9.2009']);
