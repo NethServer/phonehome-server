@@ -1,6 +1,6 @@
 <?php
 
-use App\Http\Controllers\InstallationController;
+use App\Http\Controllers\CompatibilityController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -18,7 +18,7 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::post('/', [InstallationController::class, 'store'])
+Route::post('/', CompatibilityController::class)
     ->name('installation.store')
     ->withoutMiddleware('web')
     ->middleware('api');
