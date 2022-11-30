@@ -36,7 +36,7 @@ test('cannot insert invalid version', function (string $tag) {
     'x.y.z',
     'x.y',
     'x.',
-    '99.99.99x'
+    '99.99.99x',
 ]);
 
 it('can handle post data', function () {
@@ -57,7 +57,7 @@ it('can handle post data', function () {
         [
             'uuid' => $installation->uuid,
             'release' => $installation->version->tag,
-            'type' => $installation->type
+            'type' => $installation->type,
         ]
     )->assertStatus(200)->assertContent('');
 
@@ -65,7 +65,7 @@ it('can handle post data', function () {
     $this->assertDatabaseHas('installations', [
         'uuid' => $installation->uuid,
         'version_id' => $installation->version->id,
-        'type' => $installation->type
+        'type' => $installation->type,
     ]);
 });
 
@@ -79,8 +79,7 @@ it('updates existing record at every ping', function () {
     /** @var Tests\TestCase $this */
     $this->mock(
         GeoIpLocator::class,
-        fn (MockInterface $mock) =>
-        $mock->shouldReceive('locate')
+        fn (MockInterface $mock) => $mock->shouldReceive('locate')
             ->andReturn($country)
     );
 
@@ -91,7 +90,7 @@ it('updates existing record at every ping', function () {
         [
             'uuid' => $installation->uuid,
             'release' => $installation->version->tag,
-            'type' => $installation->type
+            'type' => $installation->type,
         ]
     )->assertStatus(200)->assertContent('');
 
@@ -99,7 +98,7 @@ it('updates existing record at every ping', function () {
         'uuid' => $installation->uuid,
         'version_id' => $installation->version->id,
         'type' => $installation->type,
-        'updated_at' => $installation->updated_at->addDay()
+        'updated_at' => $installation->updated_at->addDay(),
     ]);
 });
 
@@ -111,8 +110,7 @@ it('can insert data with same uuid', function () {
     /** @var Tests\TestCase $this */
     $this->mock(
         GeoIpLocator::class,
-        fn (MockInterface $mock) =>
-        $mock->shouldReceive('locate')
+        fn (MockInterface $mock) => $mock->shouldReceive('locate')
             ->andReturn($country)
     );
 
@@ -123,7 +121,7 @@ it('can insert data with same uuid', function () {
         [
             'uuid' => $installation->uuid,
             'release' => $installation->version->tag,
-            'type' => 'community'
+            'type' => 'community',
         ]
     )->assertStatus(200)->assertContent('');
 
@@ -134,14 +132,14 @@ it('can insert data with same uuid', function () {
         [
             'uuid' => $installation->uuid,
             'release' => $version->tag,
-            'type' => 'enterprise'
+            'type' => 'enterprise',
         ]
     )->assertStatus(200)->assertContent('');
 
     $this->assertDatabaseHas('installations', [
         'uuid' => $installation->uuid,
         'version_id' => $version->id,
-        'type' => 'enterprise'
+        'type' => 'enterprise',
     ]);
 
     $newInstallation = Installation::factory()->create();
@@ -151,10 +149,9 @@ it('can insert data with same uuid', function () {
         [
             'uuid' => $newInstallation->uuid,
             'release' => $newInstallation->version->tag,
-            'type' => $newInstallation->type
+            'type' => $newInstallation->type,
         ]
     )->assertStatus(200)->assertContent('');
-
 
     $this->assertDatabaseCount('installations', 2);
 });
@@ -175,7 +172,7 @@ it('can handle if ip is not found', function () {
             'method' => 'add_info',
             'uuid' => $installation->uuid,
             'release' => $installation->version->tag,
-            'type' => $installation->type
+            'type' => $installation->type,
         ]
     )->assertUnprocessable()->assertContent('');
 });
@@ -200,88 +197,81 @@ it('can show installations', function () {
     // 3 installations in DE
     Installation::factory()->create([
         'version_id' => $version6,
-        'country_id' => $countryDe
+        'country_id' => $countryDe,
     ]);
     Installation::factory()->create([
         'version_id' => $version6,
-        'country_id' => $countryDe
+        'country_id' => $countryDe,
     ]);
     Installation::factory()->create([
         'version_id' => $version7,
-        'country_id' => $countryDe
+        'country_id' => $countryDe,
     ]);
 
     // 1 installations in GB
     Installation::factory()->create([
         'version_id' => $version7,
-        'country_id' => $countryGb
+        'country_id' => $countryGb,
     ]);
 
     // 5 installations in IT
     Installation::factory()->create([
         'version_id' => $version7,
-        'country_id' => $countryIt
+        'country_id' => $countryIt,
     ]);
     Installation::factory()->create([
         'version_id' => $version7,
-        'country_id' => $countryIt
+        'country_id' => $countryIt,
     ]);
     Installation::factory()->create([
         'version_id' => $version7,
-        'country_id' => $countryIt
+        'country_id' => $countryIt,
     ]);
     Installation::factory()->create([
         'version_id' => $version6,
-        'country_id' => $countryIt
+        'country_id' => $countryIt,
     ]);
     Installation::factory()->create([
         'version_id' => $version6,
-        'country_id' => $countryIt
+        'country_id' => $countryIt,
     ]);
 
     $this->getJson('/api/installation?interval=7')
         ->assertStatus(200)
         ->assertJson(
-            fn (AssertableJson $json) =>
-            $json->has(3)
+            fn (AssertableJson $json) => $json->has(3)
                 ->has(
                     '0',
-                    fn (AssertableJson $json) =>
-                    $json->where('country_name', $countryDe->name)
+                    fn (AssertableJson $json) => $json->where('country_name', $countryDe->name)
                         ->where('country_code', $countryDe->code)
                         ->has('installations')
                 )->has(
                     '1',
-                    fn (AssertableJson $json) =>
-                    $json->where('country_name', $countryGb->name)
+                    fn (AssertableJson $json) => $json->where('country_name', $countryGb->name)
                         ->where('country_code', $countryGb->code)
                         ->has('installations')
                 )->has(
                     '2',
-                    fn (AssertableJson $json) =>
-                    $json->where('country_name', $countryIt->name)
+                    fn (AssertableJson $json) => $json->where('country_name', $countryIt->name)
                         ->where('country_code', $countryIt->code)
                         ->has('installations')
                 )
         );
 })->skip(fn () => config('database.default') == 'sqlite', 'Cannot run on sqlite.');
 
-
 test('check if interval works', function () {
     $installation = Installation::factory()->create();
     Installation::factory()->create([
-        'updated_at' => now()->subMonth(5)
+        'updated_at' => now()->subMonth(5),
     ]);
 
     $this->getJson('/api/installation?interval=7')
         ->assertStatus(200)
         ->assertJson(
-            fn (AssertableJson $json) =>
-            $json->has(1)
+            fn (AssertableJson $json) => $json->has(1)
                 ->has(
                     '0',
-                    fn (AssertableJson $json) =>
-                    $json->where('country_name', $installation->country->name)
+                    fn (AssertableJson $json) => $json->where('country_name', $installation->country->name)
                         ->where('country_code', $installation->country->code)
                         ->has('installations')
                 )
@@ -292,8 +282,7 @@ test('check if interval works', function () {
     $this->getJson('/api/installation?interval=7')
         ->assertStatus(200)
         ->assertJson(
-            fn (AssertableJson $json) =>
-            $json->has(0)
+            fn (AssertableJson $json) => $json->has(0)
         );
 })->skip(fn () => config('database.default') == 'sqlite', 'Cannot run on sqlite.');
 
@@ -305,8 +294,7 @@ it('can insert nullable type', function () {
     /** @var Tests\TestCase $this */
     $this->mock(
         GeoIpLocator::class,
-        fn (MockInterface $mock) =>
-        $mock->shouldReceive('locate')
+        fn (MockInterface $mock) => $mock->shouldReceive('locate')
             ->andReturn($country)
     );
 
@@ -316,7 +304,7 @@ it('can insert nullable type', function () {
         [
             'uuid' => $installation->uuid,
             'release' => $installation->version->tag,
-            'type' => ''
+            'type' => '',
         ]
     )->assertStatus(200)->assertContent('');
 
@@ -324,7 +312,7 @@ it('can insert nullable type', function () {
     $this->assertDatabaseHas('installations', [
         'uuid' => $installation->uuid,
         'version_id' => $installation->version->id,
-        'type' => null
+        'type' => null,
     ]);
 });
 
@@ -346,7 +334,7 @@ it('can handle two request with same location', function () {
         [
             'uuid' => $installation->uuid,
             'release' => $installation->version->tag,
-            'type' => $installation->type
+            'type' => $installation->type,
         ]
     )->assertStatus(200)->assertContent('');
 
@@ -354,7 +342,7 @@ it('can handle two request with same location', function () {
     $this->assertDatabaseHas('installations', [
         'uuid' => $installation->uuid,
         'version_id' => $installation->version->id,
-        'type' => $installation->type
+        'type' => $installation->type,
     ]);
 
     $installation = Installation::factory()->make();
@@ -364,7 +352,7 @@ it('can handle two request with same location', function () {
         [
             'uuid' => $installation->uuid,
             'release' => $installation->version->tag,
-            'type' => $installation->type
+            'type' => $installation->type,
         ]
     )->assertStatus(200)->assertContent('');
 
@@ -372,6 +360,6 @@ it('can handle two request with same location', function () {
     $this->assertDatabaseHas('installations', [
         'uuid' => $installation->uuid,
         'version_id' => $installation->version->id,
-        'type' => $installation->type
+        'type' => $installation->type,
     ]);
 });

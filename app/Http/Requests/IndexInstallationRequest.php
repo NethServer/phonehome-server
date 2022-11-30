@@ -1,9 +1,9 @@
 <?php
 
-#
-# Copyright (C) 2022 Nethesis S.r.l.
-# SPDX-License-Identifier: AGPL-3.0-or-later
-#
+//
+// Copyright (C) 2022 Nethesis S.r.l.
+// SPDX-License-Identifier: AGPL-3.0-or-later
+//
 
 namespace App\Http\Requests;
 
@@ -29,7 +29,7 @@ class IndexInstallationRequest extends FormRequest
     public function rules()
     {
         return [
-            'interval' => 'required|numeric|in:1,7,30,180,365'
+            'interval' => 'required|numeric|in:1,7,30,180,365',
         ];
     }
 }

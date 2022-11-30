@@ -22,7 +22,7 @@ class InstallationFactory extends Factory
             'uuid' => fake()->uuid(),
             'type' => fake()->randomElement(['community', 'enterprise', 'subscription']),
             'country_id' => Country::factory(),
-            'version_id' => Version::factory()
+            'version_id' => Version::factory(),
         ];
     }
 }

@@ -7,7 +7,7 @@ use Illuminate\Support\Facades\Log;
 use MaxMind\Db\Reader\InvalidDatabaseException;
 use Mockery\MockInterface;
 
-test('invalid database present', function() {
+test('invalid database present', function () {
     $reader = Mockery::mock(Reader::class, function (MockInterface $mock) {
         $mock->shouldReceive('country')
             ->with('127.0.0.1')

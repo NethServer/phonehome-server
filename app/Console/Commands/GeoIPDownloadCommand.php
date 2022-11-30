@@ -1,9 +1,9 @@
 <?php
 
-#
-# Copyright (C) 2022 Nethesis S.r.l.
-# SPDX-License-Identifier: AGPL-3.0-or-later
-#
+//
+// Copyright (C) 2022 Nethesis S.r.l.
+// SPDX-License-Identifier: AGPL-3.0-or-later
+//
 
 namespace App\Console\Commands;
 
@@ -40,20 +40,21 @@ class GeoIPDownloadCommand extends Command
         $geoIPToken = Config::get('geoip.geoip_token');
         if (is_null($geoIPToken)) {
             $this->error('No GeoLite2 token set in configuration.');
+
             return self::FAILURE;
         }
 
         // Careful, this library is not so great, be sure to test it very well.
-        $client = new GeoIp2UpdateClient(array(
+        $client = new GeoIp2UpdateClient([
             'license_key' => Config::get('geoip.geoip_token'),
             'dir' => storage_path('app'),
-            'editions' => array('GeoLite2-Country'),
-        ));
+            'editions' => ['GeoLite2-Country'],
+        ]);
         $client->run();
 
         $exitStatus = self::SUCCESS;
 
-        if (!empty($client->errors())) {
+        if (! empty($client->errors())) {
             foreach ($client->errors() as $error) {
                 $this->error($error);
             }

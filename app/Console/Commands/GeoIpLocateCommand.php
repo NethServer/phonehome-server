@@ -1,9 +1,9 @@
 <?php
 
-#
-# Copyright (C) 2022 Nethesis S.r.l.
-# SPDX-License-Identifier: AGPL-3.0-or-later
-#
+//
+// Copyright (C) 2022 Nethesis S.r.l.
+// SPDX-License-Identifier: AGPL-3.0-or-later
+//
 
 namespace App\Console\Commands;
 
@@ -39,11 +39,13 @@ class GeoIpLocateCommand extends Command
     {
         try {
             $country = $geoIpLocator->locate(strval($this->argument('ip')));
-            $this->info('Location: ' . $country->name . ' (' . $country->isoCode .')');
+            $this->info('Location: '.$country->name.' ('.$country->isoCode.')');
         } catch (Exception $exception) {
             $this->error($exception->getMessage());
+
             return self::FAILURE;
         }
+
         return self::SUCCESS;
     }
 }

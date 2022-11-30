@@ -1,9 +1,9 @@
 <?php
 
-#
-# Copyright (C) 2022 Nethesis S.r.l.
-# SPDX-License-Identifier: AGPL-3.0-or-later
-#
+//
+// Copyright (C) 2022 Nethesis S.r.l.
+// SPDX-License-Identifier: AGPL-3.0-or-later
+//
 
 namespace App\Logic;
 
@@ -15,18 +15,17 @@ use MaxMind\Db\Reader\InvalidDatabaseException;
 
 class GeoIpLocatorImpl implements GeoIpLocator
 {
-
     private readonly Reader $resolver;
 
-    function __construct(Reader $reader)
+    public function __construct(Reader $reader)
     {
         $this->resolver = $reader;
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
-    public function locate(String $ip): Country
+    public function locate(string $ip): Country
     {
         return $this->retryLocate($ip);
     }
@@ -34,13 +33,13 @@ class GeoIpLocatorImpl implements GeoIpLocator
     /**
      * Allows to try 3 times the recovery from a invalid database.
      *
-     * @param String $ip to look for in the database
-     * @param int $retries current retry of the recursion, max 3 tries
-     *
+     * @param  string  $ip to look for in the database
+     * @param  int  $retries current retry of the recursion, max 3 tries
      * @return \GeoIp2\Record\Country resolved by given IP
+     *
      * @throws \GeoIp2\Exception\AddressNotFoundException if IP doesn't exists in database
      */
-    private function retryLocate(String $ip, int $retries = 0): Country
+    private function retryLocate(string $ip, int $retries = 0): Country
     {
         try {
             return $this->resolver->country($ip)->country;
@@ -50,6 +49,7 @@ class GeoIpLocatorImpl implements GeoIpLocator
                 throw $exception;
             }
             Artisan::call('app:geoip:download');
+
             return $this->retryLocate($ip, $retries + 1);
         }
     }

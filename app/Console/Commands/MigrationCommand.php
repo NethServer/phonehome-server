@@ -1,9 +1,9 @@
 <?php
 
-#
-# Copyright (C) 2022 Nethesis S.r.l.
-# SPDX-License-Identifier: AGPL-3.0-or-later
-#
+//
+// Copyright (C) 2022 Nethesis S.r.l.
+// SPDX-License-Identifier: AGPL-3.0-or-later
+//
 
 namespace App\Console\Commands;
 
@@ -43,11 +43,12 @@ class MigrationCommand extends Command
     public function handle(): int
     {
         $filePath = $this->ask(
-            'Please provide the relative path to the CSV file (currently in "' . getcwd() . '" directory)',
+            'Please provide the relative path to the CSV file (currently in "'.getcwd().'" directory)',
             'phone_home_tb.csv'
         );
-        if (!file_exists($filePath)) {
-            $this->error('File ' . $filePath . ' cannot be found.');
+        if (! file_exists($filePath)) {
+            $this->error('File '.$filePath.' cannot be found.');
+
             return self::FAILURE;
         }
 
@@ -55,14 +56,14 @@ class MigrationCommand extends Command
         $reader->setHeaderOffset(0);
         $totalRows = $reader->count();
 
-        $this->info('In total, ' . $totalRows . ' records will be imported, the first 3 are:');
+        $this->info('In total, '.$totalRows.' records will be imported, the first 3 are:');
         $this->info(collect($reader->fetchOne(0)));
         $this->info(collect($reader->fetchOne(1)));
         $this->info(collect($reader->fetchOne(2)));
         $this->info('While the last one is:');
         $this->info(collect($reader->fetchOne($totalRows - 1)));
 
-        if (!$this->confirm('Do you want to proceed? The application will be put in maintainance mode during the migration.')) {
+        if (! $this->confirm('Do you want to proceed? The application will be put in maintainance mode during the migration.')) {
             return self::SUCCESS;
         }
 
@@ -79,18 +80,18 @@ class MigrationCommand extends Command
                     'uuid' => 'required|uuid',
                     'release_tag' => [
                         'required',
-                        'regex:/^\d+\.\d+\.?\d*$/m' // uses preg_match
+                        'regex:/^\d+\.\d+\.?\d*$/m', // uses preg_match
                     ],
                     'country_code' => 'required|string|max:2',
                     'country_name' => 'required|string',
                     'reg_date' => 'required|date',
-                    'type' => 'required|in:community,enterprise,subscription,NULL'
+                    'type' => 'required|in:community,enterprise,subscription,NULL',
                 ]
             );
 
             $migrationLogger = Log::build([
                 'driver' => 'single',
-                'path' => storage_path('logs/migration.log')
+                'path' => storage_path('logs/migration.log'),
             ]);
             $migrationLogger->notice('Migration Started.');
 
@@ -99,38 +100,38 @@ class MigrationCommand extends Command
                 $validator->setData($record);
                 if ($validator->passes()) {
                     $installation = Installation::firstOrNew([
-                        'uuid' => $record['uuid']
+                        'uuid' => $record['uuid'],
                     ], [
-                        'type' => $record['type'] == 'NULL' ? null : $record['type']
+                        'type' => $record['type'] == 'NULL' ? null : $record['type'],
                     ]);
                     $installation->created_at = $record['reg_date'];
                     $installation->updated_at = $record['reg_date'];
 
                     $installation->country()->associate(
                         Country::firstOrCreate([
-                            'code' => $record['country_code']
+                            'code' => $record['country_code'],
                         ], [
-                            'name' => $record['country_name']
+                            'name' => $record['country_name'],
                         ])
                     );
 
                     $installation->version()->associate(
                         Version::firstOrCreate([
-                            'tag' => $record['release_tag']
+                            'tag' => $record['release_tag'],
                         ])
                     );
 
                     $installation->save();
                 } else {
                     $validationFailureCount++;
-                    $migrationLogger->warning('Validation failed: ' . $validator->errors(), $record);
+                    $migrationLogger->warning('Validation failed: '.$validator->errors(), $record);
                 }
                 $bar->advance();
             }
             $bar->finish();
             $this->newLine(2);
             if ($validationFailureCount > 0) {
-                $this->warn($validationFailureCount.' records failed the validation process, please check '. storage_path('logs/migration.log'). ' for more info.');
+                $this->warn($validationFailureCount.' records failed the validation process, please check '.storage_path('logs/migration.log').' for more info.');
             }
             $migrationLogger->notice('Migration Finished.');
         });

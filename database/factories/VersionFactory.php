@@ -17,7 +17,7 @@ class VersionFactory extends Factory
     public function definition(): array
     {
         return [
-            'tag' => fake()->semver()
+            'tag' => fake()->semver(),
         ];
     }
 }

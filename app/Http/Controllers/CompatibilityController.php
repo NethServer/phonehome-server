@@ -32,9 +32,9 @@ class CompatibilityController extends Controller
             'uuid' => 'required|uuid',
             'release' => [
                 'required',
-                'regex:/^\d+\.\d+\.?\d*$/m' // uses preg_match
+                'regex:/^\d+\.\d+\.?\d*$/m', // uses preg_match
             ],
-            'type' => 'nullable|in:community,enterprise,subscription'
+            'type' => 'nullable|in:community,enterprise,subscription',
         ]);
 
         if ($validator->fails()) {
@@ -42,7 +42,7 @@ class CompatibilityController extends Controller
         } else {
             // Search if same UUID sent a request before
             $installation = Installation::firstOrNew([
-                'uuid' => $request->get('uuid')
+                'uuid' => $request->get('uuid'),
             ]);
 
             // if record exists, update the timestamp
@@ -57,22 +57,23 @@ class CompatibilityController extends Controller
             try {
                 $countryRecord = $geoIpLocator->locate($request->ip() ?: '');
             } catch (AddressNotFoundException) {
-                Log::error('Couldn\'t resolve location for: ' . $request->ip() . ' (' . $request->get('uuid') . ')');
+                Log::error('Couldn\'t resolve location for: '.$request->ip().' ('.$request->get('uuid').')');
+
                 return response(null, (new UnprocessableEntityHttpException())->getStatusCode());
             }
 
             // Find or create new Country and associate
             $country = Country::firstOrCreate([
-                'code' => $countryRecord->isoCode
+                'code' => $countryRecord->isoCode,
             ], [
-                'name' => $countryRecord->name
+                'name' => $countryRecord->name,
             ]);
             $installation->country()->associate($country);
             $country->save();
 
             // Find or create new Version and associate
             $version = Version::firstOrCreate([
-                'tag' => $request->get('release')
+                'tag' => $request->get('release'),
             ]);
             $installation->version()->associate($version);
             $country->save();

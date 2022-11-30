@@ -1,9 +1,9 @@
 <?php
 
-#
-# Copyright (C) 2022 Nethesis S.r.l.
-# SPDX-License-Identifier: AGPL-3.0-or-later
-#
+//
+// Copyright (C) 2022 Nethesis S.r.l.
+// SPDX-License-Identifier: AGPL-3.0-or-later
+//
 
 namespace App\Console\Commands;
 
@@ -46,22 +46,23 @@ class SetupCommand extends Command
         $this->call('storage:link');
         $this->info('Migrating database');
         $this->call('migrate', [
-            '--force' => true
+            '--force' => true,
         ]);
         $this->info('Setting up Application');
         $this->execProcess(['su', '-s', '/bin/sh', '-c', 'php artisan app:geoip:download', 'www-data']);
         $this->info('Setup completed, exiting.');
+
         return 0;
     }
 
     /**
-     * @param array<String> $command
+     * @param  array<string>  $command
      */
     private function execProcess(array $command): void
     {
         $process = new Process($command);
         $process->run();
-        if (!$process->isSuccessful()) {
+        if (! $process->isSuccessful()) {
             throw new ProcessFailedException($process);
         }
     }
