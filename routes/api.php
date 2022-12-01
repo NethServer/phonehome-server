@@ -14,4 +14,4 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::apiResource('installation', InstallationController::class)->only('index');
+Route::apiResource('installation', InstallationController::class)->only('index', 'store');
