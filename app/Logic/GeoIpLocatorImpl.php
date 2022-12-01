@@ -15,7 +15,8 @@ use MaxMind\Db\Reader\InvalidDatabaseException;
 
 class GeoIpLocatorImpl implements GeoIpLocator
 {
-    public function __construct(private Reader $resolver) {
+    public function __construct(private Reader $resolver)
+    {
     }
 
     /**
