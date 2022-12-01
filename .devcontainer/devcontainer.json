@@ -26,7 +26,7 @@
 		"yzhang.markdown-all-in-one",
 		"EditorConfig.EditorConfig"
 	],
-	"remoteUser": "root",
+	"remoteUser": "sail",
 	"initializeCommand": "if [ ! -f .env ]; then cp .env.example .env; fi",
 	"postStartCommand": "composer i && php artisan migrate && php artisan ide:generate && php artisan ide:models -N"
 	// "forwardPorts": [],
