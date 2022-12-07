@@ -3,6 +3,9 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Validator;
+use Opis\JsonSchema\Errors\ErrorFormatter;
+use Opis\JsonSchema\Validator as JsonSchemaValidator;
 
 class StoreInstallationRequest extends FormRequest
 {
@@ -24,11 +27,36 @@ class StoreInstallationRequest extends FormRequest
     public function rules()
     {
         return [
-            'uuid' => 'required|uuid',
-            'version' => [
-                'required',
-                'regex:/^\d+\.\d+\.?\d*$/m', // uses preg_match
-            ],
+            '$schema' => 'required|starts_with:https://schema.nethserver.org/',
         ];
+    }
+
+    /**
+     * Configure the validator instance.
+     *
+     * @param  \Illuminate\Validation\Validator  $validator
+     * @return void
+     */
+    public function withValidator(Validator $validator)
+    {
+        $validator->after(function (Validator $validator) {
+            // if $schema has been validated, validate against it.
+            if ($validator->safe()->has('$schema')) {
+                /** @var JsonSchemaValidator */
+                $jsonValidator = app()->make(JsonSchemaValidator::class);
+                $jsonValidated = $jsonValidator->validate(
+                    json_decode($this->getContent()),
+                    $validator->safe()['$schema']
+                );
+                // fill errorbag in case format errors are present.
+                if ($jsonValidated->hasError()) {
+                    $formatter = new ErrorFormatter();
+                    $errors = $formatter->formatKeyed($jsonValidated->error());
+                    foreach ($errors as $key => $value) {
+                        $validator->errors()->add($key, $value[0]);
+                    }
+                }
+            }
+        });
     }
 }

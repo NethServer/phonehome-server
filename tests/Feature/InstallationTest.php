@@ -1,34 +1,133 @@
 <?php
 
-use App\Exceptions\NotImplemented;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
-uses(RefreshDatabase::class);
+uses(RefreshDatabase::class)->group('installation');
 
-it('can\'t push without mandatory data values')
+const SCHEMA_2022_12 = 'https://schema.nethserver.org/facts/2022-12.json';
+
+it('can\'t push without $schema')
     ->postJson('/api/installation')
     ->assertUnprocessable()
-    ->assertInvalid('uuid', 'versions');
+    ->assertInvalid('$schema');
 
-it('can\'t accept missing or invalid UUID', function (string $uuid) {
+it('can\'t process outsourced schemas', function (string $schema) {
     $this->postJson('/api/installation', [
-        'uuid' => $uuid,
+        '$schema' => $schema,
     ])
-    ->assertUnprocessable()
-    ->assertInvalid('uuid');
+        ->assertUnprocessable()
+        ->assertInvalid('$schema');
 })->with([
+    'http://schema.nethserver.org/hello',
+    'ftp://schema.nethserver.org/hello',
+    'https://schema.org/hello',
+    'http://schema.nethserver.or/hello',
+]);
+
+it('can\'t accept missing UUID', function (string $schema) {
+    $this->postJson('/api/installation', [
+        '$schema' => $schema,
+    ])
+        ->assertUnprocessable()
+        ->assertInvalid([
+            '/' => 'uuid',
+        ]);
+})->with([
+    SCHEMA_2022_12,
+]);
+
+it('can\'t accept missing installation', function (string $schema) {
+    $this->postJson('/api/installation', [
+        '$schema' => $schema,
+        'uuid' => fake()->uuid(),
+    ])
+        ->assertUnprocessable()
+        ->assertInvalid([
+            '/' => 'installation',
+        ]);
+})->with([
+    SCHEMA_2022_12,
+]);
+
+it('can\'t accept missing facts', function (string $schema, string $installation) {
+    $this->postJson('/api/installation', [
+        '$schema' => $schema,
+        'uuid' => fake()->uuid(),
+        'installation' => $installation,
+    ])
+        ->assertUnprocessable()
+        ->assertInvalid([
+            '/' => 'facts',
+        ]);
+})->with([
+    SCHEMA_2022_12,
+])->with([
+    'nethserver',
+    'nextsecurity',
+]);
+
+it('can\'t accept invalid uuid', function (string $schema, string $installation, string $uuid) {
+    $request = [
+        '$schema' => $schema,
+        'uuid' => $uuid,
+        'installation' => $installation,
+        'facts' => [
+            'cluster' => (object) [],
+            'nodes' => [
+                '1' => [
+                    'distro' => [
+                        'name' => 'rocky',
+                        'version' => '9.1',
+                    ],
+                    'version' => '8.0.0',
+                ],
+            ],
+            'modules' => (object) [],
+        ],
+    ];
+    $this->postJson('/api/installation', $request)
+        ->assertUnprocessable()
+        ->assertInvalid([
+            '/uuid' => 'format',
+        ]);
+})->with([
+    SCHEMA_2022_12,
+])->with([
+    'nethserver',
+    'nextsecurity',
+])->with([
     '',
     123,
     'hboygapeyfpavwepagyweypgadpcawyvedapwgvepiyagwdpègyawpve]',
 ]);
 
-it('can\'t accept invalid version', function (string $version) {
-    $this->postJson('/api/installation', [
-        'version' => $version,
-    ])
-    ->assertUnprocessable()
-    ->assertInvalid('version');
+it('can\'t accept invalid nethserver version', function (string $schema, string $version) {
+    $request = [
+        '$schema' => $schema,
+        'uuid' => fake()->uuid(),
+        'installation' => 'nethserver',
+        'facts' => [
+            'cluster' => (object) [],
+            'nodes' => [
+                '1' => [
+                    'distro' => [
+                        'name' => 'rocky',
+                        'version' => '9.1',
+                    ],
+                    'version' => $version,
+                ],
+            ],
+            'modules' => (object) [],
+        ],
+    ];
+    $this->postJson('/api/installation', $request)
+        ->assertUnprocessable()
+        ->assertInvalid([
+            '/facts/nodes/1/version' => 'pattern',
+        ]);
 })->with([
+    SCHEMA_2022_12,
+])->with([
     '8.0.a',
     'X.Y',
     'X',
@@ -36,37 +135,30 @@ it('can\'t accept invalid version', function (string $version) {
     '9.a.6',
 ]);
 
-it('can save additional data to database', function () {
-    $version = '8.0.0';
-    $uuid = fake()->uuid();
-    // podman --version | cut -d ' ' -f 3
-    $podman = '3.4.4';
-    // rpm -qa
-    $installed_packages = 'nftables-0.9.8-12.el9.x86_64
-        python3-nftables-0.9.8-12.el9.x86_64
-        python3-firewall-1.0.0-4.el9.noarch
-        openssl-libs-3.0.1-43.el9_0.x86_64
-        aardvark-dns-1.0.1-36.el9_0.x86_64
-        netavark-1.0.1-36.el9_0.x86_64
-        oniguruma-6.9.6-1.el9.5.x86_64
-        libnet-1.2-6.el9.x86_64
-        criu-3.15-13.el9.x86_64';
-
-    $this->withoutExceptionHandling()
-        ->postJson('/api/installation', [
+it('can\'t accept invalid nextsecurity version', function (string $schema, string $version) {
+    $request = [
+        '$schema' => $schema,
+        'uuid' => fake()->uuid(),
+        'installation' => 'nextsecurity',
+        'facts' => [
+            'distro' => [
+                'name' => 'rocky',
+                'version' => '9.1',
+            ],
             'version' => $version,
-            'uuid' => $uuid,
-            'podman' => $podman,
-            'installed_packages' => $installed_packages,
-        ])
-    ->assertCreated();
-    $this->assertDatabaseCount('installations', 1);
-    $this->assertDatabaseHas('installations', [
-        'version' => $version,
-        'uuid' => $uuid,
-        'data' => json_encode([
-            'podman' => $podman,
-            'installed_packages' => $installed_packages,
-        ]),
-    ]);
-})->throws(NotImplemented::class);
+        ],
+    ];
+    $this->postJson('/api/installation', $request)
+        ->assertUnprocessable()
+        ->assertInvalid([
+            '/facts/version' => 'pattern',
+        ]);
+})->with([
+    SCHEMA_2022_12,
+])->with([
+    '8.0.a',
+    'X.Y',
+    'X',
+    '8',
+    '9.a.6',
+]);

@@ -7,7 +7,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Exceptions\NotImplemented;
 use App\Http\Requests\IndexInstallationRequest;
 use App\Http\Requests\StoreInstallationRequest;
 use Illuminate\Http\JsonResponse;
@@ -49,6 +48,6 @@ class InstallationController extends Controller
      */
     public function store(StoreInstallationRequest $request): JsonResponse
     {
-        throw new NotImplemented();
+        return response()->json();
     }
 }
