@@ -1,127 +1,127 @@
 {
-    "$schema": "https://json-schema.org/draft/2019-09/schema",
-    "$id": "https://schema.nethserver.org/facts/2022-12.json",
-    "title": "Facts Schema validation",
-    "type": "object",
-    "required": [
-        "uuid",
-        "installation",
-        "facts"
-    ],
-    "properties": {
-        "uuid": {
-            "description": "Unique anonymous indentification of the machine.",
-            "type": "string",
-            "format": "uuid"
-        },
-        "installation": {
-            "description": "Type of installation that sends the facts.",
-            "enum": [
-                "nethserver",
-                "nextsecurity"
-            ]
-        },
-        "facts": {
-            "type": "object"
-        }
+  "$schema": "https://json-schema.org/draft/2019-09/schema",
+  "$id": "https://schema.nethserver.org/facts/2022-12.json",
+  "title": "Facts Schema validation",
+  "type": "object",
+  "required": [
+    "uuid",
+    "installation",
+    "facts"
+  ],
+  "properties": {
+    "uuid": {
+      "description": "Unique anonymous indentification of the machine.",
+      "type": "string",
+      "format": "uuid"
     },
-    "allOf": [
-        {
-            "if": {
-                "properties": {
-                    "installation": {
-                        "const": "nextsecurity"
-                    }
-                }
-            },
-            "then": {
-                "properties": {
-                    "facts": {
-                        "$ref": "#/$defs/host-info"
-                    }
-                }
-            }
-        },
-        {
-            "if": {
-                "properties": {
-                    "installation": {
-                        "const": "nethserver"
-                    }
-                }
-            },
-            "then": {
-                "properties": {
-                    "facts": {
-                        "$ref": "#/$defs/cluster-facts"
-                    }
-                }
-            }
-        }
-    ],
-    "$defs": {
-        "host-info": {
-            "description": "Common information to be fetched per-host.",
-            "type": "object",
-            "required": [
-                "version",
-                "distro"
-            ],
-            "properties": {
-                "version": {
-                    "description": "Version of the phoning software that runs on the machine.",
-                    "type": "string",
-                    "pattern": "^\\d+\\.\\d+\\.?\\d*$"
-                },
-                "distro": {
-                    "description": "Distribution that the host runs on.",
-                    "type": "object",
-                    "required": [
-                        "name",
-                        "version"
-                    ],
-                    "parameters": {
-                        "name": {
-                            "description": "Name of the distribution.",
-                            "type": "string"
-                        },
-                        "version": {
-                            "description": "Version of the distribution.",
-                            "type": "string"
-                        }
-                    }
-                }
-            }
-        },
-        "cluster-facts": {
-            "description": "NS8 Agent Facts.",
-            "type": "object",
-            "required": [
-                "cluster",
-                "nodes",
-                "modules"
-            ],
-            "properties": {
-                "cluster": {
-                    "description": "Facts from the cluster.",
-                    "type": "object"
-                },
-                "nodes": {
-                    "description": "Facts from nodes in the cluster.",
-                    "type": "object",
-                    "patternProperties": {
-                        ".*": {
-                            "type": "object",
-                            "$ref": "#/$defs/host-info"
-                        }
-                    },
-                    "minProperties": 1
-                },
-                "modules": {
-                    "description": "Facts from modules.",
-                    "type": "object"
-                }
-            }
-        }
+    "installation": {
+      "description": "Type of installation that sends the facts.",
+      "enum": [
+        "nethserver",
+        "nextsecurity"
+      ]
+    },
+    "facts": {
+      "type": "object"
     }
+  },
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "installation": {
+            "const": "nextsecurity"
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "facts": {
+            "$ref": "#/$defs/host-info"
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "installation": {
+            "const": "nethserver"
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "facts": {
+            "$ref": "#/$defs/cluster-facts"
+          }
+        }
+      }
+    }
+  ],
+  "$defs": {
+    "host-info": {
+      "description": "Common information to be fetched per-host.",
+      "type": "object",
+      "required": [
+        "version",
+        "distro"
+      ],
+      "properties": {
+        "version": {
+          "description": "Version of the phoning software that runs on the machine.",
+          "type": "string",
+          "pattern": "^\\d+\\.\\d+\\.?\\d*$"
+        },
+        "distro": {
+          "description": "Distribution that the host runs on.",
+          "type": "object",
+          "required": [
+            "name",
+            "version"
+          ],
+          "parameters": {
+            "name": {
+              "description": "Name of the distribution.",
+              "type": "string"
+            },
+            "version": {
+              "description": "Version of the distribution.",
+              "type": "string"
+            }
+          }
+        }
+      }
+    },
+    "cluster-facts": {
+      "description": "NS8 Agent Facts.",
+      "type": "object",
+      "required": [
+        "cluster",
+        "nodes",
+        "modules"
+      ],
+      "properties": {
+        "cluster": {
+          "description": "Facts from the cluster.",
+          "type": "object"
+        },
+        "nodes": {
+          "description": "Facts from nodes in the cluster.",
+          "type": "object",
+          "patternProperties": {
+            ".*": {
+              "type": "object",
+              "$ref": "#/$defs/host-info"
+            }
+          },
+          "minProperties": 1
+        },
+        "modules": {
+          "description": "Facts from modules.",
+          "type": "object"
+        }
+      }
+    }
+  }
 }
