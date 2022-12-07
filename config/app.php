@@ -195,6 +195,7 @@ return [
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
         App\Providers\GeoIpProvider::class,
+        App\Providers\ValidationServiceProvider::class,
 
     ],
 
