@@ -4,11 +4,17 @@
   "title": "Facts Schema validation",
   "type": "object",
   "required": [
+    "$schema",
     "uuid",
     "installation",
     "facts"
   ],
   "properties": {
+    "$schema": {
+      "description": "Schema that data needs to be validated against.",
+      "type": "string",
+      "format": "uri"
+    },
     "uuid": {
       "description": "Unique anonymous indentification of the machine.",
       "type": "string",
@@ -25,6 +31,7 @@
       "type": "object"
     }
   },
+  "unevaluatedProperties": false,
   "allOf": [
     {
       "if": {
