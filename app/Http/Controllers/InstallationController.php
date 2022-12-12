@@ -48,6 +48,6 @@ class InstallationController extends Controller
      */
     public function store(StoreInstallationRequest $request): JsonResponse
     {
-        return response()->json();
+        return response()->json(status: 201);
     }
 }

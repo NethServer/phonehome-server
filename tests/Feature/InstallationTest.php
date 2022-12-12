@@ -162,3 +162,53 @@ it('can\'t accept invalid nextsecurity version', function (string $schema, strin
     '8',
     '9.a.6',
 ]);
+
+it('saves correctly new nethserver installation', function (string $schema) {
+    $request = [
+        '$schema' => $schema,
+        'uuid' => fake()->uuid(),
+        'installation' => 'nethserver',
+        'facts' => [
+            'cluster' => (object) [],
+            'nodes' => [
+                '1' => [
+                    'distro' => [
+                        'name' => 'rocky',
+                        'version' => '9.1',
+                    ],
+                    'version' => fake()->numerify('#.#.#'),
+                ],
+            ],
+            'modules' => (object) [],
+        ],
+    ];
+    $this->postJson('/api/installation', $request)
+        ->assertCreated()
+        ->assertJson([]);
+
+    $this->assertDatabaseCount('installations', 0);
+})->with([
+    SCHEMA_2022_12,
+]);
+
+it('saves correctly new nextsecurity installation', function (string $schema) {
+    $request = [
+        '$schema' => $schema,
+        'uuid' => fake()->uuid(),
+        'installation' => 'nextsecurity',
+        'facts' => [
+            'distro' => [
+                'name' => 'rocky',
+                'version' => '9.1',
+            ],
+            'version' => fake()->numerify('#.#.#'),
+        ],
+    ];
+    $this->postJson('/api/installation', $request)
+        ->assertCreated()
+        ->assertJson([]);
+
+    $this->assertDatabaseCount('installations', 0);
+})->with([
+    SCHEMA_2022_12,
+]);
