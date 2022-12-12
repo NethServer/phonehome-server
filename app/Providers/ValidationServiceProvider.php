@@ -30,6 +30,9 @@ class ValidationServiceProvider extends ServiceProvider implements DeferrablePro
         });
     }
 
+    /**
+     * @codeCoverageIgnore
+     */
     public function provides(): array
     {
         return [Validator::class];
