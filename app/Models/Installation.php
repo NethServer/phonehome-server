@@ -24,6 +24,13 @@ class Installation extends Model
     ];
 
     /**
+     * {@inheritdoc}
+     */
+    protected $casts = [
+        'data' => 'array',
+    ];
+
+    /**
      * Get the country associated with the Installation
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo<\App\Models\Country, \App\Models\Installation>
