@@ -23,14 +23,13 @@ class InstallationController extends Controller
     {
         // retro-compatible query
         $query = DB::table('countries')
-            ->selectRaw('countries.name as country_name, countries.code as country_code, versions.tag, COUNT(installations.uuid) as num')
-            ->join('installations', 'installations.country_id', '=', 'countries.id')
-            ->join('versions', 'versions.id', '=', 'installations.version_id');
+            ->selectRaw('countries.name as country_name, countries.code as country_code, installations.data->\'facts\'->>\'version\' as tag, COUNT(installations.data->>\'uuid\') as num')
+            ->join('installations', 'installations.country_id', '=', 'countries.id');
         if ($request->get('interval') != '1') {
             $query = $query->whereRaw('installations.updated_at > \''.today()->subDays($request->get('interval'))->toDateString().'\'');
         }
-        $query = $query->groupBy('countries.name', 'countries.code', 'versions.tag')
-            ->orderBy('versions.tag');
+        $query = $query->groupBy('countries.name', 'countries.code', 'tag')
+            ->orderBy('installations.data->facts->version');
         $query = DB::table(DB::raw('('.$query->toSql().') as base'))
             ->select('country_name', 'country_code', DB::raw('array_to_string(array_agg(concat( tag, \'#\', num )), \',\') AS installations'))
             ->groupBy('country_name', 'country_code')
