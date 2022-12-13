@@ -1,79 +1,60 @@
 {
     "$schema": "https://docs.renovatebot.com/renovate-schema.json",
     "extends": [
-        "config:base"
+        "config:base",
+        ":reviewer(tbaile)",
+        ":semanticCommits",
+        ":disableDependencyDashboard"
     ],
-    "assignees": [
-        "Tbaile"
-    ],
-    "patch": {
-        "automerge": true
-    },
-    "schedule": [
-        "* 2 * * 1"
-    ],
-    "dependencyDashboard": false,
     "ignorePaths": [
         "**/deploy/ns8/ui/**"
     ],
     "packageRules": [
         {
-            "matchManagers": [
-                "composer"
-            ],
-            "matchUpdateTypes": [
-                "minor",
-                "patch"
-            ],
-            "groupName": "all non-major composer dependencies",
-            "groupSlug": "all-composer-minor-patch"
-        },
-        {
-            "matchManagers": [
-                "dockerfile",
-                "docker-compose"
-            ],
-            "matchUpdateTypes": [
-                "minor",
-                "patch"
-            ],
-            "groupName": "all non-major docker dependencies",
-            "groupSlug": "all-docker-minor-patch"
-        },
-        {
-            "matchManagers": [
-                "npm"
-            ],
-            "matchUpdateTypes": [
-                "minor",
-                "patch"
-            ],
-            "groupName": "all non-major npm dependencies",
-            "groupSlug": "all-npm-minor-patch"
-        },
-        {
             "matchPackageNames": [
                 "php"
             ],
-            "allowedVersions": "<= 8.0"
-        },
-        {
-            "matchPackageNames": [
-                "node"
-            ],
-            "allowedVersions": "<= 18"
+            "allowedVersions": "<= 8.1"
         },
         {
             "matchPackageNames": [
                 "postgres"
             ],
-            "allowedVersions": "<= 14.6"
+            "allowedVersions": "<= 14"
         },
         {
             "matchPackageNames": [
                 "redis"
             ],
             "allowedVersions": "<= 6"
+        },
+        {
+            "matchPackageNames": [
+                "node"
+            ],
+            "allowedVersions": "<= 18"
+        }
+    ],
+    "regexManagers": [
+        {
+            "fileMatch": [
+                "(^|/|\\.)Dockerfile$"
+            ],
+            "matchStrings": [
+                "ADD\\ https:\/\/github\\.com\/eficode\/wait-for\/releases\/download\/(?<currentValue>.*)\/wait-for"
+            ],
+            "depNameTemplate": "eficode/wait-for",
+            "datasourceTemplate": "github-releases"
+        },
+        {
+            "fileMatch": [
+                "(^|/|\\.)Dockerfile$"
+            ],
+            "matchStrings": [
+                "ADD\\ https:\/\/raw\\.githubusercontent\\.com\/renatomefi\/php-fpm-healthcheck\/(?<currentValue>.*)\/php-fpm-healthcheck"
+            ],
+            "depNameTemplate": "renatomefi/php-fpm-healthcheck",
+            "datasourceTemplate": "github-releases"
         }
     ]
 }
