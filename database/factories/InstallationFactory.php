@@ -3,7 +3,6 @@
 namespace Database\Factories;
 
 use App\Models\Country;
-use App\Models\Version;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -19,10 +18,14 @@ class InstallationFactory extends Factory
     public function definition()
     {
         return [
-            'uuid' => fake()->uuid(),
-            'type' => fake()->randomElement(['community', 'enterprise', 'subscription']),
+            'data' => [
+                'uuid' => fake()->uuid(),
+                'facts' => [
+                    'type' => fake()->randomElement(['community', 'enterprise', 'subscription']),
+                    'version' => fake()->numerify('#.#.#'),
+                ],
+            ],
             'country_id' => Country::factory(),
-            'version_id' => Version::factory(),
         ];
     }
 }

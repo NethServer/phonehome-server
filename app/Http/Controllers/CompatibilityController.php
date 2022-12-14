@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use App\Logic\GeoIpLocator;
 use App\Models\Country;
 use App\Models\Installation;
-use App\Models\Version;
 use GeoIp2\Exception\AddressNotFoundException;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
@@ -42,16 +41,18 @@ class CompatibilityController extends Controller
         } else {
             // Search if same UUID sent a request before
             $installation = Installation::firstOrNew([
-                'uuid' => $request->get('uuid'),
+                'data->uuid' => $request->get('uuid'),
             ]);
-
             // if record exists, update the timestamp
             if ($installation->exists) {
                 $installation->touch();
             }
-
+            $data = $installation->data;
             // Apply type from request
-            $installation->type = $request->get('type');
+            $data['installation'] = 'nethserver';
+            $data['facts']['type'] = $request->get('type');
+            $data['facts']['version'] = $request->get('release');
+            $installation->data = $data;
 
             // Locate IP
             try {
@@ -69,13 +70,6 @@ class CompatibilityController extends Controller
                 'name' => $countryRecord->name,
             ]);
             $installation->country()->associate($country);
-            $country->save();
-
-            // Find or create new Version and associate
-            $version = Version::firstOrCreate([
-                'tag' => $request->get('release'),
-            ]);
-            $installation->version()->associate($version);
             $country->save();
 
             // Save installation

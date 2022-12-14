@@ -21,6 +21,8 @@ Complete rewrite from ground-up of [NethServer/nethserver-phonehome](https://git
     - [Release process](#release-process)
     - [Production environment](#production-environment)
   - [Migration](#migration)
+  - [Breaking Changes](#breaking-changes)
+    - [0.2.0 -\> 0.3.0](#020---030)
 
 ## Development
 ### Application Environment
@@ -166,3 +168,30 @@ A dump in CSV format of the table `phone_home_tb` will be asked by the command, 
  - newline separated rows
 
 The file needs to be available to the `app` container, [`podman cp`](https://docs.podman.io/en/latest/markdown/podman-cp.1.html) is your friend.
+
+## Breaking Changes
+### 0.2.0 -> 0.3.0
+Due to database changes, the following query is needed to be executed prior to update:
+```
+ALTER TABLE installations
+ADD COLUMN IF NOT EXISTS data json;
+
+UPDATE installations new
+SET data = (SELECT json_build_object(
+	'uuid', old.uuid,
+	'installation', 'nethserver',
+	'facts', json_build_object(
+		'type', old.type,
+		'version', versions.tag)
+	) as data
+FROM installations old
+LEFT JOIN versions ON versions.id = old.version_id
+WHERE new.id = old.id);
+
+ALTER TABLE installations
+DROP CONSTRAINT installations_version_id_foreign,
+DROP uuid,
+DROP type,
+DROP version_id;
+```
+please note that this query has been tested only on pgsql.

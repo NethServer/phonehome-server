@@ -55,17 +55,18 @@ it('can handle post data', function () {
     $this->postJson(
         '/',
         [
-            'uuid' => $installation->uuid,
-            'release' => $installation->version->tag,
-            'type' => $installation->type,
+            'uuid' => $installation->data['uuid'],
+            'release' => $installation->data['facts']['version'],
+            'type' => $installation->data['facts']['type'],
         ]
     )->assertStatus(200)->assertContent('');
 
     $this->assertDatabaseCount('installations', 1);
     $this->assertDatabaseHas('installations', [
-        'uuid' => $installation->uuid,
-        'version_id' => $installation->version->id,
-        'type' => $installation->type,
+        'data->uuid' => $installation->data['uuid'],
+        'data->installation' => 'nethserver',
+        'data->facts->version' => $installation->data['facts']['version'],
+        'data->facts->type' => $installation->data['facts']['type'],
     ]);
 });
 
@@ -88,16 +89,17 @@ it('updates existing record at every ping', function () {
     $this->postJson(
         '/',
         [
-            'uuid' => $installation->uuid,
-            'release' => $installation->version->tag,
-            'type' => $installation->type,
+            'uuid' => $installation->data['uuid'],
+            'release' => $installation->data['facts']['version'],
+            'type' => $installation->data['facts']['type'],
         ]
     )->assertStatus(200)->assertContent('');
 
     $this->assertDatabaseHas('installations', [
-        'uuid' => $installation->uuid,
-        'version_id' => $installation->version->id,
-        'type' => $installation->type,
+        'data->uuid' => $installation->data['uuid'],
+        'data->installation' => 'nethserver',
+        'data->facts->version' => $installation->data['facts']['version'],
+        'data->facts->type' => $installation->data['facts']['type'],
         'updated_at' => $installation->updated_at->addDay(),
     ]);
 });
@@ -119,8 +121,8 @@ it('can insert data with same uuid', function () {
     $this->postJson(
         '/',
         [
-            'uuid' => $installation->uuid,
-            'release' => $installation->version->tag,
+            'uuid' => $installation->data['uuid'],
+            'release' => $installation->data['facts']['version'],
             'type' => 'community',
         ]
     )->assertStatus(200)->assertContent('');
@@ -130,16 +132,17 @@ it('can insert data with same uuid', function () {
     $this->postJson(
         '/',
         [
-            'uuid' => $installation->uuid,
-            'release' => $version->tag,
+            'uuid' => $installation->data['uuid'],
+            'release' => $installation->data['facts']['version'],
             'type' => 'enterprise',
         ]
     )->assertStatus(200)->assertContent('');
 
     $this->assertDatabaseHas('installations', [
-        'uuid' => $installation->uuid,
-        'version_id' => $version->id,
-        'type' => 'enterprise',
+        'data->uuid' => $installation->data['uuid'],
+        'data->installation' => 'nethserver',
+        'data->facts->version' => $installation->data['facts']['version'],
+        'data->facts->type' => 'enterprise',
     ]);
 
     $newInstallation = Installation::factory()->create();
@@ -147,9 +150,9 @@ it('can insert data with same uuid', function () {
     $this->postJson(
         '/',
         [
-            'uuid' => $newInstallation->uuid,
-            'release' => $newInstallation->version->tag,
-            'type' => $newInstallation->type,
+            'uuid' => $newInstallation->data['uuid'],
+            'release' => $newInstallation->data['facts']['version'],
+            'type' => $newInstallation->data['facts']['type'],
         ]
     )->assertStatus(200)->assertContent('');
 
@@ -170,16 +173,16 @@ it('can handle if ip is not found', function () {
         '/',
         [
             'method' => 'add_info',
-            'uuid' => $installation->uuid,
-            'release' => $installation->version->tag,
-            'type' => $installation->type,
+            'uuid' => $installation->data['uuid'],
+            'release' => $installation->data['facts']['version'],
+            'type' => $installation->data['facts']['type'],
         ]
     )->assertUnprocessable()->assertContent('');
 });
 
 it('can show installations', function () {
-    $version7 = Version::factory()->create(['tag' => '7.9.2009']);
-    $version6 = Version::factory()->create(['tag' => '6.10']);
+    $version7 = '7.9.2009';
+    $version6 = '6.10';
 
     $countryIt = ModelsCountry::factory()->create([
         'code' => 'IT',
@@ -196,43 +199,43 @@ it('can show installations', function () {
 
     // 3 installations in DE
     Installation::factory()->create([
-        'version_id' => $version6,
+        'data->facts->version' => $version6,
         'country_id' => $countryDe,
     ]);
     Installation::factory()->create([
-        'version_id' => $version6,
+        'data->facts->version' => $version6,
         'country_id' => $countryDe,
     ]);
     Installation::factory()->create([
-        'version_id' => $version7,
+        'data->facts->version' => $version7,
         'country_id' => $countryDe,
     ]);
 
     // 1 installations in GB
     Installation::factory()->create([
-        'version_id' => $version7,
+        'data->facts->version' => $version7,
         'country_id' => $countryGb,
     ]);
 
     // 5 installations in IT
     Installation::factory()->create([
-        'version_id' => $version7,
+        'data->facts->version' => $version7,
         'country_id' => $countryIt,
     ]);
     Installation::factory()->create([
-        'version_id' => $version7,
+        'data->facts->version' => $version7,
         'country_id' => $countryIt,
     ]);
     Installation::factory()->create([
-        'version_id' => $version7,
+        'data->facts->version' => $version7,
         'country_id' => $countryIt,
     ]);
     Installation::factory()->create([
-        'version_id' => $version6,
+        'data->facts->version' => $version6,
         'country_id' => $countryIt,
     ]);
     Installation::factory()->create([
-        'version_id' => $version6,
+        'data->facts->version' => $version6,
         'country_id' => $countryIt,
     ]);
 
@@ -302,17 +305,18 @@ it('can insert nullable type', function () {
     $this->postJson(
         '/',
         [
-            'uuid' => $installation->uuid,
-            'release' => $installation->version->tag,
+            'uuid' => $installation->data['uuid'],
+            'release' => $installation->data['facts']['version'],
             'type' => '',
         ]
     )->assertStatus(200)->assertContent('');
 
     $this->assertDatabaseCount('installations', 1);
     $this->assertDatabaseHas('installations', [
-        'uuid' => $installation->uuid,
-        'version_id' => $installation->version->id,
-        'type' => null,
+        'data->uuid' => $installation->data['uuid'],
+        'data->installation' => 'nethserver',
+        'data->facts->version' => $installation->data['facts']['version'],
+        'data->facts->type' => null,
     ]);
 });
 
@@ -332,17 +336,18 @@ it('can handle two request with same location', function () {
     $this->postJson(
         '/',
         [
-            'uuid' => $installation->uuid,
-            'release' => $installation->version->tag,
-            'type' => $installation->type,
+            'uuid' => $installation->data['uuid'],
+            'release' => $installation->data['facts']['version'],
+            'type' => $installation->data['facts']['type'],
         ]
     )->assertStatus(200)->assertContent('');
 
     $this->assertDatabaseCount('installations', 1);
     $this->assertDatabaseHas('installations', [
-        'uuid' => $installation->uuid,
-        'version_id' => $installation->version->id,
-        'type' => $installation->type,
+        'data->uuid' => $installation->data['uuid'],
+        'data->installation' => 'nethserver',
+        'data->facts->version' => $installation->data['facts']['version'],
+        'data->facts->type' => $installation->data['facts']['type'],
     ]);
 
     $installation = Installation::factory()->make();
@@ -350,16 +355,17 @@ it('can handle two request with same location', function () {
     $this->postJson(
         '/',
         [
-            'uuid' => $installation->uuid,
-            'release' => $installation->version->tag,
-            'type' => $installation->type,
+            'uuid' => $installation->data['uuid'],
+            'release' => $installation->data['facts']['version'],
+            'type' => $installation->data['facts']['type'],
         ]
     )->assertStatus(200)->assertContent('');
 
     $this->assertDatabaseCount('installations', 2);
     $this->assertDatabaseHas('installations', [
-        'uuid' => $installation->uuid,
-        'version_id' => $installation->version->id,
-        'type' => $installation->type,
+        'data->uuid' => $installation->data['uuid'],
+        'data->installation' => 'nethserver',
+        'data->facts->version' => $installation->data['facts']['version'],
+        'data->facts->type' => $installation->data['facts']['type'],
     ]);
 });

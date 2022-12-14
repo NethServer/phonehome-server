@@ -19,8 +19,7 @@ class Installation extends Model
      * {@inheritdoc}
      */
     protected $fillable = [
-        'uuid',
-        'type',
+        'data->uuid',
     ];
 
     /**
