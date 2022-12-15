@@ -1,4 +1,4 @@
-FROM nginx:1.23.2-alpine as production
+FROM nginx:1.23.3-alpine as production
 WORKDIR /var/www/html
 ADD https://github.com/eficode/wait-for/releases/download/v2.2.3/wait-for /usr/local/bin/
 COPY containers/nginx/start.sh /usr/local/bin/start
