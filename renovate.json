@@ -38,7 +38,7 @@
     "regexManagers": [
         {
             "fileMatch": [
-                "(^|/|\\.)Dockerfile$"
+                "containers\/.*\/Dockerfile"
             ],
             "matchStrings": [
                 "ADD\\ https:\/\/github\\.com\/eficode\/wait-for\/releases\/download\/(?<currentValue>.*)\/wait-for"
@@ -48,13 +48,33 @@
         },
         {
             "fileMatch": [
-                "(^|/|\\.)Dockerfile$"
+                "containers\/.*\/Dockerfile"
             ],
             "matchStrings": [
                 "ADD\\ https:\/\/raw\\.githubusercontent\\.com\/renatomefi\/php-fpm-healthcheck\/(?<currentValue>.*)\/php-fpm-healthcheck"
             ],
             "depNameTemplate": "renatomefi/php-fpm-healthcheck",
             "datasourceTemplate": "github-releases"
+        },
+        {
+            "fileMatch": [
+                "deploy\/ns8\/Dockerfile"
+            ],
+            "matchStrings": [
+                "docker\\.io\/redis:(?<currentValue>[^\\s]+)"
+            ],
+            "depNameTemplate": "redis",
+            "datasourceTemplate": "docker"
+        },
+        {
+            "fileMatch": [
+                "deploy\/ns8\/Dockerfile"
+            ],
+            "matchStrings": [
+                "docker\\.io\/postgres:(?<currentValue>[^\\s]+)"
+            ],
+            "depNameTemplate": "postgres",
+            "datasourceTemplate": "docker"
         }
     ]
 }
