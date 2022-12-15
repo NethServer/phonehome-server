@@ -9,7 +9,6 @@ namespace App\Console\Commands;
 
 use App\Models\Country;
 use App\Models\Installation;
-use App\Models\Version;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
