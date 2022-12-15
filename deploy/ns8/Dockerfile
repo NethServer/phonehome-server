@@ -29,7 +29,7 @@ ARG PHONEHOME_TAG=latest
 ARG PHONEHOME_SERVER_APP=ghcr.io/nethserver/phonehome-server-app
 ARG PHONEHOME_SERVER_WEB=ghcr.io/nethserver/phonehome-server-web
 LABEL org.nethserver.images="docker.io/postgres:14.6-alpine \
-        docker.io/redis:6.2.7-alpine \
+        docker.io/redis:6.2.8-alpine \
         $PHONEHOME_SERVER_APP:$PHONEHOME_TAG \
         $PHONEHOME_SERVER_WEB:$PHONEHOME_TAG"
 ENTRYPOINT ["/"]
