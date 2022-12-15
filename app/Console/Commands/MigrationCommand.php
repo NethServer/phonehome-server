@@ -100,10 +100,13 @@ class MigrationCommand extends Command
                 $validator->setData($record);
                 if ($validator->passes()) {
                     $installation = Installation::firstOrNew([
-                        'uuid' => $record['uuid'],
-                    ], [
-                        'type' => $record['type'] == 'NULL' ? null : $record['type'],
+                        'data->uuid' => $record['uuid'],
                     ]);
+                    $installationData = $installation->data;
+                    $installationData['installation'] = 'nethserver';
+                    $installationData['facts']['type'] = $record['type'] == 'NULL' ? null : $record['type'];
+                    $installationData['facts']['version'] = $record['release_tag'];
+
                     $installation->created_at = $record['reg_date'];
                     $installation->updated_at = $record['reg_date'];
 
@@ -115,12 +118,7 @@ class MigrationCommand extends Command
                         ])
                     );
 
-                    $installation->version()->associate(
-                        Version::firstOrCreate([
-                            'tag' => $record['release_tag'],
-                        ])
-                    );
-
+                    $installation->data = $installationData;
                     $installation->save();
                 } else {
                     $validationFailureCount++;
