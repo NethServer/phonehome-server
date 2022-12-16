@@ -111,7 +111,16 @@
       "properties": {
         "cluster": {
           "description": "Facts from the cluster.",
-          "type": "object"
+          "oneOf": [
+            {
+              "type": "object",
+              "minProperties": 1
+            },
+            {
+              "type": "array",
+              "maxContains": 0
+            }
+          ]
         },
         "nodes": {
           "description": "Facts from nodes in the cluster.",
@@ -126,7 +135,16 @@
         },
         "modules": {
           "description": "Facts from modules.",
-          "type": "object"
+          "oneOf": [
+            {
+              "type": "object",
+              "minProperties": 1
+            },
+            {
+              "type": "array",
+              "maxContains": 0
+            }
+          ]
         }
       }
     }
