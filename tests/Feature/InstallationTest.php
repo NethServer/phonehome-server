@@ -1,8 +1,18 @@
 <?php
 
+use App\Logic\GeoIpLocator;
+use App\Models\Installation;
+use GeoIp2\Exception\AddressNotFoundException;
+use GeoIp2\Record\Country;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Facades\Log;
+use Mockery\MockInterface;
 
-uses(RefreshDatabase::class)->group('installation');
+uses(RefreshDatabase::class)
+    ->group('installation')
+    ->beforeEach(function () {
+        $this->mock(GeoIpLocator::class);
+    });
 
 const SCHEMA_2022_12 = 'https://schema.nethserver.org/facts/2022-12.json';
 
@@ -72,7 +82,7 @@ it('can\'t accept invalid uuid', function (string $schema, string $installation,
         'uuid' => $uuid,
         'installation' => $installation,
         'facts' => [
-            'cluster' => (object) [],
+            'cluster' => [],
             'nodes' => [
                 '1' => [
                     'distro' => [
@@ -82,7 +92,7 @@ it('can\'t accept invalid uuid', function (string $schema, string $installation,
                     'version' => '8.0.0',
                 ],
             ],
-            'modules' => (object) [],
+            'modules' => [],
         ],
     ];
     $this->postJson('/api/installation', $request)
@@ -107,7 +117,7 @@ it('can\'t accept invalid nethserver version', function (string $schema, string 
         'uuid' => fake()->uuid(),
         'installation' => 'nethserver',
         'facts' => [
-            'cluster' => (object) [],
+            'cluster' => [],
             'nodes' => [
                 '1' => [
                     'distro' => [
@@ -117,7 +127,7 @@ it('can\'t accept invalid nethserver version', function (string $schema, string 
                     'version' => $version,
                 ],
             ],
-            'modules' => (object) [],
+            'modules' => [],
         ],
     ];
     $this->postJson('/api/installation', $request)
@@ -164,51 +174,119 @@ it('can\'t accept invalid nextsecurity version', function (string $schema, strin
 ]);
 
 it('saves correctly new nethserver installation', function (string $schema) {
-    $request = [
+    $installation = Installation::factory()->nethserver()->make();
+    $request = array_merge($installation->data, [
         '$schema' => $schema,
-        'uuid' => fake()->uuid(),
-        'installation' => 'nethserver',
-        'facts' => [
-            'cluster' => (object) [],
-            'nodes' => [
-                '1' => [
-                    'distro' => [
-                        'name' => 'rocky',
-                        'version' => '9.1',
-                    ],
-                    'version' => fake()->numerify('#.#.#'),
-                ],
-            ],
-            'modules' => (object) [],
-        ],
-    ];
+    ]);
+    $this->mock(GeoIpLocator::class, function (MockInterface $mock) {
+        $country = $this->mock(Country::class);
+        $country->name = 'Italy';
+        $country->isoCode = 'IT';
+        $mock->shouldReceive('locate')
+            ->once()
+            ->andReturn($country);
+    });
     $this->postJson('/api/installation', $request)
         ->assertCreated()
         ->assertJson([]);
-
-    $this->assertDatabaseCount('installations', 0);
+    $this->assertDatabaseCount('installations', 1);
+    $this->assertDatabaseHas('installations', [
+        'data->uuid' => $request['uuid'],
+        'data->installation' => $request['installation'],
+        'data->facts' => json_encode($request['facts']),
+    ]);
 })->with([
     SCHEMA_2022_12,
 ]);
 
 it('saves correctly new nextsecurity installation', function (string $schema) {
-    $request = [
+    $installation = Installation::factory()->nextsecurity()->make();
+    $request = array_merge($installation->data, [
         '$schema' => $schema,
-        'uuid' => fake()->uuid(),
-        'installation' => 'nextsecurity',
-        'facts' => [
-            'distro' => [
-                'name' => 'rocky',
-                'version' => '9.1',
-            ],
-            'version' => fake()->numerify('#.#.#'),
-        ],
-    ];
+    ]);
+
+    $this->mock(GeoIpLocator::class, function (MockInterface $mock) {
+        $country = $this->mock(Country::class);
+        $country->name = 'Italy';
+        $country->isoCode = 'IT';
+        $mock->shouldReceive('locate')
+            ->once()
+            ->andReturn($country);
+    });
+
     $this->postJson('/api/installation', $request)
         ->assertCreated()
         ->assertJson([]);
 
+    $this->assertDatabaseCount('installations', 1);
+    $this->assertDatabaseHas('installations', [
+        'data->uuid' => $request['uuid'],
+        'data->installation' => $request['installation'],
+        'data->facts' => json_encode($request['facts']),
+    ]);
+})->with([
+    SCHEMA_2022_12,
+]);
+
+it('updates installation', function (string $schema, string $type) {
+    $installation = Installation::factory()->$type()->create();
+    $newInstallation = Installation::factory()->$type()->make();
+
+    $request = array_merge($newInstallation->data, [
+        '$schema' => $schema,
+    ]);
+    $request['uuid'] = $installation->data['uuid'];
+
+    $this->mock(GeoIpLocator::class, function (MockInterface $mock) {
+        $country = $this->mock(Country::class);
+        $country->name = 'Italy';
+        $country->isoCode = 'IT';
+        $mock->shouldReceive('locate')
+            ->once()
+            ->andReturn($country);
+    });
+
+    $this->postJson('/api/installation', $request)
+        ->assertCreated()
+        ->assertJson([]);
+
+    $this->assertDatabaseCount('installations', 1);
+    $this->assertDatabaseHas('installations', [
+        'id' => $installation->id,
+        'data->uuid' => $request['uuid'],
+        'data->installation' => $request['installation'],
+        'data->facts' => json_encode($request['facts']),
+    ]);
+})->with([
+    SCHEMA_2022_12,
+])->with([
+    'nethserver',
+    'nextsecurity',
+]);
+
+it('fails to resolve location', function (string $schema, string $type) {
+    $installation = Installation::factory()->$type()->make();
+
+    $request = array_merge($installation->data, [
+        '$schema' => $schema,
+    ]);
+
+    $this->mock(GeoIpLocator::class, function (MockInterface $mock) {
+        $mock->shouldReceive('locate')
+            ->once()
+            ->andThrow(new AddressNotFoundException());
+    });
+
+    $this->postJson('/api/installation', $request)
+        ->assertUnprocessable();
+
+    Log::shouldReceive('error')
+        ->with('Couldn\'t resolve location for: 127.0.0.1 ('.$request['uuid'].')');
+
     $this->assertDatabaseCount('installations', 0);
 })->with([
     SCHEMA_2022_12,
+])->with([
+    'nethserver',
+    'nextsecurity',
 ]);

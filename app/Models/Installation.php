@@ -20,6 +20,8 @@ class Installation extends Model
      */
     protected $fillable = [
         'data->uuid',
+        'data->installation',
+        'data->facts',
     ];
 
     /**
