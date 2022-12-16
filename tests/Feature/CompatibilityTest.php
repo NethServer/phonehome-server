@@ -269,6 +269,13 @@ test('nextsecurity installations are not showed', function () {
         ->assertJson([]);
 })->skip(fn () => config('database.default') == 'sqlite', 'Cannot run on sqlite.');
 
+test('nethserver 8 installations are not showed', function () {
+    Installation::factory()->nethserver()->create();
+    $response = $this->getJson('/api/installation?interval=7')
+        ->assertOk()
+        ->assertJson([]);
+})->skip(fn () => config('database.default') == 'sqlite', 'Cannot run on sqlite.');
+
 test('check if interval works', function () {
     $installation = Installation::factory()->create();
     Installation::factory()->create([

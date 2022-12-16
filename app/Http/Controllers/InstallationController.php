@@ -30,7 +30,9 @@ class InstallationController extends Controller
         // retro-compatible query
         $query = DB::table('countries')
             ->selectRaw('countries.name as country_name, countries.code as country_code, installations.data->\'facts\'->>\'version\' as tag, COUNT(installations.data->>\'uuid\') as num')
-            ->join('installations', 'installations.country_id', '=', 'countries.id')->whereRaw('data->>\'installation\' = \'nethserver\'');
+            ->join('installations', 'installations.country_id', '=', 'countries.id')
+            ->whereRaw('data->>\'installation\' = \'nethserver\'')
+            ->whereRaw('data->\'facts\'->\'version\' is not null');
         if ($request->get('interval') != '1') {
             $query = $query->whereRaw('installations.updated_at > \''.today()->subDays($request->get('interval'))->toDateString().'\'');
         }
