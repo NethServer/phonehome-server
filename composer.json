@@ -1,5 +1,16 @@
 {
+    "name": "nethserver/phonehome-server",
     "type": "project",
+    "description": "Rewrite of old NethServer/nethserver-phonehome.",
+    "keywords": [
+        "nethesis",
+        "ns",
+        "nethserver",
+        "phonehome",
+        "laravel"
+    ],
+    "version": "0.3.0",
+    "license": "AGPL-3.0-or-later",
     "require": {
         "php": "^8.1",
         "ext-pcntl": "*",
