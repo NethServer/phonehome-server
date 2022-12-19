@@ -6,6 +6,9 @@
         ":semanticCommits",
         ":disableDependencyDashboard"
     ],
+    "schedule": [
+        "* 7 * * 3"
+    ],
     "ignorePaths": [
         "**/deploy/ns8/ui/**"
     ],
@@ -33,6 +36,34 @@
                 "node"
             ],
             "allowedVersions": "<= 18"
+        },
+        {
+            "matchManagers": [
+                "composer"
+            ],
+            "matchUpdateTypes": [
+                "minor", "patch"
+            ],
+            "groupName": "Composer Dependencies"
+        },
+        {
+            "matchManagers": [
+                "npm"
+            ],
+            "matchUpdateTypes": [
+                "minor", "patch"
+            ],
+            "groupName": "NPM Dependencies"
+        },
+        {
+            "matchManagers": [
+                "dockerfile",
+                "docker-compose"
+            ],
+            "matchUpdateTypes": [
+                "minor", "patch"
+            ],
+            "groupName": "Docker Dependencies"
         }
     ],
     "regexManagers": [
