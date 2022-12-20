@@ -1,11 +1,14 @@
 {
+    "name": "phonehome-server",
     "private": true,
     "scripts": {
         "dev": "vite",
-        "build": "vite build"
+        "build": "vite build",
+        "changelog": "conventional-changelog -c composer.json -p conventionalcommits -i CHANGELOG.md -s"
     },
     "devDependencies": {
         "axios": "1.2.1",
+        "conventional-changelog-cli": "2.2.2",
         "laravel-vite-plugin": "0.7.2",
         "lodash": "4.17.21",
         "postcss": "8.4.20",
