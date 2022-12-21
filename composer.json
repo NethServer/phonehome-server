@@ -34,7 +34,6 @@
         "fakerphp/faker": "v1.21.0",
         "laravel/pint": "v1.2.1",
         "laravel/sail": "v1.16.5",
-        "marcocesarato/php-conventional-changelog": "1.16.0",
         "mockery/mockery": "1.5.1",
         "nunomaduro/collision": "v6.3.1",
         "nunomaduro/larastan": "2.2.9",
