@@ -3,8 +3,6 @@ on:
   schedule:
     - cron: "0 5 * * 1"
   workflow_call:
-env:
-  REGISTRY: ghcr.io
 jobs:
   build-image:
     name: Build ${{ matrix.image }} image and push
@@ -25,9 +23,9 @@ jobs:
         uses: docker/metadata-action@v4
         id: meta
         with:
-          bake-target: ${{ matrix.image }}-release
+          bake-target: ${{ matrix.image }}
           images: |
-            ${{ env.REGISTRY }}/${{ github.repository }}-${{ matrix.image }}
+            ghcr.io/${{ github.repository }}-${{ matrix.image }}
           tags: |
             type=ref,event=branch
             type=semver,pattern={{version}}
@@ -38,30 +36,32 @@ jobs:
         uses: docker/metadata-action@v4
         id: cache-tag
         with:
-          bake-target: ${{ matrix.image }}-release
           images: |
-            ${{ env.REGISTRY }}/${{ github.repository }}-${{ matrix.image }}
+            ghcr.io/${{ github.repository }}-${{ matrix.image }}
           tags: |
             type=ref,event=branch
+            type=raw,enable=${{ github.ref_type == 'tag' }},value=${{ github.event.repository.default_branch }}
           flavor:
             suffix=-cache
 
       - name: Login to Registry
         uses: docker/login-action@v2
         with:
-          registry: ${{ env.REGISTRY }}
+          registry: ghcr.io
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
       - uses: docker/bake-action@v2.3.0
         with:
-          targets: ${{ matrix.image }}-release
+          targets: ${{ matrix.image }}
           files: |
             ./docker-bake.hcl
             ${{ steps.meta.outputs.bake-file }}
           set: |
             *.platform=linux/amd64
+            *.cache-from=type=registry,ref=${{ steps.cache-tag.outputs.tags }}
             *.cache-to=type=registry,ref=${{ steps.cache-tag.outputs.tags }},mode=max
+          push: true
 
   build-deploy:
     name: Build NS8 deploy image
@@ -75,34 +75,37 @@ jobs:
         uses: docker/metadata-action@v4
         id: meta
         with:
-          bake-target: ns8-release
           images: |
-            ${{ env.REGISTRY }}/${{ github.repository }}
+            ghcr.io/nethserver/ns8-phonehome
           tags: |
             type=ref,event=branch
             type=semver,pattern={{version}}
-            type=semver,pattern={{major}}.{{minor}}
-            type=semver,pattern={{major}},enable=${{ !startsWith(github.ref, 'refs/tags/0.') }}
+
+      - name: Generate Phonehome image tags
+        uses: docker/metadata-action@v4
+        id: phonehome-tags
+        with:
+          images: |
+            ghcr.io/${{ github.repository }}
+          tags: |
+            type=ref,event=branch
+            type=semver,pattern={{version}}
 
       - name: Login to Registry
         uses: docker/login-action@v2
         with:
-          registry: ${{ env.REGISTRY }}
+          registry: ghcr.io
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
-
-      - name: Set REPOSITORY environment variable
-        run: |
-          echo "REPOSITORY=${GITHUB_REPOSITORY,,}" >> $GITHUB_ENV
 
       - name: Build image with buildah
         env:
           TAGS: ${{ steps.meta.outputs.tags }}
           LABELS: ${{ steps.meta.outputs.labels }}
           ARGS: |
-            PHONEHOME_TAG=${{ github.ref_name }}
-            PHONEHOME_SERVER_APP=${{ env.REGISTRY }}/${{ env.REPOSITORY }}-app
-            PHONEHOME_SERVER_WEB=${{ env.REGISTRY }}/${{ env.REPOSITORY }}-web
+            PHONEHOME_TAG=${{ steps.phonehome-tags.outputs.version }}
+            PHONEHOME_SERVER_APP=${{ steps.phonehome-tags.outputs.tags }}-app
+            PHONEHOME_SERVER_WEB=${{ steps.phonehome-tags.outputs.tags }}-web
         working-directory: deploy/ns8
         run: |
           ./build-images.sh

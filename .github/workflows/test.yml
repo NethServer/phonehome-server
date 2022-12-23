@@ -13,16 +13,24 @@ jobs:
       - name: Create new buildx builder
         uses: docker/setup-buildx-action@v2
 
-      - name: Set REPOSITORY environment variable
-        run: |
-          echo "REPOSITORY=${GITHUB_REPOSITORY,,}" >> $GITHUB_ENV
+      - name: Generate Image Metadata
+        uses: docker/metadata-action@v4
+        id: cache-from-tag
+        with:
+          images: |
+            ghcr.io/${{ github.repository }}-app
+          tags: |
+            type=ref,event=branch
+            type=raw,enable=${{ github.event_name == 'pull_request' }},value=${{ github.base_ref }}
+          flavor: |
+            latest=false
+            suffix=-cache
 
       - uses: docker/bake-action@v2.3.0
-        env:
-          TAG: ${{ github.ref_name }}
         with:
           files: |
             ./docker-bake.hcl
           targets: testing
           set: |
             *.platform=linux/amd64
+            *.cache-from=type=registry,ref=${{ steps.cache-from-tag.outputs.tags }}
