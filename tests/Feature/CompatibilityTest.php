@@ -3,7 +3,6 @@
 use App\Logic\GeoIpLocator;
 use App\Models\Country as ModelsCountry;
 use App\Models\Installation;
-use App\Models\Version;
 use GeoIp2\Exception\AddressNotFoundException;
 use GeoIp2\Record\Country;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -126,8 +125,6 @@ it('can insert data with same uuid', function () {
             'type' => 'community',
         ]
     )->assertStatus(200)->assertContent('');
-
-    $version = Version::factory()->create();
 
     $this->postJson(
         '/',

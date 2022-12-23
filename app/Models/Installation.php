@@ -40,14 +40,4 @@ class Installation extends Model
     {
         return $this->belongsTo(Country::class);
     }
-
-    /**
-     * Get the version associated with the Installation
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo<\App\Models\Version, \App\Models\Installation>
-     */
-    public function version(): BelongsTo
-    {
-        return $this->belongsTo(Version::class);
-    }
 }

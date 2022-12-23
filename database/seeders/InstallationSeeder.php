@@ -2,10 +2,7 @@
 
 namespace Database\Seeders;
 
-use App\Models\Country;
 use App\Models\Installation;
-use App\Models\Version;
-use Illuminate\Database\Eloquent\Factories\Sequence;
 use Illuminate\Database\Seeder;
 
 class InstallationSeeder extends Seeder
@@ -17,16 +14,14 @@ class InstallationSeeder extends Seeder
      */
     public function run()
     {
-        $this->call(VersionSeeder::class);
         $this->call(CountrySeeder::class);
         Installation::factory()
             ->count(50)
-            ->state(new Sequence(
-                fn () => [
-                    'country_id' => Country::all()->random()->id,
-                    'version_id' => Version::all()->random()->id,
-                ]
-            ))
+            ->nethserver()
+            ->create();
+        Installation::factory()
+            ->count(50)
+            ->nextsecurity()
             ->create();
     }
 }
