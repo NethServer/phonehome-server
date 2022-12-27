@@ -4,8 +4,13 @@ on:
   schedule:
     - cron: '0 20 * * *'
   workflow_dispatch:
+
+permissions:
+  packages: write
+
 env:
-  GITHUB_TOKEN: ${{ secrets.IMAGES_CLEANUP_TOKEN }}
+  GH_TOKEN: ${{ github.token }}
+
 jobs:
   clean-dangling-images:
     name: Clean Dangling Images from Registry
@@ -13,9 +18,9 @@ jobs:
     strategy:
       matrix:
         container:
-          - phonehome-server
-          - phonehome-server-app
           - phonehome-server-web
+          - phonehome-server-app
+          - ns8-phonehome
     steps:
       - name: Delete dangling images from container releases
         run: |
@@ -26,6 +31,7 @@ jobs:
               echo "Deleting $tag in ${{ matrix.container }}..."
               gh api --input /dev/null -X DELETE --silent "$endpoint/$tag"
           done
+
   clean-ref-images:
     name: Remove Images from Deleted Refs
     runs-on: ubuntu-22.04
@@ -33,9 +39,9 @@ jobs:
     strategy:
       matrix:
         container:
-          - phonehome-server
-          - phonehome-server-app
           - phonehome-server-web
+          - phonehome-server-app
+          - ns8-phonehome
     steps:
       - name: Delete Refs from Registry
         run: |
@@ -48,6 +54,7 @@ jobs:
               echo "Deleting $version in ${{ matrix.container }}..."
               gh api --input /dev/null -X DELETE --silent "$endpoint/$version"
           done
+
       - name: Delete Refs Cache
         run: |
           echo "Scanning ${{ matrix.container }} for removed refs cache..."
