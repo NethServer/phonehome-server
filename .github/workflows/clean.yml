@@ -28,8 +28,8 @@ jobs:
           endpoint=${{ github.event.organization.url || github.event.repository.owner.url }}/packages/container/${{ matrix.container }}/versions
           no_tag_versions=$(gh api --paginate --jq '.[] | select(.metadata.container.tags == []) | .id' "$endpoint")
           for tag in $no_tag_versions; do
-              echo "Deleting $tag in ${{ matrix.container }}..."
-              gh api --input /dev/null -X DELETE --silent "$endpoint/$tag"
+            echo "Deleting $tag in ${{ matrix.container }}..."
+            gh api --input /dev/null -X DELETE --silent "$endpoint/$tag"
           done
 
   clean-ref-images:
@@ -51,8 +51,8 @@ jobs:
           jq_query=".[] | select(.metadata.container.tags == [\"${ref}\"]) | .id"
           versions_to_delete=$(gh api --paginate --jq "$jq_query"  "$endpoint")
           for version in $versions_to_delete; do
-              echo "Deleting $version in ${{ matrix.container }}..."
-              gh api --input /dev/null -X DELETE --silent "$endpoint/$version"
+            echo "Deleting $version in ${{ matrix.container }}..."
+            gh api --input /dev/null -X DELETE --silent "$endpoint/$version"
           done
 
       - name: Delete Refs Cache
@@ -63,6 +63,6 @@ jobs:
           jq_query=".[] | select(.metadata.container.tags == [\"${ref}-cache\"]) | .id"
           versions_to_delete=$(gh api --paginate --jq "$jq_query"  "$endpoint")
           for version in $versions_to_delete; do
-              echo "Deleting $version in ${{ matrix.container }}..."
-              gh api --input /dev/null -X DELETE --silent "$endpoint/$version"
+            echo "Deleting $version in ${{ matrix.container }}..."
+            gh api --input /dev/null -X DELETE --silent "$endpoint/$version"
           done
