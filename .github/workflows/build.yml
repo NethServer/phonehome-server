@@ -5,13 +5,8 @@ on:
   workflow_call:
 jobs:
   build-image:
-    name: Build ${{ matrix.image }} image and push
+    name: Build images and push to registry
     runs-on: ubuntu-22.04
-    strategy:
-      matrix:
-        image:
-          - app
-          - web
     steps:
       - name: Checkout repo
         uses: actions/checkout@v3
@@ -19,25 +14,50 @@ jobs:
       - name: Create new buildx builder
         uses: docker/setup-buildx-action@v2
 
-      - name: Generate tags
+      - name: Generate app image tags
         uses: docker/metadata-action@v4
-        id: meta
+        id: meta-app
         with:
-          bake-target: ${{ matrix.image }}
+          bake-target: app
           images: |
-            ghcr.io/${{ github.repository }}-${{ matrix.image }}
+            ghcr.io/${{ github.repository }}-app
           tags: |
             type=ref,event=branch
             type=semver,pattern={{version}}
             type=semver,pattern={{major}}.{{minor}}
             type=semver,pattern={{major}},enable=${{ !startsWith(github.ref, 'refs/tags/0.') }}
 
-      - name: Generate cache tag
+      - name: Generate web image tags
         uses: docker/metadata-action@v4
-        id: cache-tag
+        id: meta-web
+        with:
+          bake-target: web
+          images: |
+            ghcr.io/${{ github.repository }}-web
+          tags: |
+            type=ref,event=branch
+            type=semver,pattern={{version}}
+            type=semver,pattern={{major}}.{{minor}}
+            type=semver,pattern={{major}},enable=${{ !startsWith(github.ref, 'refs/tags/0.') }}
+
+      - name: Generate cache tag for app image
+        uses: docker/metadata-action@v4
+        id: cache-tag-app
         with:
           images: |
-            ghcr.io/${{ github.repository }}-${{ matrix.image }}
+            ghcr.io/${{ github.repository }}-app
+          tags: |
+            type=ref,event=branch
+            type=raw,enable=${{ github.ref_type == 'tag' }},value=${{ github.event.repository.default_branch }}
+          flavor:
+            suffix=-cache
+
+      - name: Generate cache tag for web image
+        uses: docker/metadata-action@v4
+        id: cache-tag-web
+        with:
+          images: |
+            ghcr.io/${{ github.repository }}-web
           tags: |
             type=ref,event=branch
             type=raw,enable=${{ github.ref_type == 'tag' }},value=${{ github.event.repository.default_branch }}
@@ -53,14 +73,17 @@ jobs:
 
       - uses: docker/bake-action@v2.3.0
         with:
-          targets: ${{ matrix.image }}
+          targets: release
           files: |
             ./docker-bake.hcl
-            ${{ steps.meta.outputs.bake-file }}
+            ${{ steps.meta-app.outputs.bake-file }}
+            ${{ steps.meta-web.outputs.bake-file }}
           set: |
             *.platform=linux/amd64
-            *.cache-from=type=registry,ref=${{ steps.cache-tag.outputs.tags }}
-            *.cache-to=type=registry,ref=${{ steps.cache-tag.outputs.tags }},mode=max
+            app.cache-from=type=registry,ref=${{ steps.cache-tag-app.outputs.tags }}
+            app.cache-to=type=registry,ref=${{ steps.cache-tag-app.outputs.tags }},mode=max
+            web.cache-from=type=registry,ref=${{ steps.cache-tag-web.outputs.tags }}
+            web.cache-to=type=registry,ref=${{ steps.cache-tag-web.outputs.tags }},mode=max
           push: true
 
   build-deploy:

@@ -44,6 +44,10 @@ group "develop" {
     targets = ["app-develop", "web-develop"]
 }
 
+group "release" {
+    targets = ["app", "web"]
+}
+
 group "default" {
     targets = ["develop"]
 }
