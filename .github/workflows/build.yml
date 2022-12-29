@@ -3,6 +3,7 @@ on:
   schedule:
     - cron: "0 5 * * 1"
   workflow_call:
+  workflow_dispatch:
 jobs:
   build-image:
     name: Build images and push to registry
