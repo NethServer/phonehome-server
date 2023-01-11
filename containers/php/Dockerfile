@@ -62,7 +62,7 @@ RUN apk add --no-cache \
     && mv "$PHP_INI_DIR/php.ini-production" "$PHP_INI_DIR/php.ini"
 COPY containers/php/conf.d /usr/local/etc/php/conf.d
 ADD https://raw.githubusercontent.com/renatomefi/php-fpm-healthcheck/v0.5.0/php-fpm-healthcheck /usr/local/bin/
-ADD https://github.com/eficode/wait-for/releases/download/v2.2.3/wait-for /usr/local/bin/
+ADD https://github.com/eficode/wait-for/releases/download/v2.2.4/wait-for /usr/local/bin/
 COPY containers/php/entrypoint.sh /usr/local/bin/entrypoint
 COPY --from=application /var/www/html /var/www/html
 COPY --from=vendor /var/www/html/vendor /var/www/html/vendor
