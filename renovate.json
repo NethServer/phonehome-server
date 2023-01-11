@@ -58,7 +58,8 @@
         {
             "matchManagers": [
                 "dockerfile",
-                "docker-compose"
+                "docker-compose",
+                "github-releases"
             ],
             "matchUpdateTypes": [
                 "minor", "patch"
