@@ -2,6 +2,7 @@
     "$schema": "https://docs.renovatebot.com/renovate-schema.json",
     "extends": [
         "config:base",
+        ":prHourlyLimitNone",
         ":reviewer(tbaile)",
         ":semanticCommits",
         ":disableDependencyDashboard"
@@ -58,7 +59,9 @@
         {
             "matchManagers": [
                 "dockerfile",
-                "docker-compose",
+                "docker-compose"
+            ],
+            "matchDatasources": [
                 "github-releases"
             ],
             "matchUpdateTypes": [
