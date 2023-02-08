@@ -8,7 +8,7 @@ RUN install-php-extensions \
         pgsql \
         redis \
         zip
-COPY --from=composer:2.5.1 /usr/bin/composer /usr/local/bin/composer
+COPY --from=composer:2.5.2 /usr/bin/composer /usr/local/bin/composer
 
 FROM base as vendor
 COPY composer.json .
