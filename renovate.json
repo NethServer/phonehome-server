@@ -2,15 +2,15 @@
     "$schema": "https://docs.renovatebot.com/renovate-schema.json",
     "extends": [
         "config:base",
-        ":reviewer(tbaile)",
+        ":prHourlyLimitNone",
         ":semanticCommits",
         ":disableDependencyDashboard"
     ],
-    "schedule": [
-        "before 9am on Wednesday"
-    ],
     "ignorePaths": [
         "**/deploy/ns8/ui/**"
+    ],
+    "schedule": [
+        "before 9am on Wednesday"
     ],
     "packageRules": [
         {
@@ -59,7 +59,7 @@
             "matchManagers": [
                 "dockerfile",
                 "docker-compose",
-                "github-releases"
+                "regex"
             ],
             "matchUpdateTypes": [
                 "minor", "patch"
