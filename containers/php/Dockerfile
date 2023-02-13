@@ -1,6 +1,6 @@
 FROM php:8.1.15-fpm-alpine as base
 WORKDIR /var/www/html/
-COPY --from=mlocati/php-extension-installer:1.5.52 /usr/bin/install-php-extensions /usr/local/bin/
+COPY --from=mlocati/php-extension-installer:2.0.2 /usr/bin/install-php-extensions /usr/local/bin/
 RUN install-php-extensions \
         opcache \
         pcntl \
