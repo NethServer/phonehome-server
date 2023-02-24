@@ -21,7 +21,7 @@
         "ext-redis": "*",
         "geoip2/geoip2": "v2.13.0",
         "guzzlehttp/guzzle": "7.5.0",
-        "laravel/framework": "v9.51.0",
+        "laravel/framework": "v10.1.5",
         "laravel/sanctum": "v3.2.1",
         "laravel/tinker": "v2.8.0",
         "league/csv": "9.8.0",
@@ -30,7 +30,6 @@
     },
     "require-dev": {
         "barryvdh/laravel-ide-helper": "v2.13.0",
-        "brianium/paratest": "v6.9.0",
         "fakerphp/faker": "v1.21.0",
         "laravel/pint": "v1.4.1",
         "laravel/sail": "v1.20.1",
@@ -40,8 +39,7 @@
         "pestphp/pest": "v1.22.4",
         "pestphp/pest-plugin-laravel": "v1.4.0",
         "pestphp/pest-plugin-parallel": "v1.2.1",
-        "phpunit/phpunit": "9.6.3",
-        "spatie/laravel-ignition": "1.6.4"
+        "spatie/laravel-ignition": "2.0.0"
     },
     "autoload": {
         "psr-4": {
@@ -83,6 +81,6 @@
             "pestphp/pest-plugin": true
         }
     },
-    "minimum-stability": "dev",
+    "minimum-stability": "stable",
     "prefer-stable": true
 }
