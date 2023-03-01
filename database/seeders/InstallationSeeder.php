@@ -9,10 +9,8 @@ class InstallationSeeder extends Seeder
 {
     /**
      * Run the database seeds.
-     *
-     * @return void
      */
-    public function run()
+    public function run(): void
     {
         $this->call(CountrySeeder::class);
         Installation::factory()

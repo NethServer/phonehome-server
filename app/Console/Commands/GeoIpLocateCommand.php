@@ -32,10 +32,8 @@ class GeoIpLocateCommand extends Command
 
     /**
      * Execute the console command.
-     *
-     * @return int
      */
-    public function handle(GeoIpLocator $geoIpLocator)
+    public function handle(GeoIpLocator $geoIpLocator): int
     {
         try {
             $country = $geoIpLocator->locate(strval($this->argument('ip')));

@@ -1,13 +1,7 @@
 <?php
 
-//
-// Copyright (C) 2022 Nethesis S.r.l.
-// SPDX-License-Identifier: AGPL-3.0-or-later
-//
-
 namespace App\Models;
 
-// use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;

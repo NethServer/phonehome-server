@@ -15,7 +15,7 @@ class InstallationFactory extends Factory
      *
      * @return array<string, mixed>
      */
-    public function definition()
+    public function definition(): array
     {
         return [
             'data' => [
@@ -32,10 +32,8 @@ class InstallationFactory extends Factory
 
     /**
      * Retrieve nethserver 8 installation.
-     *
-     * @return \Illuminate\Database\Eloquent\Factories\Factory
      */
-    public function nethserver()
+    public function nethserver(): static
     {
         return $this->state(function () {
             return [
@@ -62,10 +60,8 @@ class InstallationFactory extends Factory
 
     /**
      * Retrieve nextsecurity installation.
-     *
-     * @return \Illuminate\Database\Eloquent\Factories\Factory
      */
-    public function nextsecurity()
+    public function nextsecurity(): static
     {
         return $this->state(function () {
             return [

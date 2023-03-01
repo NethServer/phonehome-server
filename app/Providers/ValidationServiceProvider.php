@@ -11,10 +11,8 @@ class ValidationServiceProvider extends ServiceProvider implements DeferrablePro
 {
     /**
      * Register services.
-     *
-     * @return void
      */
-    public function register()
+    public function register(): void
     {
         $this->app->singleton(Validator::class, function () {
             // Register all schemas under resources/validation
@@ -32,6 +30,8 @@ class ValidationServiceProvider extends ServiceProvider implements DeferrablePro
 
     /**
      * @codeCoverageIgnore
+     *
+     * @return array<class-string>
      */
     public function provides(): array
     {

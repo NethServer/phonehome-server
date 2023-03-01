@@ -22,8 +22,6 @@ class InstallationController extends Controller
 {
     /**
      * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\JsonResponse
      */
     public function index(IndexInstallationRequest $request): JsonResponse
     {
@@ -49,9 +47,7 @@ class InstallationController extends Controller
     }
 
     /**
-     * Store a new Installation
-     *
-     * @return \Illuminate\Http\JsonResponse
+     * Store a new Installation.
      */
     public function store(StoreInstallationRequest $request, GeoIpLocator $geoIpLocator): JsonResponse
     {

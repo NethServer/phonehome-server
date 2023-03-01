@@ -1,5 +1,10 @@
 <?php
 
+//
+// Copyright (C) 2022 Nethesis S.r.l.
+// SPDX-License-Identifier: AGPL-3.0-or-later
+//
+
 namespace App\Http\Controllers;
 
 use App\Logic\GeoIpLocator;
@@ -20,9 +25,6 @@ class CompatibilityController extends Controller
      * Beware, this is a LEGACY request, if you're proficient in Laravel you'll see that many things are done not
      * following Laravel howtos. To maintain retro compatibility, this was done on purpose, please refrain to change
      * this function if you have no knowledge on how NS6-NS7 phone-home works.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
      */
     public function __invoke(Request $request, GeoIpLocator $geoIpLocator): Response
     {
