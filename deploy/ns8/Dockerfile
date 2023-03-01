@@ -1,4 +1,4 @@
-FROM node:18.14.0-alpine as node_base
+FROM node:18.14.2-alpine as node_base
 WORKDIR /app
 
 FROM node_base as node_modules
@@ -28,8 +28,8 @@ LABEL org.nethserver.rootfull="0"
 ARG PHONEHOME_TAG=latest
 ARG PHONEHOME_SERVER_APP=ghcr.io/nethserver/phonehome-server-app
 ARG PHONEHOME_SERVER_WEB=ghcr.io/nethserver/phonehome-server-web
-LABEL org.nethserver.images="docker.io/postgres:14.6-alpine \
-        docker.io/redis:6.2.10-alpine \
+LABEL org.nethserver.images="docker.io/postgres:14.7-alpine \
+        docker.io/redis:6.2.11-alpine \
         $PHONEHOME_SERVER_APP:$PHONEHOME_TAG \
         $PHONEHOME_SERVER_WEB:$PHONEHOME_TAG"
 ENTRYPOINT ["/"]
