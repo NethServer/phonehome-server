@@ -21,7 +21,7 @@
         "ext-redis": "*",
         "geoip2/geoip2": "v2.13.0",
         "guzzlehttp/guzzle": "7.5.0",
-        "laravel/framework": "v9.51.0",
+        "laravel/framework": "v10.3.3",
         "laravel/sanctum": "v3.2.1",
         "laravel/tinker": "v2.8.0",
         "league/csv": "9.8.0",
