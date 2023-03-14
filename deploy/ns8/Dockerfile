@@ -1,4 +1,4 @@
-FROM node:18.14.2-alpine as node_base
+FROM node:18.15.0-alpine as node_base
 WORKDIR /app
 
 FROM node_base as node_modules
