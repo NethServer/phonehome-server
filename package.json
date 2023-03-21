@@ -10,6 +10,6 @@
         "axios": "1.3.4",
         "conventional-changelog-cli": "2.2.2",
         "laravel-vite-plugin": "0.7.4",
-        "vite": "4.1.4"
+        "vite": "4.2.1"
     }
 }
