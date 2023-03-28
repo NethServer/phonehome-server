@@ -1,3 +1,18 @@
+### [0.3.2](https://github.com/NethServer/phonehome-server/compare/0.3.1...0.3.2) (2023-03-23)
+
+
+### Bug Fixes
+
+* **deps:** update composer to 2.5.4 ([e3183d6](https://github.com/NethServer/phonehome-server/commit/e3183d66ed959b714a550867f04aca021304e4da))
+* **deps:** update eficode/wait-for to v2.2.4 ([d78c515](https://github.com/NethServer/phonehome-server/commit/d78c51548c4d33ef8f601a225c2b2eff264728b5))
+* **deps:** update php to 8.1.16 ([b08e566](https://github.com/NethServer/phonehome-server/commit/b08e5661cd8eba7d20ccfc6d0c8784dca2422001))
+* **deps:** update postgres to 14.7 ([641db81](https://github.com/NethServer/phonehome-server/commit/641db8103efc0403f141cc5808f1464773dccaa5))
+* **deps:** update redis to 6.2.11 ([641db81](https://github.com/NethServer/phonehome-server/commit/641db8103efc0403f141cc5808f1464773dccaa5))
+* **deps:** update laravel/framework to v10.3.3 ([e4fbd15](https://github.com/NethServer/phonehome-server/commit/e4fbd15a141040dbc39c90077299de0fb782bb3d))
+* **deps:** update laravel/sanctum to v3.2.1 ([2adb78f](https://github.com/NethServer/phonehome-server/commit/2adb78fe205a7399dfb9639681a3d7e3bfef8aa4))
+* **deps:** update laravel/tinker to v2.8.1 ([e4fbd15](https://github.com/NethServer/phonehome-server/commit/e4fbd15a141040dbc39c90077299de0fb782bb3d))
+* **deps:** update league/csv to 9.9.0 ([e4fbd15](https://github.com/NethServer/phonehome-server/commit/e4fbd15a141040dbc39c90077299de0fb782bb3d))
+
 ### [0.3.1](https://github.com/NethServer/phonehome-server/compare/0.3.0...0.3.1) (2022-12-20)
 
 
