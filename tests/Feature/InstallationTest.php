@@ -107,7 +107,7 @@ it('can\'t accept invalid uuid', function (string $schema, string $installation,
     'nextsecurity',
 ])->with([
     '',
-    123,
+    '123',
     'hboygapeyfpavwepagyweypgadpcawyvedapwgvepiyagwdpègyawpve]',
 ]);
 

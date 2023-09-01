@@ -35,9 +35,8 @@
         "laravel/sail": "v1.24.0",
         "mockery/mockery": "1.6.6",
         "nunomaduro/larastan": "2.6.4",
-        "pestphp/pest": "v1.23.1",
-        "pestphp/pest-plugin-laravel": "v1.4.0",
-        "pestphp/pest-plugin-parallel": "v1.2.1",
+        "pestphp/pest": "v2.16.1",
+        "pestphp/pest-plugin-laravel": "v2.2.0",
         "spatie/laravel-ignition": "2.3.0"
     },
     "autoload": {
