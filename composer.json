@@ -36,7 +36,7 @@
         "mockery/mockery": "1.5.1",
         "nunomaduro/larastan": "2.6.0",
         "pestphp/pest": "v1.23.0",
-        "pestphp/pest-plugin-laravel": "v1.4.0",
+        "pestphp/pest-plugin-laravel": "v2.2.0",
         "pestphp/pest-plugin-parallel": "v1.2.1",
         "spatie/laravel-ignition": "2.1.3"
     },
