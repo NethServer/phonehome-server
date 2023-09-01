@@ -7,7 +7,7 @@ services:
         volumes:
             - redis:/data
     database:
-        image: postgres:14.8-alpine
+        image: postgres:14.9-alpine
         healthcheck:
             test: [ "CMD", "pg_isready", "-q", "-d", "phonehome", "-U", "phonehome" ]
         volumes:

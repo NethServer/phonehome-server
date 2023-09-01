@@ -1,6 +1,6 @@
 FROM php:8.1.19-fpm-alpine as base
 WORKDIR /var/www/html/
-COPY --from=mlocati/php-extension-installer:2.1.28 /usr/bin/install-php-extensions /usr/local/bin/
+COPY --from=mlocati/php-extension-installer:2.1.49 /usr/bin/install-php-extensions /usr/local/bin/
 RUN install-php-extensions \
         opcache \
         pcntl \
@@ -8,7 +8,7 @@ RUN install-php-extensions \
         pgsql \
         redis \
         zip
-COPY --from=composer:2.5.7 /usr/bin/composer /usr/local/bin/composer
+COPY --from=composer:2.5.8 /usr/bin/composer /usr/local/bin/composer
 
 FROM base as vendor
 COPY composer.json .
