@@ -20,24 +20,24 @@
         "ext-posix": "*",
         "ext-redis": "*",
         "geoip2/geoip2": "v2.13.0",
-        "guzzlehttp/guzzle": "7.8.0",
-        "laravel/framework": "v10.21.0",
-        "laravel/sanctum": "v3.2.6",
-        "laravel/tinker": "v2.8.2",
-        "league/csv": "9.10.0",
+        "guzzlehttp/guzzle": "7.8.1",
+        "laravel/framework": "v10.46.0",
+        "laravel/sanctum": "v3.3.3",
+        "laravel/tinker": "v2.9.0",
+        "league/csv": "9.15.0",
         "opis/json-schema": "2.3.0",
-        "tronovav/geoip2-update": "v2.1.24"
+        "tronovav/geoip2-update": "v2.3.1"
     },
     "require-dev": {
-        "barryvdh/laravel-ide-helper": "v2.13.0",
-        "fakerphp/faker": "v1.23.0",
-        "laravel/pint": "v1.12.0",
-        "laravel/sail": "v1.24.0",
-        "mockery/mockery": "1.6.6",
-        "nunomaduro/larastan": "2.6.4",
-        "pestphp/pest": "v2.16.1",
-        "pestphp/pest-plugin-laravel": "v2.2.0",
-        "spatie/laravel-ignition": "2.3.0"
+        "barryvdh/laravel-ide-helper": "v2.15.1",
+        "fakerphp/faker": "v1.23.1",
+        "laravel/pint": "v1.14.0",
+        "laravel/sail": "v1.28.1",
+        "mockery/mockery": "1.6.7",
+        "nunomaduro/larastan": "2.9.1",
+        "pestphp/pest": "v2.34.1",
+        "pestphp/pest-plugin-laravel": "v2.3.0",
+        "spatie/laravel-ignition": "2.4.2"
     },
     "autoload": {
         "psr-4": {
