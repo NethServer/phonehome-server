@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "38fd088368ddc8d531dd4503632103a5",
+    "content-hash": "de5379ef89517660995671bccb4a2206",
     "packages": [
         {
             "name": "brick/math",
@@ -5921,20 +5921,21 @@
         },
         {
             "name": "tronovav/geoip2-update",
-            "version": "v2.1.24",
+            "version": "v2.3.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/tronovav/geoip2-update.git",
-                "reference": "6b91582eb11d4c39cfe66b3178ac0a6c67839cf9"
+                "reference": "86fddebc2bd277832846c8d6bb3b059fd093db06"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/tronovav/geoip2-update/zipball/6b91582eb11d4c39cfe66b3178ac0a6c67839cf9",
-                "reference": "6b91582eb11d4c39cfe66b3178ac0a6c67839cf9",
+                "url": "https://api.github.com/repos/tronovav/geoip2-update/zipball/86fddebc2bd277832846c8d6bb3b059fd093db06",
+                "reference": "86fddebc2bd277832846c8d6bb3b059fd093db06",
                 "shasum": ""
             },
             "require": {
                 "ext-curl": "*",
+                "ext-json": "*",
                 "php": ">=5.3"
             },
             "suggest": {
@@ -5967,19 +5968,9 @@
             "support": {
                 "email": "newtronov@gmail.com",
                 "issues": "https://github.com/tronovav/geoip2-update/issues",
-                "source": "https://github.com/tronovav/geoip2-update/tree/v2.1.24"
+                "source": "https://github.com/tronovav/geoip2-update/tree/v2.3.1"
             },
-            "funding": [
-                {
-                    "url": "https://donate.stream/tronovav",
-                    "type": "other"
-                },
-                {
-                    "url": "https://yoomoney.ru/to/410016198845596",
-                    "type": "other"
-                }
-            ],
-            "time": "2023-03-13T11:43:07+00:00"
+            "time": "2023-10-25T22:16:50+00:00"
         },
         {
             "name": "vlucas/phpdotenv",
