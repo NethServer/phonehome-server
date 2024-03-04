@@ -59,15 +59,15 @@ class InstallationFactory extends Factory
     }
 
     /**
-     * Retrieve nextsecurity installation.
+     * Retrieve nethsecurity installation.
      */
-    public function nextsecurity(): static
+    public function nethsecurity(): static
     {
         return $this->state(function () {
             return [
                 'data' => [
                     'uuid' => fake()->uuid(),
-                    'installation' => 'nextsecurity',
+                    'installation' => 'nethsecurity',
                     'facts' => [
                         'distro' => [
                             'name' => fake()->randomElement(['debian', 'rocky', 'centos']),

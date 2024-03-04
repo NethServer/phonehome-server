@@ -259,8 +259,8 @@ it('can show installations', function () {
         );
 })->skip(fn () => config('database.default') == 'sqlite', 'Cannot run on sqlite.');
 
-test('nextsecurity installations are not showed', function () {
-    Installation::factory()->nextsecurity()->create();
+test('nethsecurity installations are not showed', function () {
+    Installation::factory()->nethsecurity()->create();
     $response = $this->getJson('/api/installation?interval=7')
         ->assertOk()
         ->assertJson([]);

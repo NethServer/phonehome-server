@@ -73,7 +73,7 @@ it('can\'t accept missing facts', function (string $schema, string $installation
     SCHEMA_2022_12,
 ])->with([
     'nethserver',
-    'nextsecurity',
+    'nethsecurity',
 ]);
 
 it('can\'t accept invalid uuid', function (string $schema, string $installation, string $uuid) {
@@ -104,7 +104,7 @@ it('can\'t accept invalid uuid', function (string $schema, string $installation,
     SCHEMA_2022_12,
 ])->with([
     'nethserver',
-    'nextsecurity',
+    'nethsecurity',
 ])->with([
     '',
     '123',
@@ -145,11 +145,11 @@ it('can\'t accept invalid nethserver version', function (string $schema, string 
     '9.a.6',
 ]);
 
-it('can\'t accept invalid nextsecurity version', function (string $schema, string $version) {
+it('can\'t accept invalid nethsecurity version', function (string $schema, string $version) {
     $request = [
         '$schema' => $schema,
         'uuid' => fake()->uuid(),
-        'installation' => 'nextsecurity',
+        'installation' => 'nethsecurity',
         'facts' => [
             'distro' => [
                 'name' => 'rocky',
@@ -199,8 +199,8 @@ it('saves correctly new nethserver installation', function (string $schema) {
     SCHEMA_2022_12,
 ]);
 
-it('saves correctly new nextsecurity installation', function (string $schema) {
-    $installation = Installation::factory()->nextsecurity()->make();
+it('saves correctly new nethsecurity installation', function (string $schema) {
+    $installation = Installation::factory()->nethsecurity()->make();
     $request = array_merge($installation->data, [
         '$schema' => $schema,
     ]);
@@ -261,7 +261,7 @@ it('updates installation', function (string $schema, string $type) {
     SCHEMA_2022_12,
 ])->with([
     'nethserver',
-    'nextsecurity',
+    'nethsecurity',
 ]);
 
 it('fails to resolve location', function (string $schema, string $type) {
@@ -288,5 +288,5 @@ it('fails to resolve location', function (string $schema, string $type) {
     SCHEMA_2022_12,
 ])->with([
     'nethserver',
-    'nextsecurity',
+    'nethsecurity',
 ]);

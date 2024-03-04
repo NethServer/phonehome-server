@@ -24,7 +24,7 @@
       "description": "Type of installation that sends the facts.",
       "enum": [
         "nethserver",
-        "nextsecurity"
+        "nethsecurity"
       ]
     },
     "facts": {
@@ -37,7 +37,7 @@
       "if": {
         "properties": {
           "installation": {
-            "const": "nextsecurity"
+            "const": "nethsecurity"
           }
         }
       },
@@ -76,7 +76,7 @@
       ],
       "properties": {
         "version": {
-          "description": "Version of the phoning software that runs on the machine.",
+          "description": "Version of the software.",
           "type": "string",
           "pattern": "^\\d+\\.\\d+\\.?\\d*$"
         },

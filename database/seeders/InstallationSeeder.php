@@ -19,7 +19,7 @@ class InstallationSeeder extends Seeder
             ->create();
         Installation::factory()
             ->count(50)
-            ->nextsecurity()
+            ->nethsecurity()
             ->create();
     }
 }
