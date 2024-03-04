@@ -1,15 +1,8 @@
-FROM node:18.16.0-alpine as node_base
+FROM docker.io/node:20.11.1-alpine as node_build
 WORKDIR /app
-
-FROM node_base as node_modules
 COPY ui/package.json .
 COPY ui/yarn.lock .
 RUN yarn
-
-FROM node_base as node_build
-COPY ui/package.json .
-COPY ui/yarn.lock .
-COPY --from=node_modules /app/node_modules /app/node_modules
 COPY ui/.browserslistrc .
 COPY ui/.eslintrc.js .
 COPY ui/babel.config.js .

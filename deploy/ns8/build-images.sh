@@ -31,7 +31,7 @@ buildah build \
     --layers \
     --file Dockerfile \
     --target production \
-    "$@"
+    "$@" \
     .
 
 # If it's run locally, print the next commands to publish the images tagged
