@@ -1,3 +1,10 @@
+## [0.3.3](https://github.com/NethServer/phonehome-server/compare/0.3.2...0.3.3) (2024-03-04)
+
+
+### Bug Fixes
+
+* updated nethsecurity installation label ([0818980](https://github.com/NethServer/phonehome-server/commit/081898043e88572b721c442baf8e1e8b8211bc8e))
+
 ### [0.3.2](https://github.com/NethServer/phonehome-server/compare/0.3.1...0.3.2) (2023-03-23)
 
 

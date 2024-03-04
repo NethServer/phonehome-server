@@ -9,7 +9,7 @@
         "phonehome",
         "laravel"
     ],
-    "version": "0.3.2",
+    "version": "0.3.3",
     "license": "AGPL-3.0-or-later",
     "require": {
         "php": "^8.1",
