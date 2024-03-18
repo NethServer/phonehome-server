@@ -34,13 +34,13 @@ class SetupCommand extends Command
     {
         $this->info('Waiting for database to come up');
         $this->execProcess(['wait-for', '-t', '30', config('database.connections.mysql.host').':'.config('database.connections.mysql.port')]);
-        $this->info('Cheching if the redis is ready');
-        $this->execProcess(['wait-for', '-t', '30', config('database.redis.cache.host').':'.config('database.redis.cache.port')]);
-        $this->info('Copying public folder contents to web container...');
-        $this->execProcess(['cp', '-r', 'public', '/app']);
-        $this->info('Setting up Laravel');
-        $this->call('config:cache');
-        $this->execProcess(['su', '-s', '/bin/sh', '-c', 'php artisan view:cache', 'www-data']);
+        if (app()->isProduction()) {
+            $this->info('Copying public folder contents to web container...');
+            $this->execProcess(['cp', '-r', 'public', '/app']);
+            $this->info('Setting up Laravel');
+            $this->call('config:cache');
+            $this->call('view:cache');
+        }
         $this->call('storage:link');
         $this->info('Migrating database');
         $this->call('migrate', [

@@ -1,36 +1,35 @@
 server {
-  listen [::]:80;
-  listen 80;
+    server_tokens off;
 
-  server_name www.${APP_DOMAIN};
+    listen 80;
+    listen [::]:80;
+    server_name _;
+    root /var/www/html/public;
 
-  return 301 $scheme://${APP_DOMAIN}$request_uri;
-}
+    add_header X-Frame-Options "SAMEORIGIN";
+    add_header X-Content-Type-Options "nosniff";
 
-server {
-  # listen [::]:80 accept_filter=httpready; # for FreeBSD
-  # listen 80 accept_filter=httpready; # for FreeBSD
-  listen [::]:80;
-  listen 80;
+    index index.php;
 
-  # The host name to respond to
-  server_name ${APP_DOMAIN};
+    charset utf-8;
 
-  # Path for static files
-  root /var/www/html/public;
+    location / {
+        try_files $uri $uri/ /index.php?$query_string;
+    }
 
-  index index.php;
+    location = /favicon.ico { access_log off; log_not_found off; }
+    location = /robots.txt  { access_log off; log_not_found off; }
 
-  location / {
-    try_files $uri $uri/ /index.php?$query_string;
-  }
+    location ~ \.php$ {
+        fastcgi_pass ${FPM_URL}:${FPM_PORT};
+        fastcgi_param SCRIPT_FILENAME $realpath_root$fastcgi_script_name;
+        include fastcgi_params;
+    }
 
-  location ~ \.php$ {
-    fastcgi_pass ${FPM_URL}:${FPM_PORT};
-    fastcgi_param SCRIPT_FILENAME $realpath_root$fastcgi_script_name;
-    include fastcgi_params;
-  }
+    location ~ /\.(?!well-known).* {
+        deny all;
+    }
 
-  # Include the basic h5bp config set
-  include h5bp/basic.conf;
+    error_page 403 /index.php;
+    error_page 404 /index.php;
 }

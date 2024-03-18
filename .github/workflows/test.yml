@@ -1,7 +1,15 @@
 name: Testing
 on:
+  push:
+    branches:
+      - "renovate/**"
   pull_request:
   workflow_call:
+
+permissions:
+  contents: read
+  packages: read
+
 jobs:
   test-app-image:
     name: Test app image
@@ -13,24 +21,14 @@ jobs:
       - name: Create new buildx builder
         uses: docker/setup-buildx-action@v2
 
-      - name: Generate Image Metadata
-        uses: docker/metadata-action@v4
-        id: cache-from-tag
+      - name: Login to GitHub Container Registry
+        uses: docker/login-action@v3
         with:
-          images: |
-            ghcr.io/${{ github.repository }}-app
-          tags: |
-            type=ref,event=branch
-            type=raw,enable=${{ github.event_name == 'pull_request' }},value=${{ github.base_ref }}
-          flavor: |
-            latest=false
-            suffix=-cache
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ github.token }}
 
-      - uses: docker/bake-action@v3.1.0
-        with:
-          files: |
-            ./docker-bake.hcl
-          targets: testing
-          set: |
-            *.platform=linux/amd64
-            *.cache-from=type=registry,ref=${{ steps.cache-from-tag.outputs.tags }}
+      - name: Run testing
+        run: |
+          cp .env.example .env
+          docker compose run --rm --build testing

@@ -1,13 +1,7 @@
-name: phone-home
+name: phonehome-prod
 services:
-    redis:
-        image: redis:6.2.12-alpine
-        healthcheck:
-            test: [ "CMD", "redis-cli", "--raw", "incr", "ping" ]
-        volumes:
-            - redis:/data
     database:
-        image: postgres:14.9-alpine
+        image: postgres:14.11-alpine
         healthcheck:
             test: [ "CMD", "pg_isready", "-q", "-d", "phonehome", "-U", "phonehome" ]
         volumes:
@@ -16,65 +10,26 @@ services:
             POSTGRES_DB: phonehome
             POSTGRES_USER: phonehome
             POSTGRES_PASSWORD: phonehome
-    setup:
-        image: ghcr.io/nethserver/phonehome-server-app:${TAG:-latest}
-        depends_on:
-            - database
-            - redis
-        volumes:
-            - public:/app/public
-            - bootstrap:/var/www/html/bootstrap
-            - storage:/var/www/html/storage
-        secrets:
-            -   source: env_file
-                target: /var/www/html/.env
-        environment:
-            ROLE: "setup"
     app:
-        image: ghcr.io/nethserver/phonehome-server-app:${TAG:-latest}
-        healthcheck:
-            test: [ "CMD", "php-fpm-healthcheck" ]
-        depends_on:
-            setup:
-                condition: service_completed_successfully
+        image: ghcr.io/nethserver/phonehome-server-app:latest
         volumes:
             - bootstrap:/var/www/html/bootstrap
             - storage:/var/www/html/storage
-        secrets:
-            -   source: env_file
-                target: /var/www/html/.env
+        env_file:
+            - .env
     scheduler:
-        image: ghcr.io/nethserver/phonehome-server-app:${TAG:-latest}
-        depends_on:
-            setup:
-                condition: service_completed_successfully
-        stop_signal: SIGKILL
-        volumes:
-            - bootstrap:/var/www/html/bootstrap
-            - storage:/var/www/html/storage
-        secrets:
-            -   source: env_file
-                target: /var/www/html/.env
-        environment:
-            ROLE: "scheduler"
+        extends:
+            service: app
+        command: [ "crond", "-f", "-l", "2" ]
     web:
-        image: ghcr.io/nethserver/phonehome-server-web:${TAG:-latest}
+        image: ghcr.io/nethserver/phonehome-server-web:latest
         healthcheck:
             test: [ "CMD", "curl", "--fail", "--silent", "--output", "/dev/null", "http://localhost/status" ]
-        volumes:
-            - public:/var/www/html/public:ro
         environment:
-            APP_DOMAIN: localhost
             FPM_URL: app
             FPM_PORT: 9000
 
 volumes:
-    redis: {}
-    database: {}
-    public: {}
-    bootstrap: {}
-    storage: {}
-
-secrets:
-    env_file:
-        file: .env
+    database: { }
+    bootstrap: { }
+    storage: { }

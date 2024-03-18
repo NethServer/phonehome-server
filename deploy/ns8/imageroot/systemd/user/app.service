@@ -20,8 +20,6 @@ ExecStart=/usr/bin/podman run \
     --volume bootstrap:/var/www/html/bootstrap \
     --volume storage:/var/www/html/storage \
     --env-file %S/state/environment \
-    --env REDIS_HOST=${PHONEHOME_REDIS_HOST} \
-    --env REDIS_PASSWORD=${PHONEHOME_REDIS_PASSWORD} \
     ${PHONEHOME_SERVER_APP_IMAGE}
 ExecStop=/usr/bin/podman stop --ignore --cidfile %t/app.ctr-id -t 10
 ExecStopPost=/usr/bin/podman rm --ignore -f --cidfile %t/app.ctr-id

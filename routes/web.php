@@ -19,6 +19,5 @@ Route::get('/', function () {
 });
 
 Route::post('/', CompatibilityController::class)
-    ->name('installation.store')
     ->withoutMiddleware('web')
     ->middleware('api');

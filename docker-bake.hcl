@@ -1,53 +1,53 @@
-target "base" {
-    target = "production"
-    context = "."
-    output = ["type=docker"]
-}
-
-target "app" {
-    inherits = ["base"]
+target "app-production" {
     dockerfile = "containers/php/Dockerfile"
-    cache-from = [
-        "type=registry,ref=ghcr.io/nethserver/phonehome-server-app:master-cache"
-    ]
-}
-
-target "app-develop" {
-    inherits = ["app"]
-    tags = [
+    target     = "production"
+    tags       = [
         "ghcr.io/nethserver/phonehome-server-app:latest"
     ]
-}
-
-target "web" {
-    inherits = ["base"]
-    dockerfile = "containers/nginx/Dockerfile"
     cache-from = [
-        "type=registry,ref=ghcr.io/nethserver/phonehome-server-web:master-cache"
+        "type=gha"
+    ]
+    output = [
+        "type=docker"
     ]
 }
 
-target "web-develop" {
-    inherits = ["web"]
-    tags = [
+target "web-production" {
+    dockerfile = "containers/nginx/Dockerfile"
+    target     = "production"
+    tags       = [
         "ghcr.io/nethserver/phonehome-server-web:latest"
     ]
+    cache-from = [
+        "type=gha"
+    ]
+    output = [
+        "type=docker"
+    ]
 }
 
-target "testing" {
-    inherits = ["app"]
-    target = "testing"
-    output = [""]
+target "ns8" {
+    dockerfile = "Dockerfile"
+    context    = "deploy/ns8"
+    target     = "production"
+    tags       = [
+        "ghcr.io/nethserver/phonehome-server:latest"
+    ]
+    labels = {
+        "org.nethserver.images" : "docker.io/postgres:14.9-alpine docker.io/redis:6.2.12-alpine ${target.app-production.tags[0]} ${target.web-production.tags[0]}"
+    }
+    cache-from = [
+        "type=gha"
+    ]
+    output = [
+        "type=docker"
+    ]
 }
 
-group "develop" {
-    targets = ["app-develop", "web-develop"]
-}
-
-group "release" {
-    targets = ["app", "web"]
+group "deploy" {
+    targets = ["default", "ns8"]
 }
 
 group "default" {
-    targets = ["develop"]
+    targets = ["app-production", "web-production"]
 }

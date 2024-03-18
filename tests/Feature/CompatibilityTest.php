@@ -50,7 +50,6 @@ it('can handle post data', function () {
     });
 
     $installation = Installation::factory()->make();
-    /** @var Tests\TestCase $this */
     $this->postJson(
         '/',
         [
@@ -76,7 +75,6 @@ it('updates existing record at every ping', function () {
     $country->name = $installation->country->name;
     $country->isoCode = $installation->country->code;
 
-    /** @var Tests\TestCase $this */
     $this->mock(
         GeoIpLocator::class,
         fn (MockInterface $mock) => $mock->shouldReceive('locate')
@@ -108,7 +106,6 @@ it('can insert data with same uuid', function () {
     $country->name = 'Italy';
     $country->isoCode = 'IT';
 
-    /** @var Tests\TestCase $this */
     $this->mock(
         GeoIpLocator::class,
         fn (MockInterface $mock) => $mock->shouldReceive('locate')
@@ -305,7 +302,6 @@ it('can insert nullable type', function () {
     $country->name = 'Italy';
     $country->isoCode = 'IT';
 
-    /** @var Tests\TestCase $this */
     $this->mock(
         GeoIpLocator::class,
         fn (MockInterface $mock) => $mock->shouldReceive('locate')
@@ -343,7 +339,6 @@ it('can handle two request with same location', function () {
     });
 
     $installation = Installation::factory()->make();
-    /** @var Tests\TestCase $this */
     $this->postJson(
         '/',
         [
@@ -362,7 +357,6 @@ it('can handle two request with same location', function () {
     ]);
 
     $installation = Installation::factory()->make();
-    /** @var Tests\TestCase $this */
     $this->postJson(
         '/',
         [

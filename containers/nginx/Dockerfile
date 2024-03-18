@@ -1,10 +1,10 @@
-FROM nginx:1.25.2-alpine as production
+FROM nginx:1.25.4-alpine as production
 WORKDIR /var/www/html
-ADD https://github.com/eficode/wait-for/releases/download/v2.2.4/wait-for /usr/local/bin/
-COPY containers/nginx/start.sh /usr/local/bin/start
-RUN chmod u+x /usr/local/bin/wait-for \
-    && chmod u+x /usr/local/bin/start
 COPY containers/nginx/config /etc/nginx
+ADD --chmod=755 \
+    --checksum=sha256:206a8f9b2177703fc5aa924d85ad6c72e82413e2d09635b4c9c82a1b65b5b3d5 \
+    https://github.com/eficode/wait-for/releases/download/v2.2.4/wait-for /usr/local/bin/wait-for
+COPY --chmod=777 \
+    containers/nginx/entrypoint.sh /docker-entrypoint.d/90-wait-fpm.sh
 COPY public ./public
-ENTRYPOINT ["start"]
-CMD ["nginx", "-g", "daemon off;"]
+HEALTHCHECK CMD curl --fail --silent --output /dev/null http://localhost/status
