@@ -55,6 +55,8 @@ services:
         build:
             dockerfile: containers/php/Dockerfile
             target: testing
+            cache_from:
+                - type=gha
         depends_on:
             - database
         secrets:
