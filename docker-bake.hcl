@@ -4,12 +4,6 @@ target "app-production" {
     tags       = [
         "ghcr.io/nethserver/phonehome-server-app:latest"
     ]
-    cache-from = [
-        "type=gha"
-    ]
-    output = [
-        "type=docker"
-    ]
 }
 
 target "web-production" {
@@ -17,12 +11,6 @@ target "web-production" {
     target     = "production"
     tags       = [
         "ghcr.io/nethserver/phonehome-server-web:latest"
-    ]
-    cache-from = [
-        "type=gha"
-    ]
-    output = [
-        "type=docker"
     ]
 }
 
@@ -36,12 +24,6 @@ target "ns8" {
     labels = {
         "org.nethserver.images" : "docker.io/postgres:14.9-alpine docker.io/redis:6.2.12-alpine ${target.app-production.tags[0]} ${target.web-production.tags[0]}"
     }
-    cache-from = [
-        "type=gha"
-    ]
-    output = [
-        "type=docker"
-    ]
 }
 
 group "deploy" {

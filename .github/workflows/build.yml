@@ -74,4 +74,5 @@ jobs:
             ${{ steps.meta-ns8.outputs.bake-file }}
           set: |
             *.cache-to=type=gha,mode=max
+            *.cache-from=type=gha
           push: true
