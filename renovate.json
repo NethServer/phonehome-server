@@ -2,21 +2,19 @@
     "$schema": "https://docs.renovatebot.com/renovate-schema.json",
     "extends": [
         "config:base",
-        "schedule:monthly",
+        ":automergeMinor",
         ":prHourlyLimitNone",
-        ":disableDependencyDashboard"
+        ":disableDependencyDashboard",
+        ":maintainLockFilesMonthly",
+        "schedule:weekends"
     ],
+    "rangeStrategy": "replace",
+    "automergeType": "branch",
     "updateNotScheduled": false,
     "ignorePaths": [
         "**/deploy/ns8/ui/**"
     ],
     "packageRules": [
-        {
-            "matchPackageNames": [
-                "php"
-            ],
-            "allowedVersions": "<= 8.1"
-        },
         {
             "matchPackageNames": [
                 "postgres"
@@ -25,67 +23,12 @@
         },
         {
             "matchPackageNames": [
-                "redis"
-            ],
-            "allowedVersions": "<= 6"
-        },
-        {
-            "matchPackageNames": [
                 "node"
             ],
             "allowedVersions": "<= 18"
-        },
-        {
-            "matchManagers": [
-                "composer"
-            ],
-            "matchUpdateTypes": [
-                "minor", "patch"
-            ],
-            "groupName": "Composer Dependencies"
-        },
-        {
-            "matchManagers": [
-                "npm"
-            ],
-            "matchUpdateTypes": [
-                "minor", "patch"
-            ],
-            "groupName": "NPM Dependencies"
-        },
-        {
-            "matchManagers": [
-                "dockerfile",
-                "docker-compose",
-                "regex"
-            ],
-            "matchUpdateTypes": [
-                "minor", "patch"
-            ],
-            "groupName": "Docker Dependencies"
         }
     ],
     "regexManagers": [
-        {
-            "fileMatch": [
-                "containers\/.*\/Dockerfile"
-            ],
-            "matchStrings": [
-                "ADD\\ https:\/\/github\\.com\/eficode\/wait-for\/releases\/download\/(?<currentValue>.*)\/wait-for"
-            ],
-            "depNameTemplate": "eficode/wait-for",
-            "datasourceTemplate": "github-releases"
-        },
-        {
-            "fileMatch": [
-                "containers\/.*\/Dockerfile"
-            ],
-            "matchStrings": [
-                "ADD\\ https:\/\/raw\\.githubusercontent\\.com\/renatomefi\/php-fpm-healthcheck\/(?<currentValue>.*)\/php-fpm-healthcheck"
-            ],
-            "depNameTemplate": "renatomefi/php-fpm-healthcheck",
-            "datasourceTemplate": "github-releases"
-        },
         {
             "fileMatch": [
                 "deploy\/ns8\/Dockerfile"
