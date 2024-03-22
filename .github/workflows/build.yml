@@ -21,7 +21,7 @@ jobs:
         uses: docker/setup-buildx-action@v3
 
       - name: Generate app image tags
-        uses: docker/metadata-action@v4
+        uses: docker/metadata-action@v5
         id: meta-app
         with:
           bake-target: app-production
@@ -34,7 +34,7 @@ jobs:
             type=semver,pattern={{major}},enable=${{ !startsWith(github.ref, 'refs/tags/0.') }}
 
       - name: Generate web image tags
-        uses: docker/metadata-action@v4
+        uses: docker/metadata-action@v5
         id: meta-web
         with:
           bake-target: web-production
@@ -47,7 +47,7 @@ jobs:
             type=semver,pattern={{major}},enable=${{ !startsWith(github.ref, 'refs/tags/0.') }}
 
       - name: Generate ns8 image tags
-        uses: docker/metadata-action@v4
+        uses: docker/metadata-action@v5
         id: meta-ns8
         with:
           bake-target: ns8
