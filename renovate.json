@@ -25,7 +25,10 @@
             "matchPackageNames": [
                 "node"
             ],
-            "allowedVersions": "<= 18"
+            "matchFileNames": [
+                "**/deploy/ns8/**"
+            ],
+            "allowedVersions": "<= 20"
         }
     ],
     "regexManagers": [
