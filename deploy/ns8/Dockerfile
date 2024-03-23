@@ -1,4 +1,4 @@
-FROM docker.io/node:20.11.1-alpine as node_build
+FROM docker.io/node:21.7.1-alpine as node_build
 WORKDIR /app
 COPY ui/package.json .
 COPY ui/yarn.lock .
