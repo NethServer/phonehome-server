@@ -1,7 +1,6 @@
 [Unit]
 Description=PhoneHome scheduler
 PartOf=phonehome.service
-After=setup.service
 
 [Service]
 Environment=PODMAN_SYSTEMD_UNIT=%n
@@ -9,6 +8,7 @@ EnvironmentFile=%S/state/environment
 WorkingDirectory=%S/state
 Restart=always
 ExecStartPre=/bin/rm -f %t/scheduler.pid %t/scheduler.ctr-id
+ExecStartPre=%S/bin/conf_to_env
 ExecStart=/usr/bin/podman run \
     --pod phonehome \
     --detach \
@@ -17,14 +17,13 @@ ExecStart=/usr/bin/podman run \
     --cgroups no-conmon \
     --replace \
     --name %N \
-    --stop-signal SIGKILL \
     --volume bootstrap:/var/www/html/bootstrap \
     --volume storage:/var/www/html/storage \
-    --env-file %S/state/environment \
-    --env REDIS_HOST=${PHONEHOME_REDIS_HOST} \
-    --env REDIS_PASSWORD=${PHONEHOME_REDIS_PASSWORD} \
-    --env ROLE=scheduler \
-    ${PHONEHOME_SERVER_APP_IMAGE}
+    --env-file phonehome-environment \
+    --env FPM_URL=app \
+    --env FPM_PORT=9000 \
+    ${PHONEHOME_SERVER_APP_IMAGE} \
+    crond -f -l 2
 ExecStop=/usr/bin/podman stop --ignore --cidfile %t/scheduler.ctr-id -t 10
 ExecStopPost=/usr/bin/podman rm --ignore -f --cidfile %t/scheduler.ctr-id
 PIDFile=%t/scheduler.pid

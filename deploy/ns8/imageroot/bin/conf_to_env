@@ -1,0 +1,13 @@
+#!/usr/bin/env python3
+
+#
+# Copyright (C) 2024 Nethesis S.r.l.
+# SPDX-License-Identifier: GPL-3.0-or-later
+#
+
+import json
+
+config = json.load(open('config.json'))
+with open('phonehome-environment', 'w') as f:
+    for key, value in config.items():
+        f.write(f'{key}={value}\n')

@@ -1,40 +1,27 @@
 #!/usr/bin/env python3
 
 #
-# Copyright (C) 2022 Nethesis S.r.l.
+# Copyright (C) 2024 Nethesis S.r.l.
 # SPDX-License-Identifier: GPL-3.0-or-later
 #
 
-import agent
-import agent.tasks
 import json
 import sys
 
+# load both data from stdin and config.json
 data = json.load(sys.stdin)
+config = json.load(open('config.json'))
 
-# Get data from request, set defaults parameters
-hostname = data.get("hostname")
-geoip_token = data.get("geoip_token")
-log_level = data.get("log_level", "warning")
-debug = data.get("debug", False)
-http_to_https = data.get("http_to_https")
-lets_encrypt = data.get("lets_encrypt")
-
-if http_to_https == True:
+if data.get("http_to_https") == True:
     protocol = 'https://'
 else:
     protocol = 'http://'
 
-# Setup Application
-agent.set_env('APP_DEBUG', debug)
-agent.set_env('APP_URL', protocol + hostname)
-agent.set_env('APP_DOMAIN', hostname)
-agent.set_env('LOG_LEVEL', log_level)
-agent.set_env('GEOIP_TOKEN', geoip_token)
-# Setup Traefik
-agent.set_env('TRAEFIK_HOST', hostname)
-agent.set_env('TRAEFIK_HTTP2HTTPS', http_to_https)
-agent.set_env('TRAEFIK_LETS_ENCRYPT', lets_encrypt)
+config['APP_URL'] = protocol + data.get("hostname")
+config['APP_DOMAIN'] = data.get("hostname")
+config['GEOIP_TOKEN'] = data.get("geoip_token")
+config['HTTP_TO_HTTPS'] = data.get("http_to_https")
+config['LETS_ENCRYPT'] = data.get("lets_encrypt")
 
-# Apply environment
-agent.dump_env()
+# write config.json
+json.dump(config, open('config.json', 'w'))

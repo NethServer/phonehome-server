@@ -14,6 +14,8 @@ if [ "$1" = 'php-fpm' ]; then
     php artisan storage:link
     php artisan app:geoip:download
     chown -R www-data:www-data storage
+elif [ "$1" = 'crond' ]; then
+    wait-for "${FPM_HOST:?Missing FPM_HOST}:${FPM_PORT:?Missing FPM_PORT}" -t 60
 fi
 
 exec "$@"
