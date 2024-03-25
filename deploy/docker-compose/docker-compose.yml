@@ -20,6 +20,9 @@ services:
     scheduler:
         extends:
             service: app
+        environment:
+            FPM_URL: app
+            FPM_PORT: 9000
         command: [ "crond", "-f", "-l", "2" ]
     web:
         image: ghcr.io/nethserver/phonehome-server-web:latest
