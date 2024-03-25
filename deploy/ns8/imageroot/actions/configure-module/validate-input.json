@@ -1,14 +1,12 @@
 {
     "$schema": "http://json-schema.org/draft-07/schema#",
-    "title": "Configure Phonehome",
     "$id": "http://schema.nethserver.org/phonehome/configure-module-input.json",
+    "title": "Configure Phonehome",
     "description": "Configure Phonehome",
     "examples": [
       {
         "hostname": "phonehome.nethserver.org",
         "geoip_token": "XXXXXXXXXXX",
-        "log_level": "error",
-        "debug": false,
         "http_to_https": true,
         "lets_encrypt": true
       }
@@ -29,24 +27,6 @@
       "geoip_token": {
         "type": "string",
         "description": "Token provided by MaxMind to fetch GeoIp2 Country Database."
-      },
-      "log_level": {
-        "type": "string",
-        "description": "Log level that the application should output.",
-        "enum": [
-          "emergency",
-          "alert",
-          "critical",
-          "error",
-          "warning",
-          "notice",
-          "info",
-          "debug"
-        ]
-      },
-      "debug": {
-        "type": "boolean",
-        "description": "If the application should enable debug mode, beware, if something happens, all stack will be printed to the page."
       },
       "lets_encrypt": {
         "type": "boolean",
