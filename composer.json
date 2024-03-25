@@ -29,7 +29,7 @@
         "tronovav/geoip2-update": "^v2.3"
     },
     "require-dev": {
-        "barryvdh/laravel-ide-helper": "^v2.13",
+        "barryvdh/laravel-ide-helper": "^v3.0.0",
         "fakerphp/faker": "^v1.23",
         "laravel/pint": "^v1.12",
         "laravel/sail": "^v1.24",
