@@ -8,6 +8,7 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Validation\Validator;
 use Opis\JsonSchema\Errors\ErrorFormatter;
 use Opis\JsonSchema\Validator as JsonSchemaValidator;
@@ -57,6 +58,7 @@ class StoreInstallationRequest extends FormRequest
                     foreach ($errors as $key => $value) {
                         $validator->errors()->add($key, $value[0]);
                     }
+                    Log::debug('JsonSchema validation failed', $errors);
                 }
             }
         });
