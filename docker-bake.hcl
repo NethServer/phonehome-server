@@ -22,7 +22,7 @@ target "ns8" {
         "ghcr.io/nethserver/phonehome-server:latest"
     ]
     labels = {
-        "org.nethserver.images" : "docker.io/postgres:14.9-alpine docker.io/redis:6.2.12-alpine ${target.app-production.tags[0]} ${target.web-production.tags[0]}"
+        "org.nethserver.images" : "docker.io/postgres:14.9-alpine ${target.app-production.tags[0]} ${target.web-production.tags[0]}"
     }
 }
 
