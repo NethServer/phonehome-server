@@ -28,6 +28,7 @@ app_key = subprocess.run(
 json.dump(
     {
         'APP_KEY': app_key,
+        'LOG_LEVEL': 'warning',
         'LOG_CHANNEL': 'stderr',
         'LOG_DEPRECATIONS_CHANNEL': 'stderr',
         'DB_CONNECTION': 'pgsql',
