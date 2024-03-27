@@ -15,7 +15,6 @@ jobs:
     runs-on: ubuntu-latest
     if: github.event_name == 'workflow_dispatch' || (github.event.pull_request.merged == true && startsWith(github.event.pull_request.head.ref, 'release-please'))
     steps:
-      - uses: actions/checkout@v4
       - uses: google-github-actions/release-please-action@v4
         with:
           release-type: php
