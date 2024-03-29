@@ -14,7 +14,7 @@ interface GeoIpLocator
     /**
      * Locate the country where the request took place.
      *
-     * @param  string  $ip Ip request source.
+     * @param  string  $ip  Ip request source.
      * @return \GeoIp2\Record\Country Country object resolved from ip.
      */
     public function locate(string $ip): Country;
