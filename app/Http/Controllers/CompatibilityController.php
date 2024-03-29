@@ -7,26 +7,55 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\IndexInstallationRequest;
 use App\Logic\GeoIpLocator;
 use App\Models\Country;
 use App\Models\Installation;
 use GeoIp2\Exception\AddressNotFoundException;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Validator;
 use Symfony\Component\HttpKernel\Exception\UnprocessableEntityHttpException;
 
+/**
+ * Beware, this is a LEGACY controller, if you're proficient in Laravel you'll see that many things are done not
+ * following Laravel howtos. To maintain retro compatibility, this was done on purpose, please refrain to change
+ * this controller if you have no knowledge on how NS6-NS7 phone-home and/or the UI works.
+ */
 class CompatibilityController extends Controller
 {
     /**
-     * Store a newly created resource in storage.
-     *
-     * Beware, this is a LEGACY request, if you're proficient in Laravel you'll see that many things are done not
-     * following Laravel howtos. To maintain retro compatibility, this was done on purpose, please refrain to change
-     * this function if you have no knowledge on how NS6-NS7 phone-home works.
+     * Display a listing of the installations, this is tricky and hard to reproduce on other DBs.
      */
-    public function __invoke(Request $request, GeoIpLocator $geoIpLocator): Response
+    public function index(IndexInstallationRequest $request): JsonResponse
+    {
+        $query = DB::table('countries')
+            ->selectRaw('countries.name as country_name, countries.code as country_code, installations.data->\'facts\'->>\'version\' as tag, COUNT(installations.data->>\'uuid\') as num')
+            ->join('installations', 'installations.country_id', '=', 'countries.id')
+            ->whereRaw('data->>\'installation\' = \'nethserver\'')
+            ->whereRaw('data->\'facts\'->\'version\' is not null');
+        if ($request->get('interval') != '1') {
+            $query = $query->whereRaw('installations.updated_at > \''.today()->subDays($request->get('interval'))->toDateString().'\'');
+        }
+        $query = $query->groupBy('countries.name', 'countries.code', 'tag')
+            ->orderBy('installations.data->facts->version');
+        $query = DB::table(DB::raw('('.$query->toSql().') as base'))
+            ->select('country_name', 'country_code', DB::raw('array_to_string(array_agg(concat( tag, \'#\', num )), \',\') AS installations'))
+            ->groupBy('country_name', 'country_code')
+            ->orderBy('country_code');
+
+        return response()->json(
+            $query->get()
+        );
+    }
+
+    /**
+     * Store a NS7 request to the database.
+     */
+    public function store(Request $request, GeoIpLocator $geoIpLocator): Response
     {
         // Create Validator instance
         $validator = Validator::make($request->all(), [

@@ -18,6 +18,6 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::post('/', CompatibilityController::class)
+Route::post('/', [CompatibilityController::class, 'store'])
     ->withoutMiddleware('web')
     ->middleware('api');

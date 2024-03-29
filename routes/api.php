@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\CompatibilityController;
 use App\Http\Controllers\InstallationController;
 use Illuminate\Support\Facades\Route;
 
@@ -14,4 +15,5 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::apiResource('installation', InstallationController::class)->only('index', 'store');
+Route::get('compatibility', [CompatibilityController::class, 'index']);
+Route::apiResource('installation', InstallationController::class)->only('store');

@@ -126,7 +126,7 @@ var geoJsons = [];
 var globalInstallations = 0;
 //call phoneHome Api to retrieve country installation
 $.ajax({
-  url: "/api/installation",
+  url: "/api/compatibility",
   type: "GET",
   data: "interval=" + interval,
   success: function (resp) {

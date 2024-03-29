@@ -233,7 +233,7 @@ it('can show installations', function () {
         'country_id' => $countryIt,
     ]);
 
-    $this->getJson('/api/installation?interval=7')
+    $this->getJson('/api/compatibility?interval=7')
         ->assertStatus(200)
         ->assertJson(
             fn (AssertableJson $json) => $json->has(3)
@@ -258,14 +258,14 @@ it('can show installations', function () {
 
 test('nethsecurity installations are not showed', function () {
     Installation::factory()->nethsecurity()->create();
-    $response = $this->getJson('/api/installation?interval=7')
+    $response = $this->getJson('/api/compatibility?interval=7')
         ->assertOk()
         ->assertJson([]);
 })->skip(fn () => config('database.default') == 'sqlite', 'Cannot run on sqlite.');
 
 test('nethserver 8 installations are not showed', function () {
     Installation::factory()->nethserver()->create();
-    $response = $this->getJson('/api/installation?interval=7')
+    $response = $this->getJson('/api/compatibility?interval=7')
         ->assertOk()
         ->assertJson([]);
 })->skip(fn () => config('database.default') == 'sqlite', 'Cannot run on sqlite.');
@@ -276,7 +276,7 @@ test('check if interval works', function () {
         'updated_at' => now()->subMonth(5),
     ]);
 
-    $this->getJson('/api/installation?interval=7')
+    $this->getJson('/api/compatibility?interval=7')
         ->assertStatus(200)
         ->assertJson(
             fn (AssertableJson $json) => $json->has(1)
@@ -290,7 +290,7 @@ test('check if interval works', function () {
 
     $this->travel(2)->weeks();
 
-    $this->getJson('/api/installation?interval=7')
+    $this->getJson('/api/compatibility?interval=7')
         ->assertStatus(200)
         ->assertJson(
             fn (AssertableJson $json) => $json->has(0)
