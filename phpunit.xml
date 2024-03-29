@@ -1,13 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <phpunit xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:noNamespaceSchemaLocation="https://schema.phpunit.de/10.3/phpunit.xsd" bootstrap="vendor/autoload.php"
-         colors="true" cacheDirectory=".phpunit.cache">
+         xsi:noNamespaceSchemaLocation="vendor/phpunit/phpunit/phpunit.xsd"
+         bootstrap="vendor/autoload.php"
+         colors="true"
+>
     <testsuites>
         <testsuite name="Unit">
-            <directory suffix="Test.php">./tests/Unit</directory>
+            <directory>tests/Unit</directory>
         </testsuite>
         <testsuite name="Feature">
-            <directory suffix="Test.php">./tests/Feature</directory>
+            <directory>tests/Feature</directory>
         </testsuite>
     </testsuites>
     <coverage/>
@@ -24,28 +26,28 @@
     </php>
     <source>
         <include>
-            <directory suffix=".php">./app</directory>
+            <directory>app</directory>
         </include>
         <exclude>
-            <file>./app/Console/Kernel.php</file>
-            <file>./app/Console/Commands/SetupCommand.php</file>
-            <file>./app/Exceptions/Handler.php</file>
-            <file>./app/Http/Controllers/Controller.php</file>
-            <file>./app/Http/Middleware/Authenticate.php</file>
-            <file>./app/Http/Middleware/EncryptCookies.php</file>
-            <file>./app/Http/Middleware/PreventRequestsDuringMaintenance.php</file>
-            <file>./app/Http/Middleware/RedirectIfAuthenticated.php</file>
-            <file>./app/Http/Middleware/TrimStrings.php</file>
-            <file>./app/Http/Middleware/TrustHosts.php</file>
-            <file>./app/Http/Middleware/TrustProxies.php</file>
-            <file>./app/Http/Middleware/ValidateSignature.php</file>
-            <file>./app/Http/Middleware/VerifyCsrfToken.php</file>
-            <file>./app/Http/Kernel.php</file>
-            <file>./app/Providers/AppServiceProvider.php</file>
-            <file>./app/Providers/AuthServiceProvider.php</file>
-            <file>./app/Providers/BroadcastServiceProvider.php</file>
-            <file>./app/Providers/EventServiceProvider.php</file>
-            <file>./app/Providers/RouteServiceProvider.php</file>
+            <file>app/Console/Kernel.php</file>
+            <file>app/Console/Commands/SetupCommand.php</file>
+            <file>app/Exceptions/Handler.php</file>
+            <file>app/Http/Controllers/Controller.php</file>
+            <file>app/Http/Middleware/Authenticate.php</file>
+            <file>app/Http/Middleware/EncryptCookies.php</file>
+            <file>app/Http/Middleware/PreventRequestsDuringMaintenance.php</file>
+            <file>app/Http/Middleware/RedirectIfAuthenticated.php</file>
+            <file>app/Http/Middleware/TrimStrings.php</file>
+            <file>app/Http/Middleware/TrustHosts.php</file>
+            <file>app/Http/Middleware/TrustProxies.php</file>
+            <file>app/Http/Middleware/ValidateSignature.php</file>
+            <file>app/Http/Middleware/VerifyCsrfToken.php</file>
+            <file>app/Http/Kernel.php</file>
+            <file>app/Providers/AppServiceProvider.php</file>
+            <file>app/Providers/AuthServiceProvider.php</file>
+            <file>app/Providers/BroadcastServiceProvider.php</file>
+            <file>app/Providers/EventServiceProvider.php</file>
+            <file>app/Providers/RouteServiceProvider.php</file>
         </exclude>
     </source>
 </phpunit>
