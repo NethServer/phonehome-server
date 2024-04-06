@@ -2,7 +2,7 @@
 FROM php:8.3.4-fpm-alpine as base
 WORKDIR /var/www/html
 # install extensions and packages
-COPY --from=mlocati/php-extension-installer:2.2.5 /usr/bin/install-php-extensions /usr/local/sbin/
+COPY --from=mlocati/php-extension-installer:2.2.6 /usr/bin/install-php-extensions /usr/local/sbin/
 RUN apk add --no-cache \
         netcat-openbsd \
         postgresql15-client \
