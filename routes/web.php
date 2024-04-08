@@ -3,6 +3,7 @@
 use App\Http\Controllers\CompatibilityController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HardwareController;
+use App\Http\Controllers\HardwareControllerNethserver;
 
 /*
 |--------------------------------------------------------------------------
@@ -23,13 +24,12 @@ Route::post('/', [CompatibilityController::class, 'store'])
     ->withoutMiddleware('web')
     ->middleware('api');
 
-
-
 Route::get('/hardware', [HardwareController::class, 'index']);
 Route::get('/hardware/{id}', [HardwareController::class, 'show']);
 Route::post('/hardware', [HardwareController::class, 'store']);
 Route::put('/hardware/{id}', [HardwareController::class, 'update']);
 Route::delete('/hardware/{id}', [HardwareController::class, 'destroy']);
-Route::post('/search-hardware', [HardwareController::class, 'searchHardware'])->name('searchHardware');
+Route::post('/hardware', [HardwareController::class, 'index'])->name('hardware');
+
 
     

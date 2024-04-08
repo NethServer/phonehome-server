@@ -8,13 +8,6 @@ use Illuminate\Http\Request;
 
 class HardwareController extends Controller
 {
-    // Show all hardware
-    public function index()
-    {
-        $hardware = Hardware::all();
-        return response()->json($hardware);
-    }
-
     // Show a single hardware
     public function show($id)
     {
@@ -69,23 +62,23 @@ class HardwareController extends Controller
         return response()->json(['message' => 'Hardware deleted']);
     }
 
-    public function searchHardware(Request $request)
+    public function index(Request $request)
     {
-        $request->validate([
-            'product_name' => 'required',
-            'manufacturer' => 'required',
-            'processor' => 'required',
-        ]);
+        $searchTerm = $request->input('search_term');
 
-        $productName = $request->input('product_name');
-        $manufacturer = $request->input('manufacturer');
-        $processor = $request->input('processor');
+        //Perform a query to find all hardware that contain the search term
+        $matchingHardware = Hardware::where('product_name', 'ilike', '%' . $searchTerm . '%')
+        ->orWhere('manufacturer', 'ilike', '%' . $searchTerm . '%')
+        ->orWhere('processor', 'ilike', '%' . $searchTerm . '%')
+        ->orWhere('vga_controller', 'ilike', '%' . $searchTerm . '%')
+        ->orWhere('usb_controller', 'ilike', '%' . $searchTerm . '%')
+        ->orWhere('pci_bridge', 'ilike', '%' . $searchTerm . '%')
+        ->orWhere('sata_controller', 'ilike', '%' . $searchTerm . '%')
+        ->orWhere('communication_controller', 'ilike', '%' . $searchTerm . '%')
+        ->orWhere('scsi_controller', 'ilike', '%' . $searchTerm . '%')
+        ->orWhere('ethernet', 'ilike', '%' . $searchTerm . '%')
+        ->get();
 
-        $matchingHardware = Hardware::where('product_name', $product_name)
-            ->where('manufacturer', $manufacturer)
-            ->where('processor', $processor)
-            ->get();
-        
-        return view('findHardware', ['matchingHardware' => $matchingHardware]);
+        return view('hardware', ['matchingHardware' => $matchingHardware]);
     }
 }

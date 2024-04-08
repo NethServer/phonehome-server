@@ -9,7 +9,7 @@ class Hardware extends Model
 {
     use HasFactory;
 
-    protected $table = 'hardware_types_nethsecurity';
+    protected $table = 'nethsecurity_hardware_view';
 
     protected $fillable = [
         'product_name',
