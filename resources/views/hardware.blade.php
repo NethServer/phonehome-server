@@ -2,36 +2,35 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Risultati della ricerca hardware</title>
+    <title>Find Hardware</title>
+    <link rel="stylesheet" href= "css/style.css">
+    
 </head>
 <body>
-    <h1>Risultati della ricerca hardware</h1>
+    <div class="container">
+    <h1>Find Hardware</h1>
 
     <form action="{{ route('hardware') }}" method="POST">
         @csrf
-        <input type="text" name="search_term" placeholder="Cerca hardware...">
-        <button type="submit">Cerca</button>
+        <input type="text" name="search_term" placeholder="Search hardware...">
+        <button type="submit">Search</button>
     </form>
 
-    @if ($matchingHardware->isEmpty())
-        <p>Nessun hardware trovato.</p>
+    @if (empty($groupedInputMatch))
+        <p>No hardware found</p>
     @else
         <ul>
-            @foreach ($matchingHardware as $hardware)
-                <li>
-                    <strong>Product Name:</strong> {{ $hardware->product_name }} <br>
-                    <strong>Manufacturer:</strong> {{ $hardware->manufacturer }} <br>
-                    <strong>Processor:</strong> {{ $hardware->processor }} <br>
-                    <strong>Vga Controller: </strong> {{ $hardware->vga_controller }} <br>
-                    <strong>Usb Controller: </strong> {{ $hardware->usb_controller }} <br>
-                    <strong>Pci Bridge: </strong>  {{ $hardware->pci_bridge }} <br>
-                    <strong>Stata Controller: </strong> {{ $hardware->stata_controller }} <br>
-                    <strong>Communication Controller: </strong> {{ $hardware->communication_controller }} <br>
-                    <strong>Scsi Controller: </strong> {{ $hardware->scsi_controller }} <br>
-                    <strong>Ethernet: </strong> {{ $hardware->ethernet }} <br>
-                </li>
-            @endforeach
+        {{$count}} hardware found <br><br>
+        @foreach ($groupedInputMatch as $key => $group)
+            <li><strong>{{ $key }}:</strong></li>
+            <ul>
+                @foreach ($group['rows'] as $row)
+                    <li>{{ $row }} ({{ $group['occurrences'][$row] }})</li> 
+                @endforeach
+            </ul>
+        @endforeach
         </ul>
     @endif
+</div>
 </body>
 </html>
