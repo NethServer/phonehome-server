@@ -4,9 +4,19 @@
     <meta charset="UTF-8">
     <title>Find Hardware</title>
     <link rel="stylesheet" href= "css/style.css">
-    
+    <style>
+        h1 {
+            font-size: 24px;
+            margin-bottom: 20px; 
+        }
+        .scrollable-content {
+            overflow-y: scroll;
+            max-height: 700px;
+        }
+    </style>
 </head>
 <body>
+<div class="scrollable-content">
     <div class="container">
     <h1>Find Hardware</h1>
 
@@ -31,6 +41,7 @@
         @endforeach
         </ul>
     @endif
+    </div>
 </div>
 </body>
 </html>
