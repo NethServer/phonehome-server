@@ -7,6 +7,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.0-alpha1/css/bootstrap.min.css" integrity="sha512-dgYf9zRvqyR6rnbBdSUF+GCN7eL2VqjjW/FumfIm9lt1cxUKQjj+u1gsmmMsEBhHzad5iA2p4np8X9Ehniy3rA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <link rel="stylesheet" href= "css/style.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css">
 </head>
 <body>
 <a href="/select" class="dropdown-item">Search Hardware</a>
