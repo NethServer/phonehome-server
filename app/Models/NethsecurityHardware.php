@@ -18,7 +18,7 @@ class NethsecurityHardware extends Model
         'vga_controller',
         'usb_controller',
         'pci_bridge',
-        'stata_controller',
+        'sata_controller',
         'communication_controller',
         'scsi_controller',
         'ethernet',

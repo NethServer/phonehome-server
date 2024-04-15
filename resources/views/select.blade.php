@@ -3,64 +3,34 @@
 <head>
     <meta charset="UTF-8">
     <title>Select Hardware</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #f0f0f0;
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            display: flex;
-            justify-content: center; 
-            align-items: center; 
-            height: 100vh; 
-        }
-
-        .container {
-            max-width: 400px;
-            padding: 20px;
-            background-color: #fff;
-            border-radius: 10px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-            text-align: center;
-        }
-
-        h1 {
-            color: #333;
-            margin-bottom: 20px;
-        }
-
-        input[type="radio"] {
-            display: none;
-        }
-
-        label {
-            display: block;
-            margin-bottom: 10px;
-            cursor: pointer;
-            padding: 10px 20px;
-            border-radius: 5px;
-            background-color: #007bff;
-            color: #fff;
-            transition: background-color 0.3s ease;
-        }
-    </style>
+    <link rel="stylesheet" href= "css/select.css">
 </head>
 <body>
     <div class="container">
         <h1>Select Hardware</h1>
         
-        <label for="nethserver_radio" onclick="redirectTo('/hardware-nethserver')">Nethserver</label>
-        <input type="radio" name="hardware_type" id="nethserver_radio" value="nethserver">
+        <label for="nethserver_radio" onclick="selectHardware('Nethserver')">Nethserver</label>
+        <input type="radio" name="hardware_type" id="nethserver_radio" value="Nethserver">
 
-        <label for="nethsecurity_radio" onclick="redirectTo('/hardware-nethsecurity')">Nethsecurity</label>
-        <input type="radio" name="hardware_type" id="nethsecurity_radio" value="nethsecurity">
+        <label for="nethsecurity_radio" onclick="selectHardware('Nethsecurity')">Nethsecurity</label>
+        <input type="radio" name="hardware_type" id="nethsecurity_radio" value="Nethsecurity">
     </div>
 
+    <form id="hardware_form" action="{{ route('hardware')}}" method="POST">
+        @csrf
+        <input type="hidden" id="hidden_hardware_type" name="hardware_type" value="">
+    </form>
+
     <script>
-        function redirectTo(url) {
-            window.location.href = url;
+    function redirectTo(url, hardwareType) {
+        window.location.href = url;
+    }
+
+    function selectHardware(hardwareType) {
+            document.getElementById('hidden_hardware_type').value = hardwareType;
+            document.getElementById('hardware_form').submit();
         }
     </script>
+
 </body>
 </html>
