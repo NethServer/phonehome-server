@@ -55,7 +55,8 @@ return new class extends Migration
            LIMIT 1) AS ethernet
        FROM installations
        WHERE data->>'installation' LIKE 'nethserver'
-       AND (data->'facts'->'nodes'->'1'->'product'->>'name') IS NOT NULL;
+       AND (data->'facts'->'nodes'->'1'->'product'->>'name') IS NOT NULL
+       AND updated_at >= CURRENT_TIMESTAMP - INTERVAL '72 hours';
        ");
     }
 

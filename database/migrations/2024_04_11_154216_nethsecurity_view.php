@@ -54,7 +54,8 @@ return new class extends Migration
             WHERE elem->>'class_name' = 'Ethernet controller'
             LIMIT 1) AS ethernet
         FROM installations
-        WHERE data->>'installation' LIKE 'nethsecurity';
+        WHERE data->>'installation' LIKE 'nethsecurity'
+        AND updated_at >= CURRENT_TIMESTAMP - INTERVAL '72 hours';
         ");
     }
 

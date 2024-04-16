@@ -64,3 +64,57 @@ body {
   li strong {
     font-weight: bold;
   }
+
+  .container h1 {
+    font-size: 24px;
+    margin-bottom: 5px;
+  }
+
+  p {
+    margin-bottom: 40px;
+    opacity: 0.6;
+  }
+
+  .scrollable-content {
+    overflow-y: scroll;
+    max-height: 700px;
+  }
+
+  .accordion {
+    background-color: #f9f9f9;
+    color: #333;
+    cursor: pointer;
+    padding: 18px;
+    width: 100%;
+    text-align: left;
+    border: none;
+    outline: none;
+    transition: 0.4s;
+    margin-bottom: 10px;
+    margin-left: -33px;
+  }
+
+  .accordion h2 {
+    text-align: left;
+    margin-left: 5px;
+    font-size: 18px;
+    margin-bottom: 10px;
+  }
+
+  .bi.bi-caret-down-fill {
+    font-size: 12px;
+    float: right;
+    margin-top: -25px;
+  }
+
+  .panel {
+    padding: 0 18px;
+    background-color: white;
+    display: none;
+    overflow: hidden;
+    margin-left: -33px;
+  }
+
+  .panel span {
+    float: right;
+  }

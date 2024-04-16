@@ -54,7 +54,7 @@ class HardwareController extends Controller
                     ->get();
             }
         }
-        // Loop through matching hardware to build inputMatch array and count
+        // Returning an array containing only the specific hardware elements that contain the search term
         foreach ($matchingHardware as $hardware) {
             if(stripos($hardware->product_name, $searchTerm) !== false){
                 $inputMatch[] = 'Product Name: ' . $hardware->product_name;            

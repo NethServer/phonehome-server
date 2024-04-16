@@ -28,6 +28,6 @@ Route::get('/select', function() {
     return view('select');
 });
 
-Route::post('/hardware', [SelectController::class, 'selectHardware'])->name('hardware');
+Route::get('/hardware-selection', [SelectController::class, 'selectHardware'])->name('hardware-selection');
 
 Route::get('/hardware', [HardwareController::class, 'index'])->name('hardware');
