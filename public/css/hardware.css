@@ -126,3 +126,11 @@ body {
   .dropdown-item {
     margin-left: 10px;
   }
+
+  a.dropdown-item {
+    color: black;
+  }
+
+  a.dropdown-item:hover {
+    color: rgb(4, 0, 255);
+  }
