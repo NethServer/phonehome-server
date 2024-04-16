@@ -25,7 +25,7 @@ class HardwareController extends Controller
             return view('hardware', ['matchingHardware' => collect(), 'hardware_type' => $hardware_type]);
         }
         // Perform a query to find all hardware that contain the search term
-        if($hardware_type === 'Nethserver'){
+        if($hardware_type === 'NethServer'){
             if(!empty($searchTerm)){
                 $matchingHardware = NethserverHardware::where('product_name', 'ilike', '%' . $searchTerm . '%')
                     ->orWhere('manufacturer', 'ilike', '%' . $searchTerm . '%')
@@ -39,7 +39,7 @@ class HardwareController extends Controller
                     ->orWhere('ethernet', 'ilike', '%' . $searchTerm . '%')
                     ->get();
             }
-        }else if($hardware_type === 'Nethsecurity'){
+        }else if($hardware_type === 'NethSecurity'){
             if(!empty($searchTerm)){
                 $matchingHardware = NethsecurityHardware::where('product_name', 'ilike', '%' . $searchTerm . '%')
                     ->orWhere('manufacturer', 'ilike', '%' . $searchTerm . '%')
