@@ -30,8 +30,7 @@
         {{$count}} hardware found <br><br>
         <!-- Looping through grouped input matches -->
         @foreach ($groupedInputMatch as $key => $group)
-            <button class="accordion"
-            onmouseover="this.style.backgroundColor='#ddd'" onmouseout="this.style.backgroundColor='#f9f9f9'"><h2><strong>{{ $key }}:</strong></h2>
+            <button class="accordion"><h2><strong>{{ $key }}:</strong></h2>
             <span><i class="bi bi-caret-down-fill"></i></span></button>
             <div class="panel">
             <ul>

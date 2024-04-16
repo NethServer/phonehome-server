@@ -22,7 +22,7 @@ class HardwareController extends Controller
         // If search term is empty, return an empty view
         if($searchTerm === null || $searchTerm === '')
         {
-            return view('hardware', ['matchingHardware' => collect()]);
+            return view('hardware', ['matchingHardware' => collect(), 'hardware_type' => $hardware_type]);
         }
         // Perform a query to find all hardware that contain the search term
         if($hardware_type === 'Nethserver'){
