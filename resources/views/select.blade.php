@@ -10,11 +10,11 @@
     <div class="container">
         <h1>Select Hardware</h1>
         
-        <label for="nethserver_radio" onclick="selectHardware('Nethserver')">Nethserver</label>
-        <input type="radio" name="hardware_type" id="nethserver_radio" value="Nethserver">
+        <label for="nethserver_radio" onclick="selectHardware('NethServer')">NethServer</label>
+        <input type="radio" name="hardware_type" id="nethserver_radio" value="NethServer">
 
-        <label for="nethsecurity_radio" onclick="selectHardware('Nethsecurity')">Nethsecurity</label>
-        <input type="radio" name="hardware_type" id="nethsecurity_radio" value="Nethsecurity">
+        <label for="nethsecurity_radio" onclick="selectHardware('NethSecurity')">NethSecurity</label>
+        <input type="radio" name="hardware_type" id="nethsecurity_radio" value="NethSecurity">
     </div>
 
     <form id="hardware_form" action="{{ route('hardware-selection')}}" method="GET">
