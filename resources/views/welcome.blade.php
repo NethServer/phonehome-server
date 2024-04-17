@@ -40,6 +40,7 @@
           <a class="dropdown-item" id="interval_all">
             All
           </a>
+          <a href="{{ route('select-hardware')}}" class="dropdown-item">Search Hardware</a>
         </div>
       </div>
     </div>

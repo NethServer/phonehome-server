@@ -1,7 +1,9 @@
 <?php
 
 use App\Http\Controllers\CompatibilityController;
+use App\Http\Controllers\HardwareController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\SelectController;
 
 /*
 |--------------------------------------------------------------------------
@@ -21,3 +23,9 @@ Route::get('/', function () {
 Route::post('/', [CompatibilityController::class, 'store'])
     ->withoutMiddleware('web')
     ->middleware('api');
+
+Route::get('/select', function() {
+    return view('select');
+})->name('select-hardware');
+
+Route::get('/hardware/{installation}', [HardwareController::class, 'index'])->name('hardware');

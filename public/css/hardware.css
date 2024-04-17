@@ -1,0 +1,136 @@
+body {
+    font-family: Arial, sans-serif; 
+    margin: 0;
+    padding: 0;
+    background-color: #f2f2f2;
+  }
+  
+  .container {
+    max-width: 800px;
+    margin: 50px auto; 
+    padding: 20px;
+    background-color: #fff;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    text-align: center; 
+  }
+  
+  h1 {
+    margin-top: 0;
+    color: #333;
+  }
+  
+  form {
+    margin-bottom: 20px;
+  }
+  
+  input[type="text"] {
+    width: 70%;
+    padding: 10px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    font-size: 16px;
+    box-sizing: border-box;
+  }
+  
+  button[type="submit"] {
+    padding: 10px 20px;
+    border: none;
+    background-color: #007bff;
+    color: #fff;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+  }
+  
+  button[type="submit"]:hover {
+    background-color: #0056b3;
+  }
+  
+  ul {
+    list-style-type: none;
+    padding: 0;
+  }
+  
+  li {
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    padding: 10px;
+    margin-bottom: 10px;
+    background-color: #f9f9f9;
+    text-align: left;
+  }
+  
+  li strong {
+    font-weight: bold;
+  }
+
+  .container h1 {
+    font-size: 30px;
+    margin-bottom: 5px;
+  }
+
+  p {
+    margin-bottom: 40px;
+    opacity: 0.6;
+  }
+
+  .scrollable-content {
+    overflow-y: scroll;
+    max-height: 700px;
+  }
+
+  .accordion {
+    background-color: #f0f0f0;
+    color: #333;
+    cursor: pointer;
+    padding: 18px;
+    width: 100%;
+    text-align: left;
+    border: none;
+    outline: none;
+    transition: 0.4s;
+    margin-bottom: 10px;
+    margin-left: -33px;
+  }
+
+  .accordion:hover {
+    background-color: #ddd;
+  }
+
+  .accordion h2 {
+    text-align: left;
+    margin-left: 5px;
+    font-size: 18px;
+    margin-bottom: 10px;
+  }
+
+  .bi.bi-caret-down-fill {
+    font-size: 12px;
+    float: right;
+    margin-top: -25px;
+  }
+
+  .panel {
+    padding: 0 18px;
+    background-color: white;
+    display: none;
+    overflow: hidden;
+    margin-left: -33px;
+  }
+
+  .panel span {
+    float: right;
+  }
+
+  .dropdown-item {
+    margin-left: 10px;
+  }
+
+  a.dropdown-item {
+    color: black;
+  }
+
+  a.dropdown-item:hover {
+    color: rgb(4, 0, 255);
+  }
