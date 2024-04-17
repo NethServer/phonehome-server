@@ -62,6 +62,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        DB::statement("DROP VIEW IF EXISTS nethsecurity_view");
+        DB::statement('DROP VIEW IF EXISTS nethsecurity_view');
     }
 };

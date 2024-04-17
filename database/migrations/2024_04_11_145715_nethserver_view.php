@@ -10,7 +10,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-       DB::statement("
+        DB::statement("
        CREATE OR REPLACE VIEW nethserver_view AS
        SELECT
            data->'facts'->'nodes'->'1'->'product'->>'name' AS product_name,
