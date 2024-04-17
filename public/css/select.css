@@ -43,6 +43,27 @@ button:hover {
 }
 
 a {
-    color: white;
     text-decoration: none;
+}
+
+strong {
+    color: white;
+}
+
+img {
+    width: 80px;
+}
+
+.nav-item {
+   padding: 0px;
+}
+
+.navbar {
+    display: flex;
+    justify-content: flex-start; 
+    align-items: center; 
+}
+
+.navbar-brand {
+    margin-right: 20px;
 }

@@ -127,10 +127,10 @@ body {
     margin-left: 10px;
   }
 
-  a.dropdown-item {
-    color: black;
+  img {
+    width: 80px;
   }
 
-  a.dropdown-item:hover {
-    color: rgb(4, 0, 255);
+  .nav-item{
+    padding: 0px;
   }
