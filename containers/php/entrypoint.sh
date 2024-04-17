@@ -11,7 +11,6 @@ if [ "$1" = 'php-fpm' ]; then
         php artisan optimize
     fi
     php artisan migrate --force
-    php artisan storage:link
     php artisan app:geoip:download
     chown -R www-data:www-data storage
 elif [ "$1" = 'crond' ]; then
