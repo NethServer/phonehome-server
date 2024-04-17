@@ -26,8 +26,6 @@ Route::post('/', [CompatibilityController::class, 'store'])
 
 Route::get('/select', function() {
     return view('select');
-});
+})->name('select-hardware');
 
-Route::get('/hardware-selection', [SelectController::class, 'selectHardware'])->name('hardware-selection');
-
-Route::get('/hardware', [HardwareController::class, 'index'])->name('hardware');
+Route::get('/hardware/{installation}', [HardwareController::class, 'index'])->name('hardware');

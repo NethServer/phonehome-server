@@ -4,14 +4,12 @@ namespace App\Http\Controllers;
 
 use App\Models\NethserverHardware;
 use App\Models\NethsecurityHardware;
-use App\Http\Controllers\SelectController;
 use Illuminate\Http\Request;
 
 class HardwareController extends Controller
 {
-    public function index(Request $request, SelectController $selectController)
+    public function index(Request $request, String $installation)
     {
-        $hardware_type = $selectController->getHardwareType($request);
         // Retrieve search term from request
         $searchTerm = $request->input('search_term');
         // Initialize variables for storing matches and count
@@ -22,10 +20,10 @@ class HardwareController extends Controller
         // If search term is empty, return an empty view
         if($searchTerm === null || $searchTerm === '')
         {
-            return view('hardware', ['matchingHardware' => collect(), 'hardware_type' => $hardware_type]);
+            return view('hardware', ['matchingHardware' => collect(), 'installation' => $installation]);
         }
         // Perform a query to find all hardware that contain the search term
-        if($hardware_type === 'NethServer'){
+        if($installation === 'NethServer'){
             if(!empty($searchTerm)){
                 $matchingHardware = NethserverHardware::where('product_name', 'ilike', '%' . $searchTerm . '%')
                     ->orWhere('manufacturer', 'ilike', '%' . $searchTerm . '%')
@@ -39,7 +37,7 @@ class HardwareController extends Controller
                     ->orWhere('ethernet', 'ilike', '%' . $searchTerm . '%')
                     ->get();
             }
-        }else if($hardware_type === 'NethSecurity'){
+        }else if($installation === 'NethSecurity'){
             if(!empty($searchTerm)){
                 $matchingHardware = NethsecurityHardware::where('product_name', 'ilike', '%' . $searchTerm . '%')
                     ->orWhere('manufacturer', 'ilike', '%' . $searchTerm . '%')
@@ -58,7 +56,7 @@ class HardwareController extends Controller
         foreach ($matchingHardware as $hardware) {
             if(stripos($hardware->product_name, $searchTerm) !== false){
                 $inputMatch[] = 'Product Name: ' . $hardware->product_name;            
-            }else if(stripos($hardware->manufacturer, $searchTerm) !== false) {
+            }else if(stripos($hardware->manufacturer, $searchTerm) !== false){
                 $inputMatch[] = 'Manufacturer: ' . $hardware->manufacturer;
             }else if(stripos($hardware->processor, $searchTerm) !== false){
                 $inputMatch[] = 'Processor: ' . $hardware->processor;
@@ -93,20 +91,19 @@ class HardwareController extends Controller
 
             //If the row does not exist yet, add it
             if(!$rowExists){
-               if(isset($groupedInputMatch[$value])){
+                if(isset($groupedInputMatch[$value])){
                     $groupedInputMatch[$value]['rows'][] = $row;
-                    $groupedInputMatch[$value]['rowsCount']++;
                 }else{
-                    $groupedInputMatch[$value] = ['rows' => [$row], 'rowsCount' => 1];
+                    $groupedInputMatch[$value] = ['rows' => [$row]];
                 }
             }
             
-            // COunt occurrences of each row
+            // Count occurrences of each row
             $rowsCount = ($groupedInputMatch[$value]['occurrences'][$row] ?? 0) + 1;
             $groupedInputMatch[$value]['occurrences'][$row] = $rowsCount;
         }
 
         // Return view with grouped input matches, count, and rows count
-        return view('hardware', ['groupedInputMatch' => $groupedInputMatch, 'count' => $count, 'hardware_type' => $hardware_type]);
+        return view('hardware', ['groupedInputMatch' => $groupedInputMatch, 'count' => $count, 'installation' => $installation]);
     }
 }

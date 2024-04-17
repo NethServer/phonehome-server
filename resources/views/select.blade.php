@@ -3,32 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <title>Select Hardware</title>
-    <!-- Linking to external CSS file -->
     <link rel="stylesheet" href= "css/select.css">
 </head>
 <body>
     <div class="container">
-        <h1>Select Hardware</h1>
-        
-        <label for="nethserver_radio" onclick="selectHardware('NethServer')">NethServer</label>
-        <input type="radio" name="hardware_type" id="nethserver_radio" value="NethServer">
-
-        <label for="nethsecurity_radio" onclick="selectHardware('NethSecurity')">NethSecurity</label>
-        <input type="radio" name="hardware_type" id="nethsecurity_radio" value="NethSecurity">
+        <h1>Select Hardware</h1>    
+        <button> <a href= "{{ route('hardware', ['installation' => 'NethServer'] )}}"><strong>NethServer</strong></a></button>
+        <button> <a href= "{{ route('hardware', ['installation' => 'NethSecurity'] )}}"><strong>NethSecurity</strong></a></button>
     </div>
-
-    <form id="hardware_form" action="{{ route('hardware-selection')}}" method="GET">
-        @csrf
-        <input type="hidden" id="hidden_hardware_type" name="hardware_type" value="">
-    </form>
-
-    <script>
-    // Function to set selected hardware type and submit form
-    function selectHardware(hardwareType) {
-            document.getElementById('hidden_hardware_type').value = hardwareType;
-            document.getElementById('hardware_form').submit();
-        }
-    </script>
-
 </body>
 </html>
