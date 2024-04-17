@@ -17,7 +17,6 @@ ExecStart=/usr/bin/podman run \
     --cgroups no-conmon \
     --replace \
     --name %N \
-    --volume public:/var/www/html/public:ro \
     --env FPM_URL=app \
     --env FPM_PORT=9000 \
     ${PHONEHOME_SERVER_WEB_IMAGE}
