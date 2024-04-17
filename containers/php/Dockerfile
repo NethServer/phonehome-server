@@ -87,7 +87,7 @@ RUN install-php-extensions \
         procps \
     && echo "access.log = /dev/null" >> /usr/local/etc/php-fpm.d/zz-docker.conf \
     && mv "$PHP_INI_DIR/php.ini-production" "$PHP_INI_DIR/php.ini" \
-    && echo "* * * * * cd /var/www/html && php artisan schedule >> /dev/null 2>&1" > /etc/crontabs/www-data
+    && echo "* * * * * cd /var/www/html && php artisan schedule:run >> /dev/null 2>&1" > /etc/crontabs/www-data
 # php configuration
 COPY containers/php/conf.d /usr/local/etc/php/conf.d
 # additional binaries and entrypoint
