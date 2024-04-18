@@ -52,7 +52,7 @@ body {
     padding: 0;
   }
   
-  #rows {
+  .rows {
     border: 1px solid #ccc;
     border-radius: 5px;
     padding: 10px;
