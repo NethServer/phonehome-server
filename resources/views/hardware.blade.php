@@ -55,7 +55,7 @@
                 <!-- Looping through hardware details -->
                 @foreach ($group['rows'] as $row)
                     <!-- Displaying hardware details and occurrences -->
-                    <li>{{ $row }} <span>({{ $group['occurrences'][$row] }})</span></li> 
+                    <li id="rows">{{ $row }} <span>({{ $group['occurrences'][$row] }})</span></li> 
                 @endforeach
             </ul>
             </div>

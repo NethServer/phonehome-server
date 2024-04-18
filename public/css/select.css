@@ -1,17 +1,19 @@
-
 body {
     font-family: Arial, sans-serif;
     background-color: #f0f0f0;
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-    display: flex;
-    justify-content: center; 
-    align-items: center; 
-    height: 100vh; 
+}
+
+img {
+    width: 80px;
+}
+
+h1 {
+    color: #333;
+    margin-bottom: 35px;
 }
 
 .container {
+    margin-top: 60px;
     max-width: 400px;
     padding: 20px;
     background-color: #fff;
@@ -20,50 +22,8 @@ body {
     text-align: center;
 }
 
-h1 {
-    color: #333;
-    margin-bottom: 20px;
-}
-
-button {
+.btn {
     display: block;
     margin-bottom: 10px;
-    cursor: pointer;
-    padding: 10px 20px;
-    border-radius: 5px;
-    background-color: #007bff;
-    transition: background-color 0.3s ease;
-    border: none;
-    width: 100%;
-    font-size: 18px;
-}
-
-button:hover {
-    background-color: #0056b3;
-}
-
-a {
-    text-decoration: none;
-}
-
-strong {
-    color: white;
-}
-
-img {
-    width: 80px;
-}
-
-.nav-item {
-   padding: 0px;
-}
-
-.navbar {
-    display: flex;
-    justify-content: flex-start; 
-    align-items: center; 
-}
-
-.navbar-brand {
-    margin-right: 20px;
+    font-size: 20px;
 }
