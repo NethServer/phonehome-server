@@ -1,5 +1,17 @@
 # Changelog
 
+## [1.2.0](https://github.com/NethServer/phonehome-server/compare/v1.1.0...v1.2.0) (2024-04-19)
+
+
+### Features
+
+* ui improvements ([#109](https://github.com/NethServer/phonehome-server/issues/109)) ([c539c09](https://github.com/NethServer/phonehome-server/commit/c539c098a09eeb9697f8fe3f1bc0cfdc1fabd111))
+
+
+### Miscellaneous Chores
+
+* fix composer hash ([7a50205](https://github.com/NethServer/phonehome-server/commit/7a50205ee638587efb100b5b1b2a97d8d1d7cdf6))
+
 ## [1.1.0](https://github.com/NethServer/phonehome-server/compare/v1.0.1...v1.1.0) (2024-04-17)
 
 
