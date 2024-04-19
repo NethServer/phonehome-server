@@ -52,7 +52,7 @@ body {
     padding: 0;
   }
   
-  li {
+  .rows {
     border: 1px solid #ccc;
     border-radius: 5px;
     padding: 10px;
@@ -77,7 +77,7 @@ body {
 
   .scrollable-content {
     overflow-y: scroll;
-    max-height: 700px;
+    max-height: auto;
   }
 
   .accordion {
@@ -127,10 +127,10 @@ body {
     margin-left: 10px;
   }
 
-  a.dropdown-item {
-    color: black;
+  img {
+    width: 80px;
   }
 
-  a.dropdown-item:hover {
-    color: rgb(4, 0, 255);
+  .nav-item{
+    padding: 0px;
   }

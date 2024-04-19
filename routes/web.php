@@ -17,7 +17,7 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
     return view('welcome');
-});
+})->name('map');
 
 Route::post('/', [CompatibilityController::class, 'store'])
     ->withoutMiddleware('web')
