@@ -1,4 +1,4 @@
-FROM nginx:1.25.4-alpine as production
+FROM nginx:1.25.5-alpine as production
 WORKDIR /var/www/html
 COPY containers/nginx/config /etc/nginx
 ADD --chmod=755 \
