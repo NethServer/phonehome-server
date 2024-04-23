@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\CompatibilityController;
 use App\Http\Controllers\HardwareController;
+use App\Http\Controllers\PciController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -28,3 +29,5 @@ Route::get('/select', function () {
 })->name('select-hardware');
 
 Route::get('/hardware/{installation}', [HardwareController::class, 'index'])->name('hardware');
+
+Route::get('/hardware-pci/{installation}', [PciController::class, 'index'])->name('hardware-pci');
