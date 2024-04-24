@@ -1,5 +1,18 @@
 # Changelog
 
+## [1.3.0](https://github.com/NethServer/phonehome-server/compare/v1.2.0...v1.3.0) (2024-04-24)
+
+
+### Features
+
+* add search by PCI id ([#112](https://github.com/NethServer/phonehome-server/issues/112)) ([eb338d3](https://github.com/NethServer/phonehome-server/commit/eb338d38b1190f62269f9b2c33fafd3c1f015c11))
+
+
+### Miscellaneous Chores
+
+* **deps:** update mlocati/php-extension-installer docker tag to v2.2.12 ([ff0af80](https://github.com/NethServer/phonehome-server/commit/ff0af80887559b9b46d1fb5ca0d83fe79ed1d5f7))
+* **deps:** update nginx docker tag to v1.25.5 ([c433099](https://github.com/NethServer/phonehome-server/commit/c433099c503e200d59fa7d0b1c901afbda88d506))
+
 ## [1.2.0](https://github.com/NethServer/phonehome-server/compare/v1.1.0...v1.2.0) (2024-04-19)
 
 
