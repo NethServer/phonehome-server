@@ -158,3 +158,11 @@ body {
     background-color: lightslategrey;
     margin-left: 0px;
   }
+
+  .dropdown-item.search-by-name {
+    color: blue;
+  }
+
+  .dropdown-item.search-by-id {
+    color: blue;
+  }

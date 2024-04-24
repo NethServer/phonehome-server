@@ -33,10 +33,11 @@
     <form action="{{ route('hardware-pci', ['installation' => $installation]) }}" method="GET">
         <div class="btn-group">
             <button class="btn btn-primary dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                Search Type
+                Search by PCI id
             </button>
             <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                <a class="dropdown-item" href="{{ route('hardware', ['installation' => $installation]) }}">Search by word</a>
+              <a class="dropdown-item" href="{{ route('hardware', ['installation' => $installation]) }}">Search by name</a>
+              <a class="dropdown-item search-by-id" href="{{ route('hardware-pci', ['installation' => $installation]) }}">Search by PCI id</a>
             </div>
         </div>
         @csrf
@@ -44,7 +45,9 @@
         <button type="submit">Search</button>
     </form>
 
-    @if (isset($error))
+    @if($pciSearch === null || $pciSearch = '')
+      <p></p>
+    @elseif (isset($error))
     <div class="alert alert-danger" role="alert">
         {{ $error }}
     </div>
