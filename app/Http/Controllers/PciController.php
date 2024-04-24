@@ -14,7 +14,7 @@ class PciController extends Controller
         $count = 0;
 
         if($pciSearch === null || $pciSearch === ''){
-            return view('hardwarePci', ['pciHardwareMatch' => collect(), 'installation' => $installation]);
+            return view('hardwarePci', ['pciHardwareMatch' => collect(), 'installation' => $installation, 'pciSearch' => $pciSearch]);
         }
 
         if($installation === 'NethSecurity'){
@@ -28,7 +28,7 @@ class PciController extends Controller
                         ->where('device_id', $deviceId)
                         ->get();
                 }else{
-                    return view('hardwarePci', ['installation' => $installation])->with('error','The format of the PCI ID is incorrect. Make sure to enter a value in the correct format (xxxx:xxxx), where xxxx represents a sequence of 4 hexadecimal characters.');
+                    return view('hardwarePci', ['installation' => $installation, 'pciSearch' => $pciSearch])->with('error','The format of the PCI ID is incorrect. Make sure to enter a value in the correct format (xxxx:xxxx), where xxxx represents a sequence of 4 hexadecimal characters.');
                 }
             }
         }else if($installation === 'NethServer'){
@@ -42,7 +42,7 @@ class PciController extends Controller
                         ->where('device_id', $deviceId)
                         ->get();
                 }else {
-                    return view('hardwarePci',  ['installation' => $installation])->with('error','The format of the PCI ID is incorrect. Make sure to enter a value in the correct format (xxxx:xxxx), where xxxx represents a sequence of 4 hexadecimal characters.');
+                    return view('hardwarePci',  ['installation' => $installation, 'pciSearch' => $pciSearch])->with('error','The format of the PCI ID is incorrect. Make sure to enter a value in the correct format (xxxx:xxxx), where xxxx represents a sequence of 4 hexadecimal characters.');
                 }
             }
         }
@@ -64,6 +64,6 @@ class PciController extends Controller
             }
         }
 
-        return view('hardwarePci', ['pciHardware' => $pciHardware, 'count' => $count, 'installation' => $installation, 'hardwareCounts' => $hardwareCounts]);
+        return view('hardwarePci', ['pciHardware' => $pciHardware, 'count' => $count, 'installation' => $installation, 'hardwareCounts' => $hardwareCounts, 'pciSearch' => $pciSearch]);
     }
 }

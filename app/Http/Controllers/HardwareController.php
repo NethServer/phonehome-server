@@ -19,7 +19,7 @@ class HardwareController extends Controller
 
         // If search term is empty, return an empty view
         if ($searchTerm === null || $searchTerm === '') {
-            return view('hardware', ['matchingHardware' => collect(), 'installation' => $installation]);
+            return view('hardware', ['matchingHardware' => collect(), 'installation' => $installation, 'searchTerm' => $searchTerm]);
         }
         // Perform a query to find all hardware that contain the search term
         if ($installation === 'NethServer') {
@@ -103,6 +103,6 @@ class HardwareController extends Controller
         }
 
         // Return view with grouped input matches, count, and rows count
-        return view('hardware', ['groupedInputMatch' => $groupedInputMatch, 'count' => $count, 'installation' => $installation]);
+        return view('hardware', ['groupedInputMatch' => $groupedInputMatch, 'count' => $count, 'installation' => $installation, 'searchTerm' => $searchTerm]);
     }
 }

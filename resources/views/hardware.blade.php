@@ -31,10 +31,9 @@
     <p>Enter a search term in the input box below to find {{$installation}} hardware matching your requirements.</p>
     <form action="{{ route('hardware', ['installation' => $installation]) }}" method="GET">
         <div class="btn-group">
-            <button class="btn btn-primary dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                Search Type
-            </button>
+            <button class="btn btn-primary dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Search by name</button>
             <div class="dropdown-menu" style="width: 10px;" aria-labelledby="dropdownMenuButton">
+                <a class="dropdown-item search-by-name" href="{{ route('hardware', ['installation' => $installation]) }}">Search by name</a>
                 <a class="dropdown-item" href="{{ route('hardware-pci', ['installation' => $installation]) }}">Search by PCI id</a>
             </div>
         </div>
@@ -44,7 +43,9 @@
         
     </form>
 
-    @if (empty($groupedInputMatch))
+    @if ($searchTerm === null || $searchTerm = '')
+        <p></p>
+    @elseif (empty($groupedInputMatch))
         <p>No hardware found</p>
     @else
         <ul>
