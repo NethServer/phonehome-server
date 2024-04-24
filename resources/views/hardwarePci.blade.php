@@ -32,7 +32,7 @@
 
     <form action="{{ route('hardware-pci', ['installation' => $installation]) }}" method="GET">
         <div class="btn-group">
-            <button class="btn btn-primary dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                 Search by PCI id
             </button>
             <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
@@ -75,10 +75,8 @@
         </ul>
         </div>
         <br>
-        @endforeach       
-        
+        @endforeach
     @endif
-    
 </div>
 </body>
 </html>

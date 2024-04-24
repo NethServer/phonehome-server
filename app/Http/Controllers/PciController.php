@@ -14,11 +14,13 @@ class PciController extends Controller
         $count = 0;
 
         if($pciSearch === null || $pciSearch === ''){
-            return view('hardwarePci', ['pciHardwareMatch' => collect(), 'installation' => $installation, 'pciSearch' => $pciSearch]);
+            return view('hardwarePci', ['pciHardwareMatch' => collect(),
+                                        'installation' => $installation,
+                                        'pciSearch' => $pciSearch]);
         }
 
         if($installation === 'NethSecurity'){
-            if(! empty($pciSearch)){ 
+            if(! empty($pciSearch)){
                 if (preg_match('/^[0-9a-fA-F]{4}:[0-9a-fA-F]{4}$/', $pciSearch)){
                     $ids = explode(':', $pciSearch);
                     $vendorId = $ids[0];
@@ -28,11 +30,13 @@ class PciController extends Controller
                         ->where('device_id', $deviceId)
                         ->get();
                 }else{
-                    return view('hardwarePci', ['installation' => $installation, 'pciSearch' => $pciSearch])->with('error','The format of the PCI ID is incorrect. Make sure to enter a value in the correct format (xxxx:xxxx), where xxxx represents a sequence of 4 hexadecimal characters.');
+                    return view('hardwarePci', ['installation' => $installation, 'pciSearch' => $pciSearch])
+                        -> with('error','The format of the PCI ID is incorrect. Make sure to enter a value in the correct
+                                format (xxxx:xxxx), where xxxx represents a sequence of 4 hexadecimal characters.');
                 }
             }
         }else if($installation === 'NethServer'){
-            if(! empty($pciSearch)){                
+            if(! empty($pciSearch)){
                 if (preg_match('/^[0-9a-fA-F]{4}:[0-9a-fA-F]{4}$/', $pciSearch)) {
                     $ids = explode(':', $pciSearch);
                     $vendorId = $ids[0];
@@ -42,7 +46,9 @@ class PciController extends Controller
                         ->where('device_id', $deviceId)
                         ->get();
                 }else {
-                    return view('hardwarePci',  ['installation' => $installation, 'pciSearch' => $pciSearch])->with('error','The format of the PCI ID is incorrect. Make sure to enter a value in the correct format (xxxx:xxxx), where xxxx represents a sequence of 4 hexadecimal characters.');
+                    return view('hardwarePci',  ['installation' => $installation, 'pciSearch' => $pciSearch])
+                        -> with('error','The format of the PCI ID is incorrect. Make sure to enter a value in the correct
+                                format (xxxx:xxxx), where xxxx represents a sequence of 4 hexadecimal characters.');
                 }
             }
         }
@@ -53,8 +59,13 @@ class PciController extends Controller
         $hardwareCounts = [];
 
         foreach ($pciHardwareMatch as $hardware){
-            $key = $hardware->class_id . '_' . $hardware->vendor_id . '_' . $hardware->device_id . '_' .
-                   $hardware->class_name . '_' . $hardware->vendor_name . '_' . $hardware->device_name . '_' . $hardware->driver;
+            $key = $hardware->class_id . '_'
+                 . $hardware->vendor_id . '_'
+                 . $hardware->device_id . '_'
+                 . $hardware->class_name . '_'
+                 . $hardware->vendor_name . '_'
+                 . $hardware->device_name . '_'
+                 . $hardware->driver;
 
             if(array_key_exists($key, $pciHardware)){
                     $hardwareCounts[$key]++;
@@ -64,6 +75,10 @@ class PciController extends Controller
             }
         }
 
-        return view('hardwarePci', ['pciHardware' => $pciHardware, 'count' => $count, 'installation' => $installation, 'hardwareCounts' => $hardwareCounts, 'pciSearch' => $pciSearch]);
+        return view('hardwarePci', ['pciHardware' => $pciHardware,
+                                    'count' => $count,
+                                    'installation' => $installation,
+                                    'hardwareCounts' => $hardwareCounts,
+                                    'pciSearch' => $pciSearch]);
     }
 }

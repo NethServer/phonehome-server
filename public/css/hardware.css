@@ -135,8 +135,7 @@ body {
     padding: 0px;
   }
 
-  .btn.btn-primary{
-    background-color: #007bff;
+  .btn.btn-secondary{
     height: 43.5px;
     line-height: center;
     padding: 9px 20px;

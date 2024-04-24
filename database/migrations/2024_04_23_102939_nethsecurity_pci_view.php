@@ -22,7 +22,8 @@ return new class extends Migration
             pci_obj->>'driver' as driver
         FROM installations,
             json_array_elements(data->'facts'->'pci') as pci_obj
-        WHERE data->>'installation' LIKE 'nethsecurity';
+        WHERE data->>'installation' LIKE 'nethsecurity'
+        AND updated_at >= CURRENT_TIMESTAMP - INTERVAL '72 hours';
         ");
     }
 

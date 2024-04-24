@@ -23,7 +23,8 @@ return new class extends Migration
         FROM installations,
             json_array_elements(data->'facts'->'nodes'->'1'->'pci') as pci_obj
         WHERE data->>'installation' LIKE 'nethserver'
-        AND (data->'facts'->'nodes'->'1'->'product'->>'name') IS NOT NULL;
+        AND (data->'facts'->'nodes'->'1'->'product'->>'name') IS NOT NULL
+        AND updated_at >= CURRENT_TIMESTAMP - INTERVAL '72 hours';
         ");
     }
 
