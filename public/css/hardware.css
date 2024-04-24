@@ -134,3 +134,34 @@ body {
   .nav-item{
     padding: 0px;
   }
+
+  .btn.btn-secondary{
+    height: 43.5px;
+    line-height: center;
+    padding: 9px 20px;
+    margin-bottom: 3px;
+    font-size: 15px;
+  }
+
+  .card {
+    text-align: left;
+    width: auto;
+    margin: 0 auto;
+  }
+
+  .dropdown-item {
+    margin-left: 0px;
+  }
+
+  .dropdown-item:hover {
+    background-color: lightslategrey;
+    margin-left: 0px;
+  }
+
+  .dropdown-item.search-by-name {
+    color: blue;
+  }
+
+  .dropdown-item.search-by-id {
+    color: blue;
+  }

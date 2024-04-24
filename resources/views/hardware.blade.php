@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <title>Hardware</title>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
     <link rel="stylesheet" href="{{ asset('css/hardware.css') }}">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css">
@@ -28,14 +29,23 @@
     <div class="container">
     <h1>Find {{$installation}} Hardware</h1>
     <p>Enter a search term in the input box below to find {{$installation}} hardware matching your requirements.</p>
-
     <form action="{{ route('hardware', ['installation' => $installation]) }}" method="GET">
+        <div class="btn-group">
+            <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Search by name</button>
+            <div class="dropdown-menu" style="width: 10px;" aria-labelledby="dropdownMenuButton">
+                <a class="dropdown-item search-by-name" href="{{ route('hardware', ['installation' => $installation]) }}">Search by name </a>
+                <a class="dropdown-item" href="{{ route('hardware-pci', ['installation' => $installation]) }}">Search by PCI id</a>
+            </div>
+        </div>
         @csrf
         <input type="text" name="search_term" id="search_term" placeholder="Search hardware...">
         <button type="submit">Search</button>
+        
     </form>
 
-    @if (empty($groupedInputMatch))
+    @if ($searchTerm === null || $searchTerm = '')
+        <p></p>
+    @elseif (empty($groupedInputMatch))
         <p>No hardware found</p>
     @else
         <ul>
