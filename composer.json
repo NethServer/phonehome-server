@@ -26,7 +26,7 @@
         "laravel/tinker": "^v2.8",
         "league/csv": "^9.10",
         "opis/json-schema": "^2.3",
-        "tronovav/geoip2-update": "^v2.3"
+        "pulkitjalan/geoip": "^6.0"
     },
     "require-dev": {
         "barryvdh/laravel-ide-helper": "^v2.13",

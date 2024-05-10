@@ -39,13 +39,13 @@ class GeoIpLocatorImpl implements GeoIpLocator
     private function retryLocate(string $ip, int $retries = 0): Country
     {
         try {
-            return $this->resolver->country($ip)->country;
+            return $this->resolver->city($ip)->country;
         } catch (InvalidDatabaseException $exception) {
             if ($retries > 2) {
                 Log::emergency('Cannot recover from invalid MaxMind DB.');
                 throw $exception;
             }
-            Artisan::call('app:geoip:download');
+            Artisan::call('geoip:update');
 
             return $this->retryLocate($ip, $retries + 1);
         }
