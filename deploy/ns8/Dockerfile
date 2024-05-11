@@ -1,4 +1,4 @@
-FROM node:20.12.2-alpine as node_build
+FROM node:20.13.1-alpine as node_build
 WORKDIR /app
 COPY ui/package.json .
 COPY ui/yarn.lock .
