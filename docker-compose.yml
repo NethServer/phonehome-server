@@ -1,7 +1,7 @@
 name: phonehome-development
 services:
     database:
-        image: postgres:14.11-alpine
+        image: postgres:14.12-alpine
         healthcheck:
             test: [ "CMD", "pg_isready", "-q", "-d", $DB_DATABASE, "-U", $DB_USERNAME ]
         ports:
