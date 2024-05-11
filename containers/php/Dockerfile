@@ -13,7 +13,7 @@ RUN apk add --no-cache \
         pgsql \
         redis \
         zip
-COPY --from=composer:2.7.4 /usr/bin/composer /usr/local/bin/composer
+COPY --from=composer:2.7.6 /usr/bin/composer /usr/local/bin/composer
 
 FROM base as development
 # install xdebug and additional packages
