@@ -2,8 +2,9 @@ FROM node:20.13.1-alpine as node_build
 WORKDIR /app
 COPY ui/package.json .
 COPY ui/yarn.lock .
-RUN --mount=type=cache,target=/usr/local/share/.cache \
-    yarn
+COPY ui/.yarn ./.yarn
+COPY ui/.yarnrc.yml .
+RUN yarn
 COPY ui/.browserslistrc .
 COPY ui/.eslintrc.js .
 COPY ui/babel.config.js .
