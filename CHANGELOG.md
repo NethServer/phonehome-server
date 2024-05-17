@@ -1,5 +1,23 @@
 # Changelog
 
+## [1.3.1](https://github.com/NethServer/phonehome-server/compare/v1.3.0...v1.3.1) (2024-05-17)
+
+
+### Miscellaneous Chores
+
+* **deps:** lock file maintenance ([0e8e6f4](https://github.com/NethServer/phonehome-server/commit/0e8e6f481a9ad1a8a606d96224bfc69edf7f6362))
+* **deps:** update composer docker tag to v2.7.4 ([c71ad92](https://github.com/NethServer/phonehome-server/commit/c71ad9259776d5a34c7670ade38b15f7358a5174))
+* **deps:** update composer docker tag to v2.7.6 ([6d2a6c3](https://github.com/NethServer/phonehome-server/commit/6d2a6c3ff91c5901059c6c7b83c49ddefe4948ef))
+* **deps:** update docker/bake-action action to v4.4.0 ([703c630](https://github.com/NethServer/phonehome-server/commit/703c630ae2e9c8c6143075d1a304f659dbbaa4e9))
+* **deps:** update docker/bake-action action to v4.5.0 ([1171105](https://github.com/NethServer/phonehome-server/commit/1171105f8567b9d37261c6e7d383007e0411ce8c))
+* **deps:** update mlocati/php-extension-installer docker tag to v2.2.13 ([fd9bc41](https://github.com/NethServer/phonehome-server/commit/fd9bc415e360494288c310563a720cf180b18b2a))
+* **deps:** update mlocati/php-extension-installer docker tag to v2.2.14 ([3f3bf79](https://github.com/NethServer/phonehome-server/commit/3f3bf7984203dc5a4665a2cd53eb71de5dbf7cda))
+* **deps:** update nginx docker tag to v1.26.0 ([9d8214e](https://github.com/NethServer/phonehome-server/commit/9d8214e3823705efc853fa73a68121abd42bf8dd))
+* **deps:** update node.js to v20.13.1 ([d6522ce](https://github.com/NethServer/phonehome-server/commit/d6522ce22fc78a35a531cbd8c4e2737f2b7c6b8a))
+* **deps:** update php docker tag to v8.3.7 ([8b20a42](https://github.com/NethServer/phonehome-server/commit/8b20a420f8ea9937db0e3e0c399705ab4467b5a9))
+* **deps:** update postgres docker tag to v14.12 ([697cf9c](https://github.com/NethServer/phonehome-server/commit/697cf9c7da21e40160f26de2058a88afd969f501))
+* removing composer version ([8f7ce59](https://github.com/NethServer/phonehome-server/commit/8f7ce59eb416795e40201f578bdd41f89907b00d))
+
 ## [1.3.0](https://github.com/NethServer/phonehome-server/compare/v1.2.0...v1.3.0) (2024-04-24)
 
 
