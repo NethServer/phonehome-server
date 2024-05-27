@@ -71,15 +71,9 @@
       "description": "Common information to be fetched per-host.",
       "type": "object",
       "required": [
-        "version",
         "distro"
       ],
       "properties": {
-        "version": {
-          "description": "Version of the software.",
-          "type": "string",
-          "pattern": "^\\d+\\.\\d+\\.?\\d*$"
-        },
         "distro": {
           "description": "Distribution that the host runs on.",
           "type": "object",
@@ -128,7 +122,23 @@
           "patternProperties": {
             ".*": {
               "type": "object",
-              "$ref": "#/$defs/host-info"
+              "allOf": [
+                {
+                  "$ref": "#/$defs/host-info"
+                },
+                {
+                  "required": [
+                    "version"
+                  ],
+                  "properties": {
+                    "version": {
+                      "description": "Version of the software.",
+                      "type": "string",
+                      "pattern": "^\\d+\\.\\d+\\.?\\d*$"
+                    }
+                  }
+                }
+              ]
             }
           },
           "minProperties": 1

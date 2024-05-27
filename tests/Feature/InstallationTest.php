@@ -145,34 +145,6 @@ it('can\'t accept invalid nethserver version', function (string $schema, string 
     '9.a.6',
 ]);
 
-it('can\'t accept invalid nethsecurity version', function (string $schema, string $version) {
-    $request = [
-        '$schema' => $schema,
-        'uuid' => fake()->uuid(),
-        'installation' => 'nethsecurity',
-        'facts' => [
-            'distro' => [
-                'name' => 'rocky',
-                'version' => '9.1',
-            ],
-            'version' => $version,
-        ],
-    ];
-    $this->postJson('/api/installation', $request)
-        ->assertUnprocessable()
-        ->assertInvalid([
-            '/facts/version' => 'pattern',
-        ]);
-})->with([
-    SCHEMA_2022_12,
-])->with([
-    '8.0.a',
-    'X.Y',
-    'X',
-    '8',
-    '9.a.6',
-]);
-
 it('saves correctly new nethserver installation', function (string $schema) {
     $installation = Installation::factory()->nethserver()->make();
     $request = array_merge($installation->data, [
