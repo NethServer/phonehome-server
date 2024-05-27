@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.3.2](https://github.com/NethServer/phonehome-server/compare/v1.3.1...v1.3.2) (2024-05-27)
+
+
+### Bug Fixes
+
+* removed version from nethsecurity installations ([11e12ec](https://github.com/NethServer/phonehome-server/commit/11e12ec90fdb692f34c27a76282f0bdd18d65718))
+
 ## [1.3.1](https://github.com/NethServer/phonehome-server/compare/v1.3.0...v1.3.1) (2024-05-17)
 
 
