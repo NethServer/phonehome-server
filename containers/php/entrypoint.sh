@@ -2,6 +2,11 @@
 
 set -e
 
+# read .env if present
+if [ -f .env ]; then
+    . .env
+fi
+
 # Bootstrap application
 if [ "$1" = 'php-fpm' ]; then
     wait-for "${DB_HOST:?Missing DB_HOST}:${DB_PORT:?Missing DB_PORT}" -t 60

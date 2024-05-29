@@ -26,8 +26,6 @@ services:
         volumes: &app-volumes
             - .:/var/www/html
             - home:/home/www-data
-        env_file:
-            - .env
     web:
         pull_policy: never
         build:
