@@ -1,5 +1,5 @@
 # base image for all containers
-FROM php:8.3.7-fpm-alpine as base
+FROM php:8.3.8-fpm-alpine as base
 WORKDIR /var/www/html
 # install extensions and packages
 COPY --from=mlocati/php-extension-installer:2.2.15 /usr/bin/install-php-extensions /usr/local/sbin/
