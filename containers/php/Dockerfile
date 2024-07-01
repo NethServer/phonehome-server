@@ -10,8 +10,6 @@ RUN apk add --no-cache \
     && install-php-extensions \
         pcntl \
         pdo_pgsql \
-        pgsql \
-        redis \
         zip
 COPY --from=composer:2.7.7 /usr/bin/composer /usr/local/bin/composer
 

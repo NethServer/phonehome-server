@@ -39,9 +39,10 @@ test('cannot insert invalid version', function (string $tag) {
 ]);
 
 it('can handle post data', function () {
-    $country = $this->mock(Country::class);
-    $country->name = 'Italy';
-    $country->isoCode = 'IT';
+    $country = new Country([
+        'iso_code' => 'IT',
+        'names' => ['en' => 'Italy'],
+    ]);
 
     $this->mock(GeoIpLocator::class, function (MockInterface $mock) use ($country) {
         $mock->shouldReceive('locate')
@@ -71,13 +72,14 @@ it('can handle post data', function () {
 it('updates existing record at every ping', function () {
     $installation = Installation::factory()->create();
 
-    $country = $this->mock(Country::class);
-    $country->name = $installation->country->name;
-    $country->isoCode = $installation->country->code;
+    $country = new Country([
+        'iso_code' => $installation->country->code,
+        'names' => ['en' => $installation->country->name],
+    ]);
 
     $this->mock(
         GeoIpLocator::class,
-        fn (MockInterface $mock) => $mock->shouldReceive('locate')
+        fn(MockInterface $mock) => $mock->shouldReceive('locate')
             ->andReturn($country)
     );
 
@@ -102,13 +104,14 @@ it('updates existing record at every ping', function () {
 });
 
 it('can insert data with same uuid', function () {
-    $country = $this->mock(Country::class);
-    $country->name = 'Italy';
-    $country->isoCode = 'IT';
+    $country = new Country([
+        'iso_code' => 'IT',
+        'names' => ['en' => 'Italy'],
+    ]);
 
     $this->mock(
         GeoIpLocator::class,
-        fn (MockInterface $mock) => $mock->shouldReceive('locate')
+        fn(MockInterface $mock) => $mock->shouldReceive('locate')
             ->andReturn($country)
     );
 
@@ -236,39 +239,39 @@ it('can show installations', function () {
     $this->getJson('/api/compatibility?interval=7')
         ->assertStatus(200)
         ->assertJson(
-            fn (AssertableJson $json) => $json->has(3)
+            fn(AssertableJson $json) => $json->has(3)
                 ->has(
                     '0',
-                    fn (AssertableJson $json) => $json->where('country_name', $countryDe->name)
+                    fn(AssertableJson $json) => $json->where('country_name', $countryDe->name)
                         ->where('country_code', $countryDe->code)
                         ->has('installations')
                 )->has(
                     '1',
-                    fn (AssertableJson $json) => $json->where('country_name', $countryGb->name)
+                    fn(AssertableJson $json) => $json->where('country_name', $countryGb->name)
                         ->where('country_code', $countryGb->code)
                         ->has('installations')
                 )->has(
                     '2',
-                    fn (AssertableJson $json) => $json->where('country_name', $countryIt->name)
+                    fn(AssertableJson $json) => $json->where('country_name', $countryIt->name)
                         ->where('country_code', $countryIt->code)
                         ->has('installations')
                 )
         );
-})->skip(fn () => config('database.default') == 'sqlite', 'Cannot run on sqlite.');
+})->skip(fn() => config('database.default') == 'sqlite', 'Cannot run on sqlite.');
 
 test('nethsecurity installations are not showed', function () {
     Installation::factory()->nethsecurity()->create();
     $response = $this->getJson('/api/compatibility?interval=7')
         ->assertOk()
         ->assertJson([]);
-})->skip(fn () => config('database.default') == 'sqlite', 'Cannot run on sqlite.');
+})->skip(fn() => config('database.default') == 'sqlite', 'Cannot run on sqlite.');
 
 test('nethserver 8 installations are not showed', function () {
     Installation::factory()->nethserver()->create();
     $response = $this->getJson('/api/compatibility?interval=7')
         ->assertOk()
         ->assertJson([]);
-})->skip(fn () => config('database.default') == 'sqlite', 'Cannot run on sqlite.');
+})->skip(fn() => config('database.default') == 'sqlite', 'Cannot run on sqlite.');
 
 test('check if interval works', function () {
     $installation = Installation::factory()->create();
@@ -279,10 +282,10 @@ test('check if interval works', function () {
     $this->getJson('/api/compatibility?interval=7')
         ->assertStatus(200)
         ->assertJson(
-            fn (AssertableJson $json) => $json->has(1)
+            fn(AssertableJson $json) => $json->has(1)
                 ->has(
                     '0',
-                    fn (AssertableJson $json) => $json->where('country_name', $installation->country->name)
+                    fn(AssertableJson $json) => $json->where('country_name', $installation->country->name)
                         ->where('country_code', $installation->country->code)
                         ->has('installations')
                 )
@@ -293,18 +296,19 @@ test('check if interval works', function () {
     $this->getJson('/api/compatibility?interval=7')
         ->assertStatus(200)
         ->assertJson(
-            fn (AssertableJson $json) => $json->has(0)
+            fn(AssertableJson $json) => $json->has(0)
         );
-})->skip(fn () => config('database.default') == 'sqlite', 'Cannot run on sqlite.');
+})->skip(fn() => config('database.default') == 'sqlite', 'Cannot run on sqlite.');
 
 it('can insert nullable type', function () {
-    $country = $this->mock(Country::class);
-    $country->name = 'Italy';
-    $country->isoCode = 'IT';
+    $country = new Country([
+        'iso_code' => 'IT',
+        'names' => ['en' => 'Italy'],
+    ]);
 
     $this->mock(
         GeoIpLocator::class,
-        fn (MockInterface $mock) => $mock->shouldReceive('locate')
+        fn(MockInterface $mock) => $mock->shouldReceive('locate')
             ->andReturn($country)
     );
 
@@ -328,9 +332,10 @@ it('can insert nullable type', function () {
 });
 
 it('can handle two request with same location', function () {
-    $country = $this->mock(Country::class);
-    $country->name = 'Italy';
-    $country->isoCode = 'IT';
+    $country = new Country([
+        'iso_code' => 'IT',
+        'names' => ['en' => 'Italy'],
+    ]);
 
     $this->mock(GeoIpLocator::class, function (MockInterface $mock) use ($country) {
         $mock->shouldReceive('locate')

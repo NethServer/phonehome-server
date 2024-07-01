@@ -24,12 +24,12 @@ class Installation extends Model
         'data->facts',
     ];
 
-    /**
-     * {@inheritdoc}
-     */
-    protected $casts = [
-        'data' => 'array',
-    ];
+    protected function casts(): array
+    {
+        return [
+            'data' => 'array',
+        ];
+    }
 
     /**
      * Get the country associated with the Installation

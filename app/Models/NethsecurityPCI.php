@@ -6,5 +6,5 @@ use Illuminate\Database\Eloquent\Model;
 
 class NethsecurityPCI extends Model
 {
-    protected $table= 'nethsecurity_pci';
+    protected $table = 'nethsecurity_pci';
 }

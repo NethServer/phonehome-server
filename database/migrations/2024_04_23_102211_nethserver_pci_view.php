@@ -33,6 +33,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        DB::statement("DROP VIEW IF EXISTS nethserver_pci");
+        DB::statement('DROP VIEW IF EXISTS nethserver_pci');
     }
 };

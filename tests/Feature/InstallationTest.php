@@ -151,9 +151,10 @@ it('saves correctly new nethserver installation', function (string $schema) {
         '$schema' => $schema,
     ]);
     $this->mock(GeoIpLocator::class, function (MockInterface $mock) {
-        $country = $this->mock(Country::class);
-        $country->name = 'Italy';
-        $country->isoCode = 'IT';
+        $country = new Country([
+            'iso_code' => 'IT',
+            'names' => ['en' => 'Italy'],
+        ]);
         $mock->shouldReceive('locate')
             ->once()
             ->andReturn($country);
@@ -178,9 +179,10 @@ it('saves correctly new nethsecurity installation', function (string $schema) {
     ]);
 
     $this->mock(GeoIpLocator::class, function (MockInterface $mock) {
-        $country = $this->mock(Country::class);
-        $country->name = 'Italy';
-        $country->isoCode = 'IT';
+        $country = new Country([
+            'iso_code' => 'IT',
+            'names' => ['en' => 'Italy'],
+        ]);
         $mock->shouldReceive('locate')
             ->once()
             ->andReturn($country);
@@ -210,9 +212,10 @@ it('updates installation', function (string $schema, string $type) {
     $request['uuid'] = $installation->data['uuid'];
 
     $this->mock(GeoIpLocator::class, function (MockInterface $mock) {
-        $country = $this->mock(Country::class);
-        $country->name = 'Italy';
-        $country->isoCode = 'IT';
+        $country = new Country([
+            'iso_code' => 'IT',
+            'names' => ['en' => 'Italy'],
+        ]);
         $mock->shouldReceive('locate')
             ->once()
             ->andReturn($country);
