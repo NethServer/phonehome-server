@@ -13,7 +13,7 @@ RUN apk add --no-cache \
         zip
 COPY --from=composer:2.7.7 /usr/bin/composer /usr/local/bin/composer
 
-FROM base as development
+FROM base AS development
 # install xdebug and additional packages
 RUN apk add --no-cache \
         bash \
@@ -40,17 +40,17 @@ ENV XDEBUG_CONFIG="client_host=host.docker.internal"
 USER www-data
 
 # vendor files
-FROM base as vendor
+FROM base AS vendor
 COPY composer.json .
 COPY composer.lock .
 RUN composer i --no-scripts --no-dev --ignore-platform-reqs
 
 # vendor dev files
-FROM vendor as vendor_test
+FROM vendor AS vendor_test
 RUN composer i --no-scripts --ignore-platform-reqs
 
 # all application files
-FROM base as application
+FROM base AS application
 COPY app ./app
 COPY bootstrap ./bootstrap
 COPY config ./config
@@ -63,7 +63,7 @@ COPY artisan .
 COPY composer.json .
 COPY composer.lock .
 
-FROM base as testing
+FROM base AS testing
 RUN install-php-extensions xdebug
 COPY --from=application /var/www/html /var/www/html
 COPY --from=vendor_test /var/www/html/vendor /var/www/html/vendor
@@ -76,7 +76,7 @@ USER www-data
 ENV XDEBUG_MODE=coverage
 CMD ["php", "artisan", "test", "--coverage-cobertura", "coverage.cobertura.xml"]
 
-FROM base as production
+FROM base AS production
 # container php extensions, packages and using official production configuration
 RUN install-php-extensions \
         opcache \
