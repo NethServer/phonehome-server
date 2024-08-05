@@ -26,6 +26,18 @@ services:
         volumes: &app-volumes
             - .:/var/www/html
             - home:/home/www-data
+    node:
+        build:
+            dockerfile: containers/node/Dockerfile
+            target: development
+            args:
+                UID: ${UID:-1000}
+                GID: ${GID:-1000}
+        volumes: *app-volumes
+        ports:
+            - "5173:5173"
+        command: ["tail", "-f", "/dev/null"]
+        stop_signal: SIGKILL
     web:
         pull_policy: never
         build:
