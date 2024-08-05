@@ -21,6 +21,7 @@
         "laravel/sanctum": "^4.0",
         "laravel/tinker": "^v2.8",
         "league/csv": "^9.10",
+        "livewire/volt": "^1.6",
         "opis/json-schema": "^2.3",
         "pulkitjalan/geoip": "^7.0"
     },
