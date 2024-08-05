@@ -6,5 +6,5 @@ ADD --chmod=755 \
     https://github.com/eficode/wait-for/releases/download/v2.2.4/wait-for /usr/local/bin/wait-for
 COPY --chmod=777 \
     containers/nginx/entrypoint.sh /docker-entrypoint.d/90-wait-fpm.sh
-COPY public ./public
+COPY --from=node_build /app/public /var/www/html/public
 HEALTHCHECK CMD curl --fail --silent --output /dev/null http://localhost/status

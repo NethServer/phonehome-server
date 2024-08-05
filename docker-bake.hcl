@@ -4,6 +4,9 @@ target "app-production" {
     tags       = [
         "ghcr.io/nethserver/phonehome-server-app:latest"
     ]
+    contexts = {
+        node_build = "target:node-build"
+    }
 }
 
 target "web-production" {
@@ -12,6 +15,14 @@ target "web-production" {
     tags       = [
         "ghcr.io/nethserver/phonehome-server-web:latest"
     ]
+    contexts = {
+        node_build = "target:node-build"
+    }
+}
+
+target "node-build" {
+    dockerfile = "containers/node/Dockerfile"
+    target     = "build"
 }
 
 target "ns8" {

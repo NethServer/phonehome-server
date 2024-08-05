@@ -74,6 +74,7 @@ RUN apk add --no-cache ${DEPENDENCIES} \
 # copy application files
 COPY --from=application /var/www/html /var/www/html
 COPY --from=vendor /var/www/html/vendor /var/www/html/vendor
+COPY --from=node_build /app/public /var/www/html/public
 # setup applications and remove unnecessary files
 RUN composer check-platform-reqs \
     && composer dump-autoload --optimize \
