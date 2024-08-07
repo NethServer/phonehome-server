@@ -42,6 +42,7 @@ services:
         pull_policy: never
         build:
             dockerfile: containers/nginx/Dockerfile
+            target: development
         depends_on:
             - app
         volumes: *app-volumes
@@ -62,11 +63,7 @@ services:
         profiles:
             - testing
         pull_policy: never
-        build:
-            dockerfile: containers/php/Dockerfile
-            target: testing
-            cache_from:
-                - type=gha
+        image: phonehome/testing:latest
         depends_on:
             - database
         secrets:

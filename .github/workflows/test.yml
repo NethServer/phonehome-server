@@ -33,4 +33,5 @@ jobs:
       - name: Run testing
         run: |
           cp .env.example .env
-          docker compose run --rm --build testing
+          docker buildx bake testing
+          docker compose run testing

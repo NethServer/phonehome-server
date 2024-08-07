@@ -6,7 +6,7 @@ ARG DEPENDENCIES="netcat-openbsd postgresql15-client procps"
 ARG DEPENDENCIES_DEV="git shadow sudo bash"
 
 # base image for all containers
-FROM php:8.3.10-fpm-alpine as base
+FROM php:8.3.10-fpm-alpine AS base
 WORKDIR /var/www/html
 # install extensions and packages
 COPY --from=mlocati/php-extension-installer:2.3.2 /usr/bin/install-php-extensions /usr/local/sbin/install-php-extensions
@@ -47,6 +47,9 @@ COPY composer.json .
 COPY composer.lock .
 RUN composer install --no-scripts --no-dev --ignore-platform-reqs
 
+FROM vendor AS vendor_test
+RUN composer install --no-scripts --ignore-platform-reqs
+
 # all application files
 FROM base AS application
 COPY app ./app
@@ -82,3 +85,19 @@ RUN composer check-platform-reqs \
     && echo $(find . -name "*.php" | wc -l | awk '{print (int($1/1000)+2)*1000}') >> "$PHP_INI_DIR/conf.d/opcache.ini" \
     && rm /usr/local/bin/composer \
     && rm /usr/local/sbin/install-php-extensions
+
+FROM base AS testing
+ARG DEPENDENCIES_DEV
+ARG PHP_EXTENSIONS_DEV
+# install dependencies and configure php
+RUN apk add --no-cache ${DEPENDENCIES_DEV} \
+    && install-php-extensions ${PHP_EXTENSIONS_DEV} \
+    && mv "$PHP_INI_DIR/php.ini-development" "$PHP_INI_DIR/php.ini"
+COPY --from=application --chown=www-data:www-data /var/www/html /var/www/html
+COPY --from=vendor_test --chown=www-data:www-data /var/www/html/vendor /var/www/html/vendor
+COPY --from=node_build --chown=www-data:www-data /app/public /var/www/html/public
+COPY tests ./tests
+COPY phpunit.xml .
+USER www-data
+ENV XDEBUG_MODE=coverage
+CMD ["php", "artisan", "test"]
