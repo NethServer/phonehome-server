@@ -56,7 +56,8 @@ services:
             cache_from:
                 - type=gha
         depends_on:
-            - database
+            database:
+                condition: service_healthy
         secrets:
             -   source: env_file
                 target: /var/www/html/.env

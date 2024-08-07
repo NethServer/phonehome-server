@@ -17,7 +17,6 @@ if [ "$1" = 'php-fpm' ]; then
     fi
     php artisan migrate --force
     php artisan geoip:update
-    chown -R www-data:www-data storage
 elif [ "$1" = 'crond' ]; then
     wait-for "${FPM_URL:?Missing FPM_URL}:${FPM_PORT:?Missing FPM_PORT}" -t 60
 fi
