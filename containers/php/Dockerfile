@@ -68,6 +68,7 @@ COPY composer.lock .
 FROM base_development AS testing
 COPY --from=application /var/www/html /var/www/html
 COPY --from=vendor_test /var/www/html/vendor /var/www/html/vendor
+COPY --from=node_build /app/public /var/www/html/public
 COPY tests ./tests
 COPY phpunit.xml .
 RUN composer check-platform-reqs \
@@ -89,6 +90,7 @@ RUN apk add --no-cache ${DEPENDENCIES} \
 # copy application files
 COPY --from=application /var/www/html /var/www/html
 COPY --from=vendor /var/www/html/vendor /var/www/html/vendor
+COPY --from=node_build /app/public /var/www/html/public
 # setup applications and remove unnecessary files
 RUN composer check-platform-reqs \
     && composer dump-autoload --optimize \

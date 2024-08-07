@@ -25,11 +25,11 @@ services:
             - 'host.docker.internal:host-gateway'
         volumes: &app-volumes
             - .:/var/www/html
-            - home:/home/www-data
     web:
         pull_policy: never
         build:
             dockerfile: containers/nginx/Dockerfile
+            target: development
         depends_on:
             - app
         volumes: *app-volumes
@@ -38,6 +38,18 @@ services:
         environment:
             FPM_URL: app
             FPM_PORT: 9000
+    node:
+        build:
+            dockerfile: containers/node/Dockerfile
+            target: development
+            args:
+                UID: ${UID:-1000}
+                GID: ${GID:-1000}
+        volumes: *app-volumes
+        ports:
+            - "5173:5173"
+        command: [ "tail", "-f", "/dev/null" ]
+        stop_signal: SIGKILL
 
     adminer:
         image: adminer:4.8.1
@@ -50,11 +62,7 @@ services:
         profiles:
             - testing
         pull_policy: never
-        build:
-            dockerfile: containers/php/Dockerfile
-            target: testing
-            cache_from:
-                - type=gha
+        image: phonehome/testing
         depends_on:
             database:
                 condition: service_healthy
@@ -63,11 +71,9 @@ services:
                 target: /var/www/html/.env
         environment:
             APP_ENV: testing
-            APP_KEY: base64:jobMaruKa1iNGS74JK7PGywi5zGWdgIo0HoMG0B+hrY=
 
 volumes:
     database: { }
-    home: { }
 
 secrets:
     env_file:

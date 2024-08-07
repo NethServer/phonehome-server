@@ -1,4 +1,16 @@
+target "node-build" {
+    dockerfile = "containers/node/Dockerfile"
+    target     = "build"
+}
+
+target "_common" {
+    contexts = {
+        node_build = "target:node-build"
+    }
+}
+
 target "app-production" {
+    inherits = ["_common"]
     dockerfile = "containers/php/Dockerfile"
     target     = "production"
     tags       = [
@@ -7,10 +19,23 @@ target "app-production" {
 }
 
 target "web-production" {
+    inherits = ["_common"]
     dockerfile = "containers/nginx/Dockerfile"
     target     = "production"
     tags       = [
         "ghcr.io/nethserver/phonehome-server-web:latest"
+    ]
+}
+
+target "testing" {
+    inherits = ["_common"]
+    dockerfile = "containers/php/Dockerfile"
+    target     = "testing"
+    tags       = [
+        "phonehome/testing"
+    ]
+    output     = [
+        "type=docker"
     ]
 }
 
