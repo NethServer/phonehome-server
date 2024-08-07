@@ -1,4 +1,5 @@
 deploy/docker-compose/docker-compose.override.yml
+public/build
 
 # Created by https://www.toptal.com/developers/gitignore/api/linux,laravel,visualstudiocode,intellij+all
 # Edit at https://www.toptal.com/developers/gitignore?templates=linux,laravel,visualstudiocode,intellij+all
