@@ -33,5 +33,5 @@ jobs:
       - name: Run testing
         run: |
           cp .env.example .env
-          docker buildx bake testing --set *.cache-from=type=gha
+          docker buildx bake testing --set *.cache-from=type=gha,scope=testing --set *.cache-to=type=gha,mode=max,scope=testing
           docker compose run --rm testing

@@ -73,6 +73,10 @@ jobs:
             ${{ steps.meta-web.outputs.bake-file }}
             ${{ steps.meta-ns8.outputs.bake-file }}
           set: |
-            *.cache-to=type=gha,mode=max
-            *.cache-from=type=gha
+            app-production.cache-from=type=gha,scope=app
+            app-production.cache-to=type=gha,mode=max,scope=app
+            web-production.cache-from=type=gha,scope=web
+            web-production.cache-to=type=gha,mode=max,scope=web
+            ns8.cache-from=type=gha,scope=ns8
+            ns8.cache-to=type=gha,mode=max,scope=ns8
           push: true
