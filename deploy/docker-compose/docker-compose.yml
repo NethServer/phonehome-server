@@ -1,7 +1,7 @@
 name: phonehome-prod
 services:
     database:
-        image: postgres:14.12-alpine
+        image: postgres:14.13-alpine
         healthcheck:
             test: [ "CMD", "pg_isready", "-q", "-d", "phonehome", "-U", "phonehome" ]
         volumes:
