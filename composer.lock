@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "1d17af0c6b35330ecdc0e0eafc7a5072",
+    "content-hash": "153bac879b2eab1c00053036e4ca45ee",
     "packages": [
         {
             "name": "brick/math",
@@ -3478,16 +3478,16 @@
         },
         {
             "name": "pulkitjalan/geoip",
-            "version": "7.1.0",
+            "version": "8.0.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/pulkitjalan/ip-geolocation.git",
-                "reference": "a1b3994e921fe170115763dc527ea8cf53795ee6"
+                "reference": "095121c4b36a30d18704623fbf2c35930ea946be"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/pulkitjalan/ip-geolocation/zipball/a1b3994e921fe170115763dc527ea8cf53795ee6",
-                "reference": "a1b3994e921fe170115763dc527ea8cf53795ee6",
+                "url": "https://api.github.com/repos/pulkitjalan/ip-geolocation/zipball/095121c4b36a30d18704623fbf2c35930ea946be",
+                "reference": "095121c4b36a30d18704623fbf2c35930ea946be",
                 "shasum": ""
             },
             "require": {
@@ -3505,10 +3505,10 @@
             "extra": {
                 "laravel": {
                     "providers": [
-                        "PulkitJalan\\GeoIP\\GeoIPServiceProvider"
+                        "PulkitJalan\\IPGeolocation\\IPGeolocationServiceProvider"
                     ],
                     "aliases": {
-                        "GeoIP": "PulkitJalan\\GeoIP\\Facades\\GeoIP"
+                        "IPGeolocation": "PulkitJalan\\IPGeolocation\\Facades\\IPGeolocation"
                     }
                 }
             },
@@ -3517,7 +3517,7 @@
                     "helpers.php"
                 ],
                 "psr-4": {
-                    "PulkitJalan\\GeoIP\\": "src"
+                    "PulkitJalan\\IPGeolocation\\": "src"
                 }
             },
             "notification-url": "https://packagist.org/downloads/",
@@ -3529,20 +3529,21 @@
                     "name": "Pulkit Jalan"
                 }
             ],
-            "description": "Geoip Wrapper with Laravel Support",
-            "homepage": "https://github.com/pulkitjalan/geoip",
+            "description": "IP Geolocation Wrapper with Laravel Support",
+            "homepage": "https://github.com/pulkitjalan/ip-geolocation",
             "keywords": [
-                "geoip",
+                "geolocation",
                 "ip-api",
+                "ip-geolocation",
                 "ipstack",
                 "maxmind"
             ],
             "support": {
                 "issues": "https://github.com/pulkitjalan/ip-geolocation/issues",
-                "source": "https://github.com/pulkitjalan/ip-geolocation/tree/7.1.0"
+                "source": "https://github.com/pulkitjalan/ip-geolocation/tree/8.0.0"
             },
             "abandoned": "pulkitjalan/ip-geolocation",
-            "time": "2024-05-30T06:15:44+00:00"
+            "time": "2024-08-22T05:21:30+00:00"
         },
         {
             "name": "ralouphie/getallheaders",
