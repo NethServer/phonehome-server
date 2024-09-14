@@ -29,7 +29,7 @@
         "laravel/pint": "^v1.12",
         "mockery/mockery": "^1.6",
         "pestphp/pest": "^v2.16",
-        "pestphp/pest-plugin-laravel": "^v2.2",
+        "pestphp/pest-plugin-laravel": "^v3.0.0",
         "spatie/laravel-ignition": "^2.3"
     },
     "autoload": {
