@@ -15,7 +15,7 @@ permissions:
 jobs:
   test-app-image:
     name: Test app image
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-24.04
     steps:
       - name: Checkout repo
         uses: actions/checkout@v4

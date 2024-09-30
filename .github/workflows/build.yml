@@ -12,7 +12,7 @@ permissions:
 jobs:
   build-image:
     name: Build images and push to registry
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-24.04
     steps:
       - name: Checkout repo
         uses: actions/checkout@v4
