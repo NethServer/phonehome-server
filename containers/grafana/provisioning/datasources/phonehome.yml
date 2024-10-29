@@ -1,0 +1,16 @@
+apiVersion: 1
+
+prune: true
+
+datasources:
+  - name: phonehome
+    uid: phonehome_datasource
+    type: postgres
+    url: $PHONEHOME_HOST:$PHONEHOME_PORT
+    user: $PHONEHOME_USERNAME
+    secureJsonData:
+      password: $PHONEHOME_PASSWORD
+    jsonData:
+      database: $PHONEHOME_DATABASE
+      sslmode: 'disable'
+      postgresVersion: 1400

@@ -2,3 +2,6 @@ services:
   web:
     ports:
       - "8888:80"
+  grafana:
+    ports:
+      - "3000:3000"

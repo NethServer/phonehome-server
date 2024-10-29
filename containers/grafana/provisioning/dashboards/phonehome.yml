@@ -1,0 +1,7 @@
+apiVersion: 1
+
+providers:
+  - name: PhoneHome
+    type: file
+    options:
+      path: /etc/grafana/provisioning/dashboards/phonehome.json
