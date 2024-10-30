@@ -48,7 +48,7 @@ jobs:
         uses: docker/metadata-action@v5
         id: meta-grafana
         with:
-          bake-target: grafana
+          bake-target: grafana-production
           images: |
             ghcr.io/${{ github.repository }}-grafana
           tags: |
@@ -65,7 +65,6 @@ jobs:
 
       - uses: docker/bake-action@v5.10.0
         with:
-          targets: deploy
           files: |
             ./docker-bake.hcl
             ${{ steps.meta-app.outputs.bake-file }}

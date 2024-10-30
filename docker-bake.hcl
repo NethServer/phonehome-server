@@ -14,7 +14,7 @@ target "web-production" {
     ]
 }
 
-target "grafana" {
+target "grafana-production" {
     dockerfile = "containers/grafana/Dockerfile"
     tags       = [
         "ghcr.io/nethserver/phonehome-server-grafana:latest"
@@ -22,5 +22,5 @@ target "grafana" {
 }
 
 group "default" {
-    targets = ["app-production", "web-production", "grafana"]
+    targets = ["app-production", "web-production", "grafana-production"]
 }
