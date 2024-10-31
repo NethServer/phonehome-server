@@ -11,7 +11,7 @@ services:
             POSTGRES_USER: $DB_USERNAME
             POSTGRES_PASSWORD: $DB_PASSWORD
     grafana:
-        image: ghcr.io/nethserver/phonehome-grafana:latest
+        image: ghcr.io/nethserver/phonehome-server-grafana:latest
         environment:
             GF_INSTANCE_NAME: phonehome
             GF_SECURITY_ADMIN_PASSWORD: phonehome
@@ -21,7 +21,7 @@ services:
             PHONEHOME_USERNAME: $GRAFANA_USERNAME
             PHONEHOME_PASSWORD: $GRAFANA_PASSWORD
     app:
-        image: ghcr.io/nethserver/phonehome-php:latest
+        image: ghcr.io/nethserver/phonehome-server-app:latest
         volumes:
             - bootstrap:/var/www/html/bootstrap
             - storage:/var/www/html/storage
@@ -35,7 +35,7 @@ services:
             FPM_PORT: 9000
         command: [ "crond", "-f", "-l", "2" ]
     web:
-        image: ghcr.io/nethserver/phonehome-nginx:latest
+        image: ghcr.io/nethserver/phonehome-server-web:latest
         healthcheck:
             test: [ "CMD", "curl", "--fail", "--silent", "--output", "/dev/null", "http://localhost/status" ]
         environment:
