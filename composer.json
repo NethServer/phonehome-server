@@ -28,7 +28,7 @@
         "fakerphp/faker": "^v1.23",
         "laravel/pint": "^v1.12",
         "mockery/mockery": "^1.6",
-        "pestphp/pest": "^v2.16",
+        "pestphp/pest": "^v3.0.0",
         "pestphp/pest-plugin-laravel": "^v2.2",
         "spatie/laravel-ignition": "^2.3"
     },
