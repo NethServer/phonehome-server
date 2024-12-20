@@ -17,7 +17,7 @@ test('invalid database present', function () {
     Artisan::partialMock()
         ->shouldReceive('call')
         ->times(3)
-        ->with('geoip:update');
+        ->with('ip-geolocation:update');
 
     Log::partialMock()
         ->shouldReceive('emergency')

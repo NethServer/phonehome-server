@@ -12,7 +12,7 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule): void
     {
-        $schedule->command("geoip:update")->daily();
+        $schedule->command("ip-geolocation:update")->daily();
     }
 
     /**

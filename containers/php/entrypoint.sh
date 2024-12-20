@@ -16,7 +16,7 @@ if [ "$1" = 'php-fpm' ]; then
         php artisan optimize
     fi
     php artisan migrate --force
-    php artisan geoip:update
+    php artisan ip-geolocation:update
 elif [ "$1" = 'crond' ]; then
     wait-for "${FPM_URL:?Missing FPM_URL}:${FPM_PORT:?Missing FPM_PORT}" -t 60
 fi

@@ -43,7 +43,7 @@ class GeoIpLocatorImpl implements GeoIpLocator
                 Log::emergency('Cannot recover from invalid MaxMind DB.');
                 throw $exception;
             }
-            Artisan::call('geoip:update');
+            Artisan::call('ip-geolocation:update');
 
             return $this->retryLocate($ip, $retries + 1);
         }

@@ -90,7 +90,7 @@ Create a licence key by confirming that it will not be used for GeoIpUpdate. Now
 To check if the variable is set up, run this command to install the latest database release:
 
 ```bash
-docker compose exec app php artisan geoip:update
+docker compose exec app php artisan ip-geolocation:update
 ```
 the database should be now downloaded inside `storage/app/GeoLite2-Country`, no additional steps are required.
 
