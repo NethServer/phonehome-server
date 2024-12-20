@@ -10,10 +10,6 @@
   "rangeStrategy": "replace",
   "automergeType": "branch",
   "updateNotScheduled": false,
-  "vulnerabilityAlerts": {
-    "enabled": true,
-    "assignees": ["@tbaile"]
-  },
   "packageRules": [
     {
       "matchPackageNames": [
@@ -21,5 +17,9 @@
       ],
       "allowedVersions": "<= 14"
     }
-  ]
+  ],
+  "vulnerabilityAlerts": {
+    "enabled": true,
+    "assignees": ["@Tbaile"]
+  }
 }
