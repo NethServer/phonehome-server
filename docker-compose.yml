@@ -12,6 +12,24 @@ services:
             POSTGRES_DB: $DB_DATABASE
             POSTGRES_USER: $DB_USERNAME
             POSTGRES_PASSWORD: $DB_PASSWORD
+    grafana:
+        pull_policy: never
+        build:
+            dockerfile: containers/grafana/Dockerfile
+        depends_on:
+            - database
+        ports:
+            - "3000:3000"
+        volumes:
+            - grafana:/var/lib/grafana
+        environment:
+            GF_INSTANCE_NAME: phonehome
+            GF_SECURITY_ADMIN_PASSWORD: phonehome
+            PHONEHOME_HOST: $DB_HOST
+            PHONEHOME_PORT: $DB_PORT
+            PHONEHOME_DATABASE: $DB_DATABASE
+            PHONEHOME_USERNAME: $GRAFANA_DATABASE_USERNAME
+            PHONEHOME_PASSWORD: $GRAFANA_DATABASE_PASSWORD
     app:
         pull_policy: never
         build:
@@ -68,6 +86,7 @@ services:
 volumes:
     database: { }
     home: { }
+    grafana: { }
 
 secrets:
     env_file:

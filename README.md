@@ -3,83 +3,84 @@ Complete rewrite from ground-up of [NethServer/nethserver-phonehome](https://git
 
 [![Development Pipeline](https://github.com/NethServer/phonehome-server/actions/workflows/development.yml/badge.svg?event=push)](https://github.com/NethServer/phonehome-server/actions/workflows/development.yml)
 
-- [PhoneHome](#phonehome)
-  - [Development](#development)
-    - [Application Environment](#application-environment)
-    - [Laravel Sail](#laravel-sail)
-      - [Requirements](#requirements)
-      - [Initial setup of development environment](#initial-setup-of-development-environment)
-      - [Using Sail](#using-sail)
-    - [First application setup](#first-application-setup)
-    - [GeoIP2](#geoip2)
-  - [Testing](#testing)
-  - [Build images](#build-images)
-    - [Requirements](#requirements-1)
-    - [Build files](#build-files)
-    - [Build process](#build-process)
-    - [Environment variables](#environment-variables)
-    - [Release process](#release-process)
-    - [Production environment](#production-environment)
-  - [Migration](#migration)
-  - [Breaking Changes](#breaking-changes)
-    - [0.2.0 -\> 0.3.0](#020---030)
-
 ## Development
-### Application Environment
+
+### First steps
+
 To get started, the application needs an environment to run on, to do that simply copy the `.env.example` to `.env`:
 ```bash
 cp .env.example .env
 ```
 inside the file are all the variables needed for the framework to work properly.
 
-If you're planning to develop with the included development environment, you can simply ignore the content of the file, since everything is set up beforehand, otherwise you'll need to edit the file accordingly and then go to [first application setup](#first-application-setup).
+Here's a brief explanation of the variables:
 
-More info on configuration can be found [in the docs](https://laravel.com/docs/9.x/configuration) or simply browsing the `config` directory.
+- `APP_NAME`: The name of your application, can be left as is.
+- `APP_ENV`: The environment your application is running in (e.g., local, production).
+- `APP_KEY`: The encryption key used by
+  Laravel. [More info](https://laravel.com/docs/11.x/configuration#application-key)
+- `APP_DEBUG`: Boolean value that determines if debug mode is enabled.
+- `APP_URL`: The URL of your application.
+- `LOG_CHANNEL`: The logging channel used by the application. Keep stderr for Docker.
+- `LOG_DEPRECATIONS_CHANNEL`: The logging channel for deprecation warnings. Keep stderr for Docker.
+- `LOG_LEVEL`: The minimum log level for messages to be logged.
+- `DB_CONNECTION`: We're using pgsql for PostgreSQL.
+- `DB_HOST`: The hostname of your database server.
+- `DB_PORT`: The port your database server is running on.
+- `DB_DATABASE`: The name of your database.
+- `DB_USERNAME`: The username used to connect to your database.
+- `DB_PASSWORD`: The password used to connect to your database.
+- `GF_INSTANCE_NAME`: The name of the Grafana instance.
+- `GF_SECURITY_ADMIN_PASSWORD`: The password for the Grafana admin user.
+- `GRAFANA_DATABASE_USERNAME`: The username for the read-only Grafana user.
+- `GRAFANA_DATABASE_PASSWORD`: The password for the read-only Grafana user.
+- `GRAFANA_PUBLIC_DASHBOARD_REDIRECT`: The URL to redirect to when accessing to the root page of phonehome.
+- `GEOIP_TOKEN`: The token for GeoIP services. [More info](#geoip2)
+- `UID`: The user ID for running the application. Development variable only, needed only when running dev environment.
+- `GID`: The group ID for running the application. Development variable only, needed only when running dev environment.
 
-### Laravel Sail
-#### Requirements
-Laravel sail is the development environment that Laravel provides by default. To use it and to develop locally, the following software is required:
- - [Docker Engine](https://docs.docker.com/engine/install/)
- - [Docker Compose](https://docs.docker.com/compose/install/linux/)
+More info on configuration can be found [in the docs](https://laravel.com/docs/11.x/configuration) or simply browsing
+the `config` directory.
 
-#### Initial setup of development environment
-Laravel comes with a development environment by default that is called [`laravel/sail`](https://laravel.com/docs/9.x/sail). The tool is provided through `composer`, run the following command to get started:
+As a first mandatory step, you need to generate the APP_KEY, which is done by running the following command:
+
 ```bash
-docker run --rm \
-    -u "$(id -u):$(id -g)" \
-    -v $(pwd):/var/www/html \
-    -w /var/www/html \
-    laravelsail/php81-composer:latest \
-    composer install --ignore-platform-reqs
+docker compose run --rm app php artisan key:generate
 ```
-this will install all PHP dependencies, but most importantly installs `sail`.
 
-#### Using Sail
-Once `sail` is installed, you can manage the development environment with it, to get everything up and running simply use:
-```bash
-./vendor/bin/sail up -d
-```
-to shut everything down, run:
-```bash
-./vendor/bin/sail down
-```
-this tool is the heart of all the development environment, is built to handle and manage the development process, for example, to simply interact with PHP, run:
-```
-./vendor/bin/sail php --version
-```
-all the other available commands can be found in the [`laravel/sail` docs](https://laravel.com/docs/9.x/sail).
+### Run the application
 
-### First application setup
-Once that the development environment is ready, run the following commands to finish the development:
-```bash
-# Generate APP_KEY in the .env
-./vendor/bin/sail artisan key:generate
-# Migrate the database
-./vendor/bin/sail artisan migrate
-```
-And you're set up for now, application should be successfully available in the url given by your development environment (if you're using `sail` you will find the application at `http://localhost`).
+All is provided by `docker-compose.yml`, this includes:
 
-If you need to resolve locations for IPs, please follow the brief guide on how to setup [GeoIP2](#geoip2).
+- PostgreSQL
+- PHP-fpm
+- nginx
+- adminer
+- grafana
+
+To start the development environment, simply run:
+
+```bash
+docker compose up -d
+```
+
+and the application will be available at `http://localhost`.
+
+To browse the logs, you can `docker compose logs` to see the logs of all the services or
+`docker compose logs <container>` to see only the logs of specific container.
+
+To shut down the environment, simply run:
+
+```bash
+docker compose down
+```
+
+If you need to access the containers and run commands in them, use `docker compose exec <container> <command>`, for
+example:
+
+```bash
+docker compose exec app php artisan migrate
+```
 
 ### GeoIP2
 To achieve the ip-to-country conversion additional setup is required, you'll need a valid licence key from [MaxMind](https://www.maxmind.com). Simply register to the platform and then, in your account page, go to "Manage License Keys".
@@ -87,30 +88,34 @@ To achieve the ip-to-country conversion additional setup is required, you'll nee
 Create a licence key by confirming that it will not be used for GeoIpUpdate. Now copy the key in the .env file at `GEOIP_TOKEN` entry.
 
 To check if the variable is set up, run this command to install the latest database release:
+
 ```bash
-./vendor/bin/sail artisan app:geoip:download
+docker compose exec app php artisan geoip:update
 ```
 the database should be now downloaded inside `storage/app/GeoLite2-Country`, no additional steps are required.
 
 ## Testing
 The project uses [Pest](https://pestphp.com/) to run the testing for both Unit testing and Feature testing. To run the tests, simply run:
+
 ```bash
-./vendor/bin/sail artisan test
+docker compose exec app php artisan test
 # or, with code coverage
-./vendor/bin/sail artisan test --coverage
+docker compose exec app php artisan test --coverage
 ```
 remember that you'll need a working development setup to run all the tests, since many of them are database-related.
 
 To create a new *Test file, simply run the following commands:
+
 ```bash
 # Create a Unit test
-./vendor/bin/sail artisan make:test --pest --unit FancyTest
+docker compose exec app php artisan make:test --pest --unit FancyTest
 # Create a Feature test
-./vendor/bin/sail artisan make:test --pest FancyTest
+docker compose exec app php artisan make:test --pest FancyTest
 ```
 Additional resources on how testing works can be found in [Laravel Docs](https://laravel.com/docs/9.x/testing#main-content) and [Pest Docs](https://pestphp.com/docs/writing-tests).
 
 ## Build images
+
 ### Requirements
 To build the images, `docker buildx` is required, if you have Docker Engine 18.09 or above, it is included, otherwise please follow official documentation on how to install buildx at [Docker Docs](https://docs.docker.com/build/buildx/install/).
 
@@ -118,80 +123,29 @@ To build the images, `docker buildx` is required, if you have Docker Engine 18.0
 Build-related files can be found in the following directories:
  - `containers/nginx`: contains the Dockerfile and the configuration to build the *-web image for the project;
  - `containers/php`: contains the Dockerfile and the configuration to build the *-app image for the project;
- - `containers/docker-compose.yml`: emulates a production environment using the previous mentioned images;
+- `containers/grafana`: contains the Dockerfile and the configuration to build the *-grafana image for the project;
  - `docker-bake.hcl`: defines all the build processes and targets, more info on that can be found in the [Docker Bake Docs](https://docs.docker.com/build/customize/bake/).
 
 ### Build process
 To build the images, you'll have available few commands, the main one is
+
 ```bash
 docker buildx bake
-# the previous command is just an alias to
-docker buildx bake develop
 ```
 that allows you to build the production images and save them inside docker.
-
-Additional commands are:
-```bash
-# Run the testing inside the production image
-# No image is exported to docker
-docker buildx bake testing
-# You can even specify a target or a group defined inside the docker-bake.hcl
-# For example, to build only the web image for development
-docker buildx bake web-develop
-```
-
-### Environment variables
-There are few variables that handle the tags of the generated images:
- - `REGISTRY`: the registry that the image will be pushed to, will be appended before the `REPOSITORY` on every tag. Defaults to 'ghcr.io';
- - `REPOSITORY`: the name of the image, defaults to 'nethserver/phonehome-server';
- - `TAG`: tag of the produced image, defaults to 'latest'.
 
 ### Release process
 > *The relase process is completely automated by GitHub Actions (release tags too), the following is only reference to the process used by the pipeline.*
 
-Inside the `docker-bake.hcl` there are some entries that refer to *release, they are special ones that publish the images (and cache) built directly to the registry.
-
-Make sure when using this commands you're logged in to the used `REGISTRY`, otherwise the push will fail.
-
-Be wary that only one tag is produced by the script, additional tags will need to be provided by using [`docker tag`](https://docs.docker.com/engine/reference/commandline/tag/).
+Inside the pipeline there's a generation of the image schema names, which is completely automated. Will take care of
+tags, multiple tags and branch pushes.
 
 ### Production environment
-Inside the `deploy/docker-compose` folder, a `docker-compose.yml` is provided to emulate a production environment using upstream images or `docker buildx bake develop` images.
+
+Inside the `deploy/docker-compose` folder, a `docker-compose.yml` is provided to emulate a production environment using
+upstream images or `docker buildx bake` images.
 
 Simply enter the `deploy/docker-compose` folder, copy the given `deploy/docker-compose/.env.example` to `deploy/docker-compose/.env` and just add `APP_KEY` and `GEOIP_TOKEN`. Once done you can just run `docker-compose up -d` and a production environment will be running on `http://localhost` in no time.
 
-## Migration
-To migrate the data from the [old phonehome](https://github.com/NethServer/nethserver-phonehome) the command `php artisan app:phonehome:migrate` is provided.
-A dump in CSV format of the table `phone_home_tb` will be asked by the command, the file MUST HAVE:
- - headers, the format needs to be: `"uuid","release_tag","ip","country_code","country_name","reg_date","type"`
- - comma separated values
- - newline separated rows
+#### Initial deployment setup
 
-The file needs to be available to the `app` container, [`podman cp`](https://docs.podman.io/en/latest/markdown/podman-cp.1.html) is your friend.
-
-## Breaking Changes
-### 0.2.0 -> 0.3.0
-Due to database changes, the following query is needed to be executed prior to update:
-```
-ALTER TABLE installations
-ADD COLUMN IF NOT EXISTS data json;
-
-UPDATE installations new
-SET data = (SELECT json_build_object(
-	'uuid', old.uuid,
-	'installation', 'nethserver',
-	'facts', json_build_object(
-		'type', old.type,
-		'version', versions.tag)
-	) as data
-FROM installations old
-LEFT JOIN versions ON versions.id = old.version_id
-WHERE new.id = old.id);
-
-ALTER TABLE installations
-DROP CONSTRAINT installations_version_id_foreign,
-DROP uuid,
-DROP type,
-DROP version_id;
-```
-please note that this query has been tested only on pgsql.

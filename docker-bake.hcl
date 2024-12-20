@@ -14,22 +14,13 @@ target "web-production" {
     ]
 }
 
-target "ns8" {
-    dockerfile = "Dockerfile"
-    context    = "deploy/ns8"
-    target     = "production"
+target "grafana-production" {
+    dockerfile = "containers/grafana/Dockerfile"
     tags       = [
-        "ghcr.io/nethserver/phonehome-server:latest"
+        "ghcr.io/nethserver/phonehome-server-grafana:latest"
     ]
-    labels = {
-        "org.nethserver.images" : "docker.io/postgres:14.9-alpine ${target.app-production.tags[0]} ${target.web-production.tags[0]}"
-    }
-}
-
-group "deploy" {
-    targets = ["default", "ns8"]
 }
 
 group "default" {
-    targets = ["app-production", "web-production"]
+    targets = ["app-production", "web-production", "grafana-production"]
 }

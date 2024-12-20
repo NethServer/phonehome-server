@@ -7,9 +7,19 @@ services:
         volumes:
             - database:/var/lib/postgresql/data
         environment:
-            POSTGRES_DB: phonehome
-            POSTGRES_USER: phonehome
-            POSTGRES_PASSWORD: phonehome
+            POSTGRES_DB: $DB_DATABASE
+            POSTGRES_USER: $DB_USERNAME
+            POSTGRES_PASSWORD: $DB_PASSWORD
+    grafana:
+        image: ghcr.io/nethserver/phonehome-server-grafana:latest
+        environment:
+            GF_INSTANCE_NAME: phonehome
+            GF_SECURITY_ADMIN_PASSWORD: phonehome
+            PHONEHOME_HOST: $DB_HOST
+            PHONEHOME_PORT: $DB_PORT
+            PHONEHOME_DATABASE: $DB_DATABASE
+            PHONEHOME_USERNAME: $GRAFANA_USERNAME
+            PHONEHOME_PASSWORD: $GRAFANA_PASSWORD
     app:
         image: ghcr.io/nethserver/phonehome-server-app:latest
         volumes:

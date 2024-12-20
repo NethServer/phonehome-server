@@ -17,7 +17,9 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    $redirect = config('grafana.public_dashboard_redirect');
+    abort_if(!config('grafana.public_dashboard_redirect'), 503, 'Public dashboard is disabled');
+    return redirect($redirect);
 })->name('map');
 
 Route::post('/', [CompatibilityController::class, 'store'])
