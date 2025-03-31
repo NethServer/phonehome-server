@@ -67,9 +67,9 @@ jobs:
         with:
           files: |
             ./docker-bake.hcl
-            ${{ steps.meta-app.outputs.bake-file }}
-            ${{ steps.meta-web.outputs.bake-file }}
-            ${{ steps.meta-grafana.outputs.bake-file }}
+            cwd://${{ steps.meta-app.outputs.bake-file }}
+            cwd://${{ steps.meta-web.outputs.bake-file }}
+            cwd://${{ steps.meta-grafana.outputs.bake-file }}
           set: |
             *.cache-to=type=gha,mode=max
             *.cache-from=type=gha
