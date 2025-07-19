@@ -10,7 +10,7 @@ FROM php:8.4.10-fpm-alpine AS base
 WORKDIR /var/www/html
 # install extensions and packages
 COPY --from=mlocati/php-extension-installer:2.8.5 /usr/bin/install-php-extensions /usr/local/sbin/
-COPY --from=composer:2.8.9 /usr/bin/composer /usr/local/bin/composer
+COPY --from=composer:2.8.10 /usr/bin/composer /usr/local/bin/composer
 # php configuration
 COPY containers/php/conf.d /usr/local/etc/php/conf.d
 # additional binaries
