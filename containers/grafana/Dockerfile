@@ -1,2 +1,2 @@
-FROM grafana/grafana-oss:11.6.5
+FROM grafana/grafana-oss:12.1.1
 COPY containers/grafana/provisioning /etc/grafana/provisioning
