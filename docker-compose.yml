@@ -58,7 +58,7 @@ services:
             FPM_PORT: 9000
 
     adminer:
-        image: adminer:5.4.0
+        image: adminer:5.4.1
         ports:
             - "8080:8080"
         environment:
