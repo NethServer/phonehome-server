@@ -1,5 +1,27 @@
 # Changelog
 
+## [1.5.0](https://github.com/NethServer/phonehome-server/compare/1.4.0...v1.5.0) (2025-11-03)
+
+
+### Features
+
+* add metabase user to access phonehome database ([df455b0](https://github.com/NethServer/phonehome-server/commit/df455b093ded16d6e2eff78e8e5992b645fa8929))
+
+
+### Miscellaneous Chores
+
+* **deps:** replace google-github-actions/release-please-action action with googleapis/release-please-action v4 ([#136](https://github.com/NethServer/phonehome-server/issues/136)) ([28f3903](https://github.com/NethServer/phonehome-server/commit/28f3903a2b1907a2227b655123f5a451d0840796))
+* **deps:** update adminer docker tag to v5.4.1 ([1026257](https://github.com/NethServer/phonehome-server/commit/1026257d659ceea8fdd1fc32ee3249dd6ac80cdb))
+* **deps:** update composer docker tag to v2.8.12 ([0837f36](https://github.com/NethServer/phonehome-server/commit/0837f365dee383b2deba28f8dab841cea9fa480e))
+* **deps:** update mlocati/php-extension-installer docker tag to v2.9.11 ([397f13e](https://github.com/NethServer/phonehome-server/commit/397f13e0b35eedd85ff2eacb7320785f3a697ed0))
+* **deps:** update mlocati/php-extension-installer docker tag to v2.9.13 ([c42a49e](https://github.com/NethServer/phonehome-server/commit/c42a49edcffa8a8a747067d7eb09880cb83d4441))
+* **deps:** update mlocati/php-extension-installer docker tag to v2.9.8 ([b7deb39](https://github.com/NethServer/phonehome-server/commit/b7deb39279156500505dd0bfc7367cc0b07dd3cf))
+* **deps:** update nginx docker tag to v1.29.2 ([e23d7d3](https://github.com/NethServer/phonehome-server/commit/e23d7d3afc4d020163dd802b22271bce9627a535))
+* **deps:** update nginx docker tag to v1.29.3 ([1cc6657](https://github.com/NethServer/phonehome-server/commit/1cc6657fbdd0730e3e11db93256f677a79acbfdb))
+* **deps:** update php docker tag to v8.4.13 ([1e21725](https://github.com/NethServer/phonehome-server/commit/1e217254dd858b8942ef61de45d6aec60e476d26))
+* **deps:** update php docker tag to v8.4.14 ([016d4d1](https://github.com/NethServer/phonehome-server/commit/016d4d133e47ca08e6dc5e4809b9ac96f5d29a7f))
+* updated grafana ([bcbd468](https://github.com/NethServer/phonehome-server/commit/bcbd46853b54cc8b0566e97d3f3a94a213d53b36))
+
 ## [1.3.2](https://github.com/NethServer/phonehome-server/compare/v1.3.1...v1.3.2) (2024-05-27)
 
 
