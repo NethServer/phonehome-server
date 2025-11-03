@@ -35,6 +35,8 @@ Here's a brief explanation of the variables:
 - `GRAFANA_DATABASE_USERNAME`: The username for the read-only Grafana user.
 - `GRAFANA_DATABASE_PASSWORD`: The password for the read-only Grafana user.
 - `GRAFANA_PUBLIC_DASHBOARD_REDIRECT`: The URL to redirect to when accessing to the root page of phonehome.
+- `METABASE_USER`: The username for the Metabase user.
+- `METABASE_PASSWORD`: The password for the Metabase user.
 - `GEOIP_TOKEN`: The token for GeoIP services. [More info](#geoip2)
 - `UID`: The user ID for running the application. Development variable only, needed only when running dev environment.
 - `GID`: The group ID for running the application. Development variable only, needed only when running dev environment.
