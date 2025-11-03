@@ -1,9 +1,9 @@
 name: Release Please
 
 on:
-  pull_request:
-    types:
-      - closed
+  push:
+    branches:
+      - master
   workflow_dispatch:
 
 permissions:
@@ -11,10 +11,10 @@ permissions:
   pull-requests: write
 
 jobs:
-  release-please:
+  run:
     runs-on: ubuntu-latest
-    if: github.event_name == 'workflow_dispatch' || (github.event.pull_request.merged == true && startsWith(github.event.pull_request.head.ref, 'release-please'))
     steps:
       - uses: googleapis/release-please-action@v4
         with:
           release-type: php
+          token: '${{ secrets.RELEASE_PLEASE }}'
