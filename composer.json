@@ -17,21 +17,22 @@
         "ext-posix": "*",
         "geoip2/geoip2": "^v3.0",
         "guzzlehttp/guzzle": "^7.8",
-        "laravel/framework": "^12.0",
+        "laravel/framework": "^13.0",
         "laravel/sanctum": "^4.0",
-        "laravel/tinker": "^v2.8",
+        "laravel/tinker": "^3.0",
         "league/csv": "^9.10",
         "opis/json-schema": "^2.3",
-        "pulkitjalan/ip-geolocation": "^8.0"
+        "pulkitjalan/ip-geolocation": "^9.0"
     },
     "require-dev": {
         "fakerphp/faker": "^v1.23",
+        "laravel/boost": "^2.4",
         "laravel/pint": "^v1.12",
         "mockery/mockery": "^1.6",
+        "nunomaduro/collision": "^8.0",
         "pestphp/pest": "^v4.0",
         "pestphp/pest-plugin-laravel": "^4.0",
-        "spatie/laravel-ignition": "^2.3",
-        "nunomaduro/collision": "^8.0"
+        "spatie/laravel-ignition": "^2.3"
     },
     "autoload": {
         "psr-4": {

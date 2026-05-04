@@ -41,7 +41,7 @@
             <file>app/Http/Middleware/TrustHosts.php</file>
             <file>app/Http/Middleware/TrustProxies.php</file>
             <file>app/Http/Middleware/ValidateSignature.php</file>
-            <file>app/Http/Middleware/VerifyCsrfToken.php</file>
+            <file>app/Http/Middleware/PreventRequestForgery.php</file>
             <file>app/Http/Kernel.php</file>
             <file>app/Providers/AppServiceProvider.php</file>
             <file>app/Providers/AuthServiceProvider.php</file>
