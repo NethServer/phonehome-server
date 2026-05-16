@@ -1,5 +1,38 @@
 # Changelog
 
+## [1.5.1](https://github.com/NethServer/phonehome-server/compare/v1.5.0...v1.5.1) (2026-05-16)
+
+
+### Miscellaneous Chores
+
+* **deps:** update actions/checkout action to v6 ([#139](https://github.com/NethServer/phonehome-server/issues/139)) ([90b2069](https://github.com/NethServer/phonehome-server/commit/90b2069a4227fd2fd414d9ee1672bf4c61f09e69))
+* **deps:** update adminer docker tag to v5.4.2 ([03a855e](https://github.com/NethServer/phonehome-server/commit/03a855ec1bf0ee2ba497638cb649fbbd7b23dcdf))
+* **deps:** update composer docker tag to v2.9.1 ([92b366e](https://github.com/NethServer/phonehome-server/commit/92b366e0f8df34f9b7b5994ba5ce9e26fc22c45b))
+* **deps:** update composer docker tag to v2.9.2 ([77ee11c](https://github.com/NethServer/phonehome-server/commit/77ee11c30badf63ff33e2f5d2d1a79135b58336b))
+* **deps:** update composer docker tag to v2.9.5 ([c88b3b9](https://github.com/NethServer/phonehome-server/commit/c88b3b92f67a47515db18d3ecdc0c50884081c10))
+* **deps:** update composer docker tag to v2.9.7 ([8002172](https://github.com/NethServer/phonehome-server/commit/800217218a0969e5d6a74ac0ece08eaf3636a291))
+* **deps:** update composer docker tag to v2.9.8 ([49bfee1](https://github.com/NethServer/phonehome-server/commit/49bfee1b41286d705387cd984e917ac2868a177d))
+* **deps:** update docker/bake-action action to v6.10.0 ([4c9c933](https://github.com/NethServer/phonehome-server/commit/4c9c93391edc9be2cb54e53caed81b32fef4c249))
+* **deps:** update docker/bake-action action to v7 ([#143](https://github.com/NethServer/phonehome-server/issues/143)) ([dab77ae](https://github.com/NethServer/phonehome-server/commit/dab77ae65d349fb5984109d72d5de08ccf9657d9))
+* **deps:** update docker/login-action action to v4 ([#144](https://github.com/NethServer/phonehome-server/issues/144)) ([a754372](https://github.com/NethServer/phonehome-server/commit/a754372c63bc5a1f4aef75085ac436b06cc77fe4))
+* **deps:** update docker/metadata-action action to v6 ([#145](https://github.com/NethServer/phonehome-server/issues/145)) ([dc4c2c6](https://github.com/NethServer/phonehome-server/commit/dc4c2c6b62a5373ca459767729a151f33af8c990))
+* **deps:** update docker/setup-buildx-action action to v4 ([#146](https://github.com/NethServer/phonehome-server/issues/146)) ([5d7466a](https://github.com/NethServer/phonehome-server/commit/5d7466a53bb14b7cc73ea9c271be0cb0a975f0e2))
+* **deps:** update grafana/grafana-oss docker tag to v12.4.1 ([5160a67](https://github.com/NethServer/phonehome-server/commit/5160a673728e5ed79ebe820a26398a64f665c8c3))
+* **deps:** update grafana/grafana-oss docker tag to v12.4.3 ([699ad7d](https://github.com/NethServer/phonehome-server/commit/699ad7d84388c8dfbf8cee75d3a785ecf8ee6100))
+* **deps:** update mlocati/php-extension-installer docker tag to v2.10.6 ([dbd5cdc](https://github.com/NethServer/phonehome-server/commit/dbd5cdc57b923cdea44ae0f2d75b79b1e7cd2930))
+* **deps:** update mlocati/php-extension-installer docker tag to v2.10.7 ([5ca9ac1](https://github.com/NethServer/phonehome-server/commit/5ca9ac14ef08360f38ec684c20c03d3d25a58bc7))
+* **deps:** update mlocati/php-extension-installer docker tag to v2.11.1 ([ba7b474](https://github.com/NethServer/phonehome-server/commit/ba7b4744b504eaa45c36bd46a682a3ee09e95f55))
+* **deps:** update mlocati/php-extension-installer docker tag to v2.9.18 ([45b4472](https://github.com/NethServer/phonehome-server/commit/45b4472068672707373ccc52d480e55d038e2ea4))
+* **deps:** update nginx docker tag to v1.29.6 ([7be2f48](https://github.com/NethServer/phonehome-server/commit/7be2f480e0b9591e404bd51e8e8bd20c3259e498))
+* **deps:** update nginx docker tag to v1.30.0 ([4110a71](https://github.com/NethServer/phonehome-server/commit/4110a71470f95e33b1e7b9d9ed1ac1b1b363b630))
+* **deps:** update nginx docker tag to v1.31.0 ([50578b2](https://github.com/NethServer/phonehome-server/commit/50578b244dbd8ac549aca1972c1ef5d2b66c30d7))
+* **deps:** update php docker tag to v8.5.6 ([#140](https://github.com/NethServer/phonehome-server/issues/140)) ([dc58384](https://github.com/NethServer/phonehome-server/commit/dc58384c78bf9fe97ff0a30ecbb0d943affa7f3a))
+* **deps:** update postgres docker tag to v14.20 ([df97841](https://github.com/NethServer/phonehome-server/commit/df97841e9c2260dd76446908787e0a37a770ece6))
+* **deps:** update postgres docker tag to v14.22 ([7149b48](https://github.com/NethServer/phonehome-server/commit/7149b484ceb43819be0ff111db983ec237db92e6))
+* **deps:** update postgres docker tag to v14.23 ([f407380](https://github.com/NethServer/phonehome-server/commit/f407380ef18c74e8539deb0ca7bd82d3dde9cca9))
+* updated to laravel 13 ([165612a](https://github.com/NethServer/phonehome-server/commit/165612ad8d7ee869e2f0556076a0f31a78f9b349))
+* updated unused package.json ([638fad4](https://github.com/NethServer/phonehome-server/commit/638fad4638e56a64ed49a488d2abfda22619a5c4))
+
 ## [1.5.0](https://github.com/NethServer/phonehome-server/compare/1.4.0...v1.5.0) (2025-11-03)
 
 
