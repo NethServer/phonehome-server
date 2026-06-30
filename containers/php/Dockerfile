@@ -2,7 +2,7 @@ ARG PHP_EXTENSIONS="pcntl pdo_pgsql zip"
 ARG PHP_EXTENSIONS_DEV="${PHP_EXTENSIONS} xdebug"
 ARG PHP_EXTENSIONS_PROD="${PHP_EXTENSIONS} opcache"
 
-ARG DEPENDENCIES="netcat-openbsd postgresql15-client procps"
+ARG DEPENDENCIES="netcat-openbsd postgresql-client procps"
 ARG DEPENDENCIES_DEV="git shadow sudo bash"
 
 # base image for all containers
