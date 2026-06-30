@@ -17,8 +17,16 @@ if [ "$1" = 'php-fpm' ]; then
     fi
     php artisan migrate --force
     php artisan ip-geolocation:update
-elif [ "$1" = 'crond' ]; then
+elif [ "$1" = 'scheduler' ] || [ "$1" = 'worker' ]; then
     wait-for "${FPM_URL:?Missing FPM_URL}:${FPM_PORT:?Missing FPM_PORT}" -t 60
+    if [ "$APP_ENV" != "local" ]; then
+        php artisan optimize
+    fi
+    if [ "$1" = 'scheduler' ]; then
+        set -- php artisan schedule:work --whisper
+    else
+        set -- php artisan queue:work --sleep=3 --tries=3 --max-time=3600
+    fi
 fi
 
 exec "$@"

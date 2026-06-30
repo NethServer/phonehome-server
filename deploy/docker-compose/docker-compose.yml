@@ -30,10 +30,25 @@ services:
     scheduler:
         extends:
             service: app
+        hostname: scheduler
+        restart: unless-stopped
+        depends_on:
+            - app
         environment:
             FPM_URL: app
             FPM_PORT: 9000
-        command: [ "crond", "-f", "-l", "2" ]
+        command: [ "scheduler" ]
+    worker:
+        extends:
+            service: app
+        hostname: worker
+        restart: unless-stopped
+        depends_on:
+            - app
+        environment:
+            FPM_URL: app
+            FPM_PORT: 9000
+        command: [ "worker" ]
     web:
         image: ghcr.io/nethserver/phonehome-server-web:latest
         healthcheck:

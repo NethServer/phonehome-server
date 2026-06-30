@@ -44,6 +44,28 @@ services:
         volumes: &app-volumes
             - .:/var/www/html
             - home:/home/www-data
+    scheduler:
+        extends:
+            service: app
+        hostname: scheduler
+        restart: unless-stopped
+        depends_on:
+            - app
+        environment:
+            FPM_URL: app
+            FPM_PORT: 9000
+        command: [ "scheduler" ]
+    worker:
+        extends:
+            service: app
+        hostname: worker
+        restart: unless-stopped
+        depends_on:
+            - app
+        environment:
+            FPM_URL: app
+            FPM_PORT: 9000
+        command: [ "worker" ]
     web:
         pull_policy: never
         build:
