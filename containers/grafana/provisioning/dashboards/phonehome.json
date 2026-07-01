@@ -190,7 +190,7 @@
           "editorMode": "code",
           "format": "table",
           "rawQuery": true,
-          "rawSql": "SELECT\n  day_series :: date AS day,\n  COUNT(id) as active_firewalls\nFROM\n  generate_series(\n    NOW() - '6 month' :: interval,\n    NOW() - '1 day' :: interval,\n    '1 day' :: interval\n  ) day_series\n  LEFT JOIN installations ON installations.created_at :: date <= day_series :: date\n  AND updated_at :: date >= day_series :: date - '7 days' :: interval\nWHERE\n  data ->> 'installation' = 'nethsecurity'\nGROUP BY\n  day;",
+          "rawSql": "SELECT\n  day,\n  active_count AS active_firewalls\nFROM\n  phonehome_daily_active_counts\nWHERE\n  category = 'nethsecurity'\nORDER BY\n  day;",
           "refId": "Nethsecurity 8 currently active",
           "sql": {
             "columns": [
@@ -219,7 +219,7 @@
           "format": "table",
           "hide": false,
           "rawQuery": true,
-          "rawSql": "SELECT\n  day_series :: date AS day,\n  COUNT(id) as active_clusters\nFROM\n  generate_series(\n    NOW() - '6 month' :: interval,\n    NOW() - '1 day' :: interval,\n    '1 day' :: interval\n  ) day_series\n  LEFT JOIN installations ON installations.created_at :: date <= day_series :: date\n  AND updated_at :: date >= day_series :: date - '7 days' :: interval\nWHERE\n  to_jsonb(data -> 'facts') ? 'nodes'\nGROUP BY\n  day;",
+          "rawSql": "SELECT\n  day,\n  active_count AS active_clusters\nFROM\n  phonehome_daily_active_counts\nWHERE\n  category = 'nethserver8'\nORDER BY\n  day;",
           "refId": "Nethserver 8 currently active",
           "sql": {
             "columns": [
@@ -248,7 +248,7 @@
           "format": "table",
           "hide": false,
           "rawQuery": true,
-          "rawSql": "SELECT\n  day_series :: date AS day,\n  COUNT(id) as installation_count\nFROM\n  generate_series(\n    NOW() - '6 month' :: interval,\n    NOW() - '1 day' :: interval,\n    '1 day' :: interval\n  ) day_series\n  LEFT JOIN installations ON installations.created_at :: date <= day_series :: date\n  AND updated_at :: date >= day_series :: date - '7 days' :: interval\nWHERE\n  NOT to_jsonb(data -> 'facts') ? 'nodes'\n  AND data ->> 'installation' = 'nethserver'\nGROUP BY\n  day;",
+          "rawSql": "SELECT\n  day,\n  active_count AS installation_count\nFROM\n  phonehome_daily_active_counts\nWHERE\n  category = 'nethserver67'\nORDER BY\n  day;",
           "refId": "NethServer 6/7 installations ",
           "sql": {
             "columns": [
@@ -334,7 +334,7 @@
           "editorMode": "code",
           "format": "table",
           "rawQuery": true,
-          "rawSql": "SELECT COUNT(id)\nFROM installations\nWHERE installations.updated_at > NOW() - interval '7 days';",
+          "rawSql": "SELECT COUNT(*)\nFROM phonehome_installations;",
           "refId": "A",
           "sql": {
             "columns": [
@@ -432,7 +432,7 @@
           "editorMode": "code",
           "format": "table",
           "rawQuery": true,
-          "rawSql": "SELECT\n  COUNT(installations.id) as ns_installations\nFROM\n  installations\nWHERE\n  installations.updated_at > NOW() - interval '7 days'\n  AND to_jsonb(data -> 'facts') ? 'nodes'\n  AND data ->> 'installation' = 'nethserver';",
+          "rawSql": "SELECT\n  COUNT(*) as ns_installations\nFROM\n  phonehome_installations\nWHERE\n  category = 'nethserver8';",
           "refId": "A",
           "sql": {
             "columns": [
@@ -624,7 +624,7 @@
           "editorMode": "code",
           "format": "table",
           "rawQuery": true,
-          "rawSql": "SELECT\n  code,\n  name,\n  COUNT(installations.id) as old_installations\nFROM\n  installations\n  JOIN countries ON installations.country_id = countries.id\nWHERE\n  installations.updated_at > NOW() - interval '7 days'\n  AND to_jsonb(data -> 'facts') ? 'nodes'\n  AND data ->> 'installation' = 'nethserver'\nGROUP BY\n  code,\n  name;",
+          "rawSql": "SELECT\n  country_code AS code,\n  country_name AS name,\n  COUNT(*) as old_installations\nFROM\n  phonehome_installations\nWHERE\n  category = 'nethserver8'\nGROUP BY\n  country_code,\n  country_name;",
           "refId": "A",
           "sql": {
             "columns": [
@@ -761,7 +761,7 @@
           "editorMode": "code",
           "format": "table",
           "rawQuery": true,
-          "rawSql": "SELECT node_count, count(id)\nFROM (SELECT id, count(nodes) as node_count\n      FROM (SELECT id, length(json_object_keys(data -> 'facts' -> 'nodes')) as nodes\n            FROM installations\n            WHERE updated_at > now() - interval '7 days') as nodes_unpack\n      GROUP BY id) as nodes_by_installation\nGROUP BY node_count\nORDER BY node_count;",
+          "rawSql": "SELECT node_count, COUNT(*)\nFROM phonehome_installations\nWHERE category = 'nethserver8'\nGROUP BY node_count\nORDER BY node_count;",
           "refId": "A",
           "sql": {
             "columns": [
@@ -880,7 +880,7 @@
           "editorMode": "code",
           "format": "table",
           "rawQuery": true,
-          "rawSql": "SELECT\n  name,\n  jsonb_path_query(to_jsonb(data), '$.facts.nodes.*') ->> 'version' as version,\n  COUNT(installations.id) as old_installations\nFROM\n  installations\n  JOIN countries ON installations.country_id = countries.id\nWHERE\n  installations.updated_at > NOW() - interval '7 days'\n  AND to_jsonb(data -> 'facts') ? 'nodes'\n  AND data ->> 'installation' = 'nethserver'\nGROUP BY\n  name,\n  version\nORDER BY old_installations DESC, version, name;",
+          "rawSql": "SELECT\n  country_name as name,\n  version,\n  COUNT(*) as old_installations\nFROM\n  phonehome_nethserver8_node_versions\nGROUP BY\n  country_name,\n  version\nORDER BY old_installations DESC, version, name;",
           "refId": "A",
           "sql": {
             "columns": [
@@ -978,7 +978,7 @@
           "editorMode": "code",
           "format": "table",
           "rawQuery": true,
-          "rawSql": "SELECT\n  COUNT(installations.id) as nsec_installations\nFROM\n  installations\nWHERE\n  installations.updated_at > NOW() - interval '7 days'\n  AND data ->> 'installation' = 'nethsecurity';",
+          "rawSql": "SELECT\n  COUNT(*) as nsec_installations\nFROM\n  phonehome_installations\nWHERE\n  category = 'nethsecurity';",
           "refId": "A",
           "sql": {
             "columns": [
@@ -1170,7 +1170,7 @@
           "editorMode": "code",
           "format": "table",
           "rawQuery": true,
-          "rawSql": "SELECT\n  code,\n  name,\n  COUNT(installations.id) as nsec_installations\nFROM\n  installations\n  JOIN countries ON installations.country_id = countries.id\nWHERE\n  installations.updated_at > NOW() - interval '7 days'\n  AND data ->> 'installation' = 'nethsecurity'\nGROUP BY\n  code,\n  name;",
+          "rawSql": "SELECT\n  country_code AS code,\n  country_name AS name,\n  COUNT(*) as nsec_installations\nFROM\n  phonehome_installations\nWHERE\n  category = 'nethsecurity'\nGROUP BY\n  country_code,\n  country_name;",
           "refId": "A",
           "sql": {
             "columns": [
@@ -1289,7 +1289,7 @@
           "editorMode": "code",
           "format": "table",
           "rawQuery": true,
-          "rawSql": "SELECT name, data -> 'facts' -> 'distro' ->> 'version' as version, COUNT(installations.id) as installation_count\nFROM installations\nJOIN countries ON countries.id = installations.country_id\nWHERE installations.updated_at > now() - interval '7 days'\n  AND data ->> 'installation' = 'nethsecurity'\nGROUP BY name, version\nORDER BY installation_count DESC, version, name;",
+          "rawSql": "SELECT country_name as name, version, COUNT(*) as installation_count\nFROM phonehome_installations\nWHERE category = 'nethsecurity'\nGROUP BY country_name, version\nORDER BY installation_count DESC, version, name;",
           "refId": "A",
           "sql": {
             "columns": [
@@ -1421,7 +1421,7 @@
           "editorMode": "code",
           "format": "table",
           "rawQuery": true,
-          "rawSql": "SELECT\n  name,\n  data -> 'facts' ->> 'version' as version,\n  COUNT(installations.id) as old_installations\nFROM\n  installations\n  JOIN countries ON installations.country_id = countries.id\nWHERE\n  installations.updated_at > NOW() - interval '7 days'\n  AND NOT to_jsonb(data -> 'facts') ? 'nodes'\n  AND data ->> 'installation' = 'nethserver'\nGROUP BY\n  name,\n  version\nORDER BY old_installations DESC, version, name;",
+          "rawSql": "SELECT\n  country_name as name,\n  version,\n  COUNT(*) as old_installations\nFROM\n  phonehome_installations\nWHERE\n  category = 'nethserver67'\nGROUP BY\n  country_name,\n  version\nORDER BY old_installations DESC, version, name;",
           "refId": "A",
           "sql": {
             "columns": [
@@ -1613,7 +1613,7 @@
           "editorMode": "code",
           "format": "table",
           "rawQuery": true,
-          "rawSql": "SELECT\n  code,\n  name,\n  COUNT(installations.id) as old_installations\nFROM\n  installations\n  JOIN countries ON installations.country_id = countries.id\nWHERE\n  installations.updated_at > NOW() - interval '7 days'\n  AND NOT to_jsonb(data -> 'facts') ? 'nodes'\n  AND data ->> 'installation' = 'nethserver'\nGROUP BY\n  code,\n  name;",
+          "rawSql": "SELECT\n  country_code AS code,\n  country_name AS name,\n  COUNT(*) as old_installations\nFROM\n  phonehome_installations\nWHERE\n  category = 'nethserver67'\nGROUP BY\n  country_code,\n  country_name;",
           "refId": "A",
           "sql": {
             "columns": [
