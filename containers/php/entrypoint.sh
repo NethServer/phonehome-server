@@ -25,7 +25,7 @@ elif [ "$1" = 'scheduler' ] || [ "$1" = 'worker' ]; then
     if [ "$1" = 'scheduler' ]; then
         set -- php artisan schedule:work --whisper
     else
-        set -- php artisan queue:work --sleep=3 --tries=3 --max-time=3600
+        set -- php artisan queue:work --sleep=3 --tries=3 --max-time=3600 --timeout=0
     fi
 fi
 
