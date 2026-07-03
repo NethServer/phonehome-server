@@ -78,7 +78,6 @@ services:
         environment:
             FPM_URL: app
             FPM_PORT: 9000
-
     adminer:
         image: adminer:5.4.2
         ports:

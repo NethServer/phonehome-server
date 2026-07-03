@@ -151,3 +151,69 @@ Simply enter the `deploy/docker-compose` folder, copy the given `deploy/docker-c
 
 #### Initial deployment setup
 
+On first deploy, after `docker compose up -d`, run migrations and seed the GeoIP database:
+
+```bash
+docker compose exec app php artisan migrate --force
+docker compose exec app php artisan ip-geolocation:update
+```
+
+## Nethvoice stats
+
+Nightly-refreshed `nethvoice_*` PostgreSQL materialized views expose pre-flattened phone system stats for Metabase/Grafana without live JSONB unpacking. The views are created by a migration and refreshed by `App\Jobs\RefreshNethvoiceStatsMaterializedViews`, scheduled at 02:00 via `App\Console\Kernel`.
+
+To trigger a manual refresh:
+
+```bash
+docker compose exec app php artisan nethvoice:refresh-stats
+```
+
+### Test locally with podman and a production dump
+
+Requires `podman` and `podman-compose`.
+
+**1. Start the database**
+
+```bash
+podman-compose up -d database
+```
+
+**2. Load a production dump**
+
+```bash
+zcat dump.sql.gz | podman exec -i phonehome-development_database_1 psql -U phonehome -d phonehome -q
+```
+
+**3. Build the production image**
+
+```bash
+podman build -f containers/php/Dockerfile --target production -t phonehome-app-prod:test .
+```
+
+**4. Run migrations and refresh stats**
+
+```bash
+podman run --rm --network=host \
+  -e DB_HOST=127.0.0.1 -e DB_PORT=5432 \
+  -e DB_DATABASE=phonehome -e DB_USERNAME=phonehome -e DB_PASSWORD=phonehome \
+  -e APP_KEY=base64:jobMaruKa1iNGS74JK7PGywi5zGWdgIo0HoMG0B+hrY= \
+  -e APP_ENV=production \
+  phonehome-app-prod:test sh -c "php artisan migrate --force && php artisan nethvoice:refresh-stats"
+```
+
+To rollback a migration:
+```bash
+podman run --rm --network=host \
+  -e DB_HOST=127.0.0.1 -e DB_PORT=5432 \
+  -e DB_DATABASE=phonehome -e DB_USERNAME=phonehome -e DB_PASSWORD=phonehome \
+  -e APP_KEY=base64:jobMaruKa1iNGS74JK7PGywi5zGWdgIo0HoMG0B+hrY= \ 
+  -e APP_ENV=production \
+  phonehome-app-prod:test sh -c "php artisan migrate rollback"
+```
+
+**5. Verify views are populated**
+
+```bash
+podman exec -i phonehome-development_database_1 psql -U phonehome -d phonehome -c \
+  "SELECT matviewname, pg_size_pretty(pg_total_relation_size(matviewname::regclass)) FROM pg_matviews WHERE matviewname LIKE 'nethvoice%' ORDER BY matviewname;"
+```

@@ -2,6 +2,8 @@
 
 namespace App\Console;
 
+use App\Jobs\RefreshNethvoiceStatsMaterializedViews;
+use App\Jobs\RefreshPhonehomeDashboardMaterializedViews;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
 
@@ -12,7 +14,9 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule): void
     {
-        $schedule->command("ip-geolocation:update")->daily();
+        $schedule->command('ip-geolocation:update')->daily();
+        $schedule->job(new RefreshNethvoiceStatsMaterializedViews)->dailyAt('02:00')->withoutOverlapping();
+        $schedule->job(new RefreshPhonehomeDashboardMaterializedViews)->dailyAt('02:15')->withoutOverlapping();
     }
 
     /**
