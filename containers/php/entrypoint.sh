@@ -23,10 +23,14 @@ elif [ "$1" = 'scheduler' ] || [ "$1" = 'worker' ]; then
         php artisan optimize
     fi
     if [ "$1" = 'scheduler' ]; then
-        set -- php artisan schedule:work --whisper
+        cmd="php artisan schedule:work --whisper"
     else
-        set -- php artisan queue:work --sleep=3 --tries=3 --max-time=3600 --timeout=0
+        cmd="php artisan queue:work --sleep=3 --tries=3 --timeout=0"
     fi
+    if [ "$(id -u)" = '0' ]; then
+        exec su -s /bin/sh www-data -c "$cmd"
+    fi
+    set -- $cmd
 fi
 
 exec "$@"
