@@ -1,5 +1,17 @@
 # Changelog
 
+## [1.6.1](https://github.com/NethServer/phonehome-server/compare/v1.6.0...v1.6.1) (2026-07-21)
+
+
+### Miscellaneous Chores
+
+* **deps:** update adminer docker tag to v5.5.0 ([36669e5](https://github.com/NethServer/phonehome-server/commit/36669e55e326490ce165be6943bf61474c7dc881))
+* **deps:** update composer docker tag to v2.10.2 ([ebad4c6](https://github.com/NethServer/phonehome-server/commit/ebad4c67be829f1958de35a230ba73d892cf5738))
+* **deps:** update dependency guzzlehttp/guzzle to v7.15.1 [security] ([ed2d2a1](https://github.com/NethServer/phonehome-server/commit/ed2d2a114f15f1f22a8f1979378f5477ca3ba16d))
+* **deps:** update docker/bake-action action to v7.3.0 ([491e374](https://github.com/NethServer/phonehome-server/commit/491e37444547adfb26b92415154ac913d63011e6))
+* **deps:** update nginx docker tag to v1.31.3 ([027708c](https://github.com/NethServer/phonehome-server/commit/027708cd62d4e19f6ccd977796c0f1bf7198753e))
+* **deps:** update php docker tag to v8.5.8 ([6a3ad0a](https://github.com/NethServer/phonehome-server/commit/6a3ad0a89402852b05c62bf3d4d9fb68d5bd21c9))
+
 ## [1.6.0](https://github.com/NethServer/phonehome-server/compare/v1.5.0...v1.6.0) (2026-07-03)
 
 
