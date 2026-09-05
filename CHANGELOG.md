@@ -1,5 +1,25 @@
 # Changelog
 
+## [1.6.1](https://github.com/NethServer/phonehome-server/compare/v1.6.0...v1.6.1) (2026-09-05)
+
+
+### Miscellaneous Chores
+
+* **deps:** update adminer docker tag to v5.5.0 ([36669e5](https://github.com/NethServer/phonehome-server/commit/36669e55e326490ce165be6943bf61474c7dc881))
+* **deps:** update adminer docker tag to v5.5.1 ([1c7f6e6](https://github.com/NethServer/phonehome-server/commit/1c7f6e6e2616ac8d6b5303278dc4cc6bd229aed6))
+* **deps:** update composer docker tag to v2.10.2 ([ebad4c6](https://github.com/NethServer/phonehome-server/commit/ebad4c67be829f1958de35a230ba73d892cf5738))
+* **deps:** update composer docker tag to v2.10.3 ([9935181](https://github.com/NethServer/phonehome-server/commit/99351811fe4be9cdc9283be520383709f443c4cb))
+* **deps:** update dependency guzzlehttp/guzzle to v7.15.1 [security] ([ed2d2a1](https://github.com/NethServer/phonehome-server/commit/ed2d2a114f15f1f22a8f1979378f5477ca3ba16d))
+* **deps:** update dependency guzzlehttp/guzzle to v7.15.2 [security] ([a70fad4](https://github.com/NethServer/phonehome-server/commit/a70fad43e9134b2249fbb9fe3e1de864c8b56cda))
+* **deps:** update docker/bake-action action to v7.3.0 ([491e374](https://github.com/NethServer/phonehome-server/commit/491e37444547adfb26b92415154ac913d63011e6))
+* **deps:** update nginx docker tag to v1.31.3 ([027708c](https://github.com/NethServer/phonehome-server/commit/027708cd62d4e19f6ccd977796c0f1bf7198753e))
+* **deps:** update nginx docker tag to v1.31.4 ([a33e170](https://github.com/NethServer/phonehome-server/commit/a33e17076291b5ad51c4f6079530c6410ca43448))
+* **deps:** update nginx docker tag to v1.31.5 ([5a60162](https://github.com/NethServer/phonehome-server/commit/5a60162df5fc4d5083642f82fe5dc0f422274dd3))
+* **deps:** update php docker tag to v8.5.10 ([ff18fca](https://github.com/NethServer/phonehome-server/commit/ff18fca373e3acd936e36571dede8439e5e9825c))
+* **deps:** update php docker tag to v8.5.8 ([6a3ad0a](https://github.com/NethServer/phonehome-server/commit/6a3ad0a89402852b05c62bf3d4d9fb68d5bd21c9))
+* **deps:** update php docker tag to v8.5.9 ([5ae7b34](https://github.com/NethServer/phonehome-server/commit/5ae7b34cfb3311d42826ba145a54631f59eb8772))
+* **deps:** update postgres docker tag to v14.24 ([3c792c5](https://github.com/NethServer/phonehome-server/commit/3c792c5bb2b30149c80ab0af8934df1db5cd4881))
+
 ## [1.6.0](https://github.com/NethServer/phonehome-server/compare/v1.5.0...v1.6.0) (2026-07-03)
 
 
