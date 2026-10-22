@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.6.2](https://github.com/NethServer/phonehome-server/compare/v1.6.1...v1.6.2) (2026-10-22)
+
+
+### Miscellaneous Chores
+
+* **deps:** update dependency ubuntu to v26 ([#160](https://github.com/NethServer/phonehome-server/issues/160)) ([99b9666](https://github.com/NethServer/phonehome-server/commit/99b96663c068f76f52681b0a0418f4b5e15f5a27))
+* **deps:** update grafana/grafana-oss docker tag to v13 ([#151](https://github.com/NethServer/phonehome-server/issues/151)) ([fe9cc4f](https://github.com/NethServer/phonehome-server/commit/fe9cc4fcc14d4b41e8fcb6efade89d992af3b7c5))
+
 ## [1.6.1](https://github.com/NethServer/phonehome-server/compare/v1.6.0...v1.6.1) (2026-10-17)
 
 
