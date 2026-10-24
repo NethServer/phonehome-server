@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.6.3](https://github.com/NethServer/phonehome-server/compare/v1.6.2...v1.6.3) (2026-10-24)
+
+
+### Miscellaneous Chores
+
+* **deps:** update composer docker tag to v2.10.3 ([e8f7e0a](https://github.com/NethServer/phonehome-server/commit/e8f7e0aa637b960d7736555b3e8a7fddc7c04309))
+
 ## [1.6.2](https://github.com/NethServer/phonehome-server/compare/v1.6.1...v1.6.2) (2026-10-22)
 
 
