@@ -1,5 +1,14 @@
 # Changelog
 
+## [1.6.3](https://github.com/NethServer/phonehome-server/compare/v1.6.2...v1.6.3) (2026-10-31)
+
+
+### Miscellaneous Chores
+
+* **deps:** update composer docker tag to v2.10.3 ([e8f7e0a](https://github.com/NethServer/phonehome-server/commit/e8f7e0aa637b960d7736555b3e8a7fddc7c04309))
+* **deps:** update composer docker tag to v2.11.1 ([177ad81](https://github.com/NethServer/phonehome-server/commit/177ad8185f8954364728a119a7d32d7d0561be73))
+* **deps:** update mlocati/php-extension-installer docker tag to v2.13.1 ([ff3d443](https://github.com/NethServer/phonehome-server/commit/ff3d44334c3458f4bed5a723c95de43130e3de27))
+
 ## [1.6.2](https://github.com/NethServer/phonehome-server/compare/v1.6.1...v1.6.2) (2026-10-22)
 
 
