@@ -1,15 +1,13 @@
 {
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
   "extends": [
-    "config:base",
+    "config:best-practices",
     ":automergeMinor",
     ":prHourlyLimitNone",
-    ":disableDependencyDashboard",
-    "schedule:weekends"
+    ":disableDependencyDashboard"
   ],
   "rangeStrategy": "replace",
   "automergeType": "branch",
-  "updateNotScheduled": false,
   "packageRules": [
     {
       "matchPackageNames": [
@@ -19,7 +17,6 @@
     }
   ],
   "vulnerabilityAlerts": {
-    "enabled": true,
     "assignees": ["@Tbaile"]
   }
 }
