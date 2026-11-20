@@ -1,5 +1,17 @@
 # Changelog
 
+## [1.7.0](https://github.com/NethServer/phonehome-server/compare/v1.6.3...v1.7.0) (2026-11-20)
+
+
+### Features
+
+* hide version counters in public dashboard ([#164](https://github.com/NethServer/phonehome-server/issues/164)) ([696574e](https://github.com/NethServer/phonehome-server/commit/696574edd96ecd8a265caf13fd0a754283a4d98b))
+
+
+### Miscellaneous Chores
+
+* updated php to 8.5.13 ([21b4f5e](https://github.com/NethServer/phonehome-server/commit/21b4f5e0446a0a110b1f5a7335e5b331b324976a))
+
 ## [1.6.3](https://github.com/NethServer/phonehome-server/compare/v1.6.2...v1.6.3) (2026-11-19)
 
 
