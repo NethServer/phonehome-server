@@ -6,7 +6,7 @@ ARG DEPENDENCIES="netcat-openbsd postgresql-client procps"
 ARG DEPENDENCIES_DEV="git shadow sudo bash"
 
 # base image for all containers
-FROM php:8.5.13-fpm-alpine AS base
+FROM php:8.6.0-fpm-alpine AS base
 WORKDIR /var/www/html
 # install extensions and packages
 COPY --from=mlocati/php-extension-installer:2.13.2 /usr/bin/install-php-extensions /usr/local/sbin/
