@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.7.1](https://github.com/NethServer/phonehome-server/compare/v1.7.0...v1.7.1) (2026-11-20)
+
+
+### Bug Fixes
+
+* **grafana:** wrong datasource was edited ([b025644](https://github.com/NethServer/phonehome-server/commit/b025644c6ae254b1178a05bd41e3a5fcf611019b))
+
 ## [1.7.0](https://github.com/NethServer/phonehome-server/compare/v1.6.3...v1.7.0) (2026-11-20)
 
 
