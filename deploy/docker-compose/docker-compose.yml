@@ -1,7 +1,7 @@
 name: phonehome-prod
 services:
     database:
-        image: postgres:14.25-alpine
+        image: postgres:14.25-alpine@sha256:e7d9e6aac7fe3232f7661da103aebc0ce38b04105b46af5e9edd5ef6bc343f20
         healthcheck:
             test: [ "CMD", "pg_isready", "-q", "-d", "phonehome", "-U", "phonehome" ]
         volumes:
@@ -11,7 +11,7 @@ services:
             POSTGRES_USER: $DB_USERNAME
             POSTGRES_PASSWORD: $DB_PASSWORD
     grafana:
-        image: ghcr.io/nethserver/phonehome-server-grafana:latest
+        image: ghcr.io/nethserver/phonehome-server-grafana:latest@sha256:0fdc06bef6456520a8aa0aec4aeef7e340de800fdfd63494c1efc352448a69bd
         environment:
             GF_INSTANCE_NAME: phonehome
             GF_SECURITY_ADMIN_PASSWORD: phonehome
@@ -21,7 +21,7 @@ services:
             PHONEHOME_USERNAME: $GRAFANA_USERNAME
             PHONEHOME_PASSWORD: $GRAFANA_PASSWORD
     app:
-        image: ghcr.io/nethserver/phonehome-server-app:latest
+        image: ghcr.io/nethserver/phonehome-server-app:latest@sha256:f045970d0c705c3c9e968d193fe4e1038e284924dd3e79ba28880451e761b9c8
         volumes:
             - bootstrap:/var/www/html/bootstrap
             - storage:/var/www/html/storage
@@ -50,7 +50,7 @@ services:
             FPM_PORT: 9000
         command: [ "worker" ]
     web:
-        image: ghcr.io/nethserver/phonehome-server-web:latest
+        image: ghcr.io/nethserver/phonehome-server-web:latest@sha256:df5abd20f5a8aaeb782fda891d106f69e4d59f6082737531d8c975591d360686
         healthcheck:
             test: [ "CMD", "curl", "--fail", "--silent", "--output", "/dev/null", "http://localhost/status" ]
         environment:

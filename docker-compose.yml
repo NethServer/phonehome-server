@@ -1,7 +1,7 @@
 name: phonehome-development
 services:
     database:
-        image: postgres:14.25-alpine
+        image: postgres:14.25-alpine@sha256:e7d9e6aac7fe3232f7661da103aebc0ce38b04105b46af5e9edd5ef6bc343f20
         healthcheck:
             test: [ "CMD", "pg_isready", "-q", "-d", $DB_DATABASE, "-U", $DB_USERNAME ]
         ports:
@@ -79,7 +79,7 @@ services:
             FPM_URL: app
             FPM_PORT: 9000
     adminer:
-        image: adminer:5.5.1
+        image: adminer:5.5.1@sha256:04ccdec4f899b92650855e9e8ad2f4099987f1b348fdad9b44d345ad38e1e54b
         ports:
             - "8080:8080"
         environment:
