@@ -163,9 +163,9 @@
                     "hidden": false,
                     "query": {
                       "datasource": {
-                        "name": "phonehome"
+                        "name": "phonehome_datasource"
                       },
-                      "group": "datasource",
+                      "group": "grafana-postgresql-datasource",
                       "kind": "DataQuery",
                       "spec": {
                         "editorMode": "code",
@@ -295,9 +295,9 @@
                     "hidden": false,
                     "query": {
                       "datasource": {
-                        "name": "phonehome"
+                        "name": "phonehome_datasource"
                       },
-                      "group": "datasource",
+                      "group": "grafana-postgresql-datasource",
                       "kind": "DataQuery",
                       "spec": {
                         "editorMode": "code",
@@ -504,9 +504,9 @@
                     "hidden": false,
                     "query": {
                       "datasource": {
-                        "name": "phonehome"
+                        "name": "phonehome_datasource"
                       },
-                      "group": "datasource",
+                      "group": "grafana-postgresql-datasource",
                       "kind": "DataQuery",
                       "spec": {
                         "editorMode": "code",
@@ -890,9 +890,9 @@
                     "hidden": false,
                     "query": {
                       "datasource": {
-                        "name": "phonehome"
+                        "name": "phonehome_datasource"
                       },
-                      "group": "datasource",
+                      "group": "grafana-postgresql-datasource",
                       "kind": "DataQuery",
                       "spec": {
                         "editorMode": "code",
@@ -928,9 +928,9 @@
                     "hidden": false,
                     "query": {
                       "datasource": {
-                        "name": "phonehome"
+                        "name": "phonehome_datasource"
                       },
-                      "group": "datasource",
+                      "group": "grafana-postgresql-datasource",
                       "kind": "DataQuery",
                       "spec": {
                         "editorMode": "code",
@@ -966,9 +966,9 @@
                     "hidden": false,
                     "query": {
                       "datasource": {
-                        "name": "phonehome"
+                        "name": "phonehome_datasource"
                       },
-                      "group": "datasource",
+                      "group": "grafana-postgresql-datasource",
                       "kind": "DataQuery",
                       "spec": {
                         "editorMode": "code",
@@ -1138,9 +1138,9 @@
                     "hidden": false,
                     "query": {
                       "datasource": {
-                        "name": "phonehome"
+                        "name": "phonehome_datasource"
                       },
-                      "group": "datasource",
+                      "group": "grafana-postgresql-datasource",
                       "kind": "DataQuery",
                       "spec": {
                         "editorMode": "code",
@@ -1347,9 +1347,9 @@
                     "hidden": false,
                     "query": {
                       "datasource": {
-                        "name": "phonehome"
+                        "name": "phonehome_datasource"
                       },
-                      "group": "datasource",
+                      "group": "grafana-postgresql-datasource",
                       "kind": "DataQuery",
                       "spec": {
                         "editorMode": "code",
@@ -1479,9 +1479,9 @@
                     "hidden": false,
                     "query": {
                       "datasource": {
-                        "name": "phonehome"
+                        "name": "phonehome_datasource"
                       },
-                      "group": "datasource",
+                      "group": "grafana-postgresql-datasource",
                       "kind": "DataQuery",
                       "spec": {
                         "editorMode": "code",
