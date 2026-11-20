@@ -6,6 +6,11 @@
     ":prHourlyLimitNone",
     ":disableDependencyDashboard"
   ],
+  "ignorePresets": [
+    ":pinDevDependencies",
+    "docker:pinDigests",
+    "helpers:pinGitHubActionDigests"
+  ],
   "rangeStrategy": "replace",
   "automergeType": "branch",
   "packageRules": [
@@ -14,6 +19,12 @@
         "postgres"
       ],
       "allowedVersions": "<= 14"
+    },
+    {
+      "matchPackageNames": [
+        "php"
+      ],
+      "separateMinorPatch": true
     }
   ],
   "vulnerabilityAlerts": {
