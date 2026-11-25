@@ -1,5 +1,16 @@
 # Changelog
 
+## [1.7.2](https://github.com/NethServer/phonehome-server/compare/v1.7.1...v1.7.2) (2026-11-25)
+
+
+### Miscellaneous Chores
+
+* **deps:** update composer docker tag to v2.11.3 ([2f4b256](https://github.com/NethServer/phonehome-server/commit/2f4b256ef63ebcae4136587dfe68736a750318e9))
+* **deps:** update grafana/grafana docker tag to v13.3.2 ([a0304c6](https://github.com/NethServer/phonehome-server/commit/a0304c6851ed1c99e90457145697324423f457c1))
+* **deps:** update mlocati/php-extension-installer docker tag to v2.13.3 ([e9452ad](https://github.com/NethServer/phonehome-server/commit/e9452ad6bbbdb55df4a4472dcef804f77bc8701f))
+* **deps:** update mlocati/php-extension-installer docker tag to v2.13.4 ([48a488f](https://github.com/NethServer/phonehome-server/commit/48a488fcf671cdb1b09e6f26564a7de0407603c4))
+* **deps:** update nginx docker tag to v1.31.10 ([45d2b35](https://github.com/NethServer/phonehome-server/commit/45d2b35f0d4f40b3d5f93c1fd8fa07a62f26cf50))
+
 ## [1.7.1](https://github.com/NethServer/phonehome-server/compare/v1.7.0...v1.7.1) (2026-11-20)
 
 
